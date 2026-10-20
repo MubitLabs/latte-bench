@@ -30,7 +30,7 @@ test('task seeds and foam evidence reject invalid data',()=>{
 test('held-out and independent protocols cannot silently receive practice feedback',()=>{
   const feedback=[{score:20,failedChecks:['shape'],actions:[{command:'grind',duration:2.2}]}];
   expect(()=>benchmarkContext({protocol:'holdout',feedback})).toThrow();expect(()=>benchmarkContext({protocol:'independent',feedback})).toThrow();
-  const c=benchmarkContext({taskId:'rosetta',protocol:'feedback',feedback});expect(c.previousEpisodes).toEqual(feedback);expect(c.task.targetFoam).toHaveLength(16);
+  const c=benchmarkContext({taskId:'rosetta',protocol:'feedback',feedback});expect(c.previousEpisodes).toEqual(feedback);expect(c.task.targetFoam).toHaveLength(32);
   expect(()=>benchmarkContext({protocol:'feedback',feedback:[{...feedback[0],actions:[{command:'bogus'}]}]})).toThrow();
 });
 test('agent context includes a bounded remaining budget and labels cross-task feedback',()=>{

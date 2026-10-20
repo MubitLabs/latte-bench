@@ -1,0 +1,24 @@
+{
+  "schema": "heart-frozen/3",
+  "tag": "latte-bench-v0.7-heart-freeze",
+  "target": "heart",
+  "targetSeed": 42,
+  "seeds": [42, 43, 44, 45, 46],
+  "attemptsPerSeed": 10,
+  "modes": ["no-notes", "notes"],
+  "models": [
+    {"id": "gpt-6-astra", "ratesPerMillion": {"input": 12.5, "output": 50}, "standardRates": {"input": 10, "cached": 1, "cacheWrite": 12.5, "output": 50}, "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"},
+    {"id": "gpt-6.1-sol", "ratesPerMillion": {"input": 2.5, "output": 10}, "standardRates": {"input": 2, "cached": 0.1, "cacheWrite": 2.5, "output": 10}, "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"}
+  ],
+  "reasoningEffort": {"plan": "medium", "notes": "low"},
+  "maxTokens": {"plan": 4096, "notes": 2048},
+  "capUSD": 50,
+  "concurrency": 4,
+  "formatRepairs": 2,
+  "optimizer": {"seedCount": 5, "evalsPerSeed": 10, "population": 8, "sigma": 0.23, "initialization": "generic INITIAL_PLAN; no reference warm start"},
+  "randomized": true,
+  "ordering": "Round-robin attempt index, then seed, then model and mode; alternate model/mode order on odd indices. Batches of four independent attempts, with per-run attempts sequential.",
+  "memory": "Fresh request messages. No-notes planning input must exactly equal a new target/milk/parameter-guide payload. Current-attempt reflection is generated but discarded. Notes mode carries only its own replacement note. No SDK memory middleware, shared histories, session IDs or previous response IDs. store:false. Gateway-side model routing or memory injection cannot be independently certified by this client.",
+  "metrics": "Per-attempt pass rate; fraction of seeds ever passed by each budget; best-so-far score mean and sample SD across five seeds. Rejected slots count as zero. Actual per-attempt scores retained. No held-out evaluation.",
+  "score": "max(0,min(IoU,boundaryF1)-0.25*mean raw foam density in hull(target)-target); quality>=0.7826 plus unchanged IoU, precision, boundary and serving gates."
+}

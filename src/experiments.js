@@ -1,11 +1,12 @@
-import {runPlan,validatePlan,planContext,compactFeedback,environmentFor,PLAN_VERSION,SPACE_HASH} from './plans.js';
+import {runPlan,validatePlan,planContext,assertPlanningIsolation,compactFeedback,environmentFor,PLAN_VERSION,SPACE_HASH} from './plans.js';
 import {taskSpec,BENCH_VERSION} from './benchmark.js';
 
 export function experimentConfig(input={}){
-  const c={taskId:input.taskId??'heart',targetSeed:input.targetSeed??42,seed:input.seed??42,attempts:input.attempts??5,
+  const c={formatRepairs:input.formatRepairs??2,taskId:input.taskId??'heart',targetSeed:input.targetSeed??42,seed:input.seed??42,attempts:input.attempts??5,
     ablation:input.ablation??'notes',randomized:input.randomized!==false,split:input.split??'practice',lane:input.lane??'mubit',
     evaluationKind:input.evaluationKind??'training',initialNotes:input.initialNotes??'',initialPast:input.initialPast??[],source:input.source??null};
   taskSpec(c.taskId,c.targetSeed);
+  if(!Number.isInteger(c.formatRepairs)||c.formatRepairs<0||c.formatRepairs>2)throw new Error('Format repairs must be 0–2.');
   if(!Number.isInteger(c.seed)||c.seed<0||c.seed>0xffffffff)throw new Error('Invalid milk seed.');
   if(!Number.isInteger(c.attempts)||c.attempts<1||c.attempts>100)throw new Error('Attempt budget must be 1–100.');
   if(!['no-notes','raw-history','notes'].includes(c.ablation)||!['practice','holdout'].includes(c.split)||!['mubit','frontier'].includes(c.lane))throw new Error('Invalid controller settings.');
@@ -28,19 +29,22 @@ export async function attemptExperiment(experiment,callModel){
   const task=taskSpec(c.taskId,c.targetSeed),milk=environmentFor(c.seed,index,c.split,c.randomized);
   const frozen=c.evaluationKind!=='training';
   const input=planContext({task,milk,ablation:c.ablation,notes:frozen?c.initialNotes:experiment.notes,past:frozen?c.initialPast:experiment.attempts});
-  const started=performance.now(),calls=[];
-  let result,planResponse;
+  const started=performance.now(),calls=[],formatErrors=[];
+  let result,planResponse,plan;
   try{
-    planResponse=await callModel('plan',input);
-    calls.push({...planResponse,phase:'plan',text:undefined});
-    let plan;
-    try{plan=validatePlan(JSON.parse(planResponse.text.replace(/^```(?:json)?\s*|\s*```$/g,'').trim()));}
-    catch(error){result={outcome:'Rejected',error:error.message,rawPlan:planResponse.text};}
-    if(plan)result=runPlan({plan,task,conditions:milk});
+    for(let correction=0;correction<=c.formatRepairs;correction++){
+      const request=correction?{...input,formatFeedback:{correction,remaining:c.formatRepairs-correction,error:formatErrors.at(-1).error,previousOutput:formatErrors.at(-1).rawPlan,instruction:'Correct only the invalid plan encoding. No simulator evaluation has occurred; use the same target and milk.'}}:input;
+      assertPlanningIsolation(request,c.ablation);
+      planResponse=await callModel('plan',request);
+      calls.push({...planResponse,phase:'plan',correction,text:undefined});
+      try{plan=validatePlan(JSON.parse(planResponse.text.replace(/^```(?:json)?\s*|\s*```$/g,'').trim()));break;}
+      catch(error){formatErrors.push({correction,error:error.message,rawPlan:planResponse.text});}
+    }
+    result=plan?runPlan({plan,task,conditions:milk}):{outcome:'Rejected',error:formatErrors.at(-1).error,rawPlan:planResponse.text};
   }catch(error){
-    calls.push({phase:'plan',cost:null,error:error.message});
-    result={outcome:'Error',error:error.message};
+    calls.push({phase:'plan',cost:null,error:error.message});result={outcome:'Error',error:error.message};
   }
+  result={...result,formatErrors,formatRepairCalls:Math.max(0,calls.filter(c=>c.phase==='plan'&&!c.error).length-1)};
   result={...result,number:index+1,task,environment:milk,benchmark:BENCH_VERSION,planVersion:PLAN_VERSION,spaceHash:SPACE_HASH,
     schedule:{seed:c.seed,index,split:c.split,randomized:c.randomized},notesBefore:input.notes??'',ablation:c.ablation,evaluationKind:c.evaluationKind,startedAt:new Date().toISOString()};
   result.feedback=result.evaluation?compactFeedback(result):{rejected:true,error:result.error};

@@ -1,0 +1,10 @@
+import {evaluateCup,taskSpec,targetMask} from '../src/benchmark.js';
+import {concavityMask} from '../src/shape-metrics.js';
+import {runPlan} from '../src/plans.js';
+import ref from '../tasks/reference-heart.json';
+const previous=await Bun.file('results/heart-pilot/optimizer.json').json(),task=taskSpec('heart');
+const rows=previous.experiments.flatMap(e=>e.attempts.filter(a=>a.evaluation.passed).map(a=>({label:`CMA-ES seed ${e.seed}, eval ${a.number}`,seed:e.seed,number:a.number,oldEvaluation:a.evaluation,evaluation:evaluateCup(task,a.observation,a.surface),surface:a.surface})));
+const reference=runPlan({plan:ref.plan,task});
+if(rows.length!==2||rows.some(r=>r.evaluation.passed)||!reference.evaluation.passed)throw new Error('Concavity regression failed.');
+await Bun.write('docs/heart-pilot-v2/scorer-check.json',JSON.stringify({task,target:Array.from(targetMask(task)),concavity:Array.from(concavityMask(targetMask(task))),rows,reference},null,2));
+console.log(JSON.stringify([...rows,{label:'Reviewed reference',evaluation:reference.evaluation}].map(r=>({label:r.label,score:r.evaluation.score,empty:r.evaluation.concavityEmptyFraction,passed:r.evaluation.passed})),null,2));

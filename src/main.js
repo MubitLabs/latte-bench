@@ -1,3 +1,4 @@
+import {GRID_SIZE} from './grid.js';
 import { CoffeeSimulation, clamp, validateCommand } from './simulation.js';
 import { createWorkstation } from './workstation.js';
 import { runTrials, summarizeAttempt } from './attempts.js';
@@ -15,7 +16,7 @@ let events=[],keys=new Set(),pendingMove={x:0,z:0},moveClock=0,uiClock=0,config=
 let lastAgentInput=null,lastPlan=null,lastExperimentId=null;
 let manualEpisode=1;
 let selectedTask=taskSpec(),manualCupRecorded=false,scoreClock=0,episodeFinished=false;
-const storageKey='mubit-coffee-attempts-v1';
+const storageKey='latte-bench-attempts-v7';
 let attempts=[],activeAttempt=null,thinkingSince=0,activity='Idle',activityDetail='',storageAvailable=true;
 try{const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');if(Array.isArray(saved))attempts=saved.filter(a=>a?.id&&a.observation&&Array.isArray(a.models)&&Array.isArray(a.trace)).slice(-30);}catch{storageAvailable=false;}
 const startTime=Date.now();
@@ -32,8 +33,8 @@ function takeControl(){if(activeAttempt)finishAttempt({outcome:'Stopped',error:n
 function resetCup(conditions=episodeConditions(selectedTask.seed,manualEpisode++,selectedTask.protocol==='holdout'?'holdout':'practice')){sim.reset(conditions);lastPlan=null;lastAgentInput=null;manualCupRecorded=false;episodeFinished=false;events=[];agentSteps=0;agentUsage=0;agentCost=0;costKnown=true;$('#height').value=80;$('#tilt').value=48;$('#score-value').textContent='—';}
 function newCup(){takeControl();resetCup();syncUI();}
 function drawTarget(){
-  const canvas=$('#target-view'),ctx=canvas.getContext('2d'),n=160,mask=targetMask(selectedTask,n);
-  ctx.clearRect(0,0,n,n);ctx.fillStyle='#ece7d8';ctx.beginPath();ctx.arc(80,80,74,0,Math.PI*2);ctx.fill();
+  const canvas=$('#target-view'),ctx=canvas.getContext('2d'),n=GRID_SIZE,mask=targetMask(selectedTask,n);
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#ece7d8';ctx.beginPath();ctx.arc(80,80,74,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#725035';ctx.beginPath();ctx.arc(80,80,66,0,Math.PI*2);ctx.fill();
   ctx.save();ctx.translate(14,14);ctx.scale(132/n,132/n);ctx.fillStyle='#fff4d8';
   for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(mask[y*n+x])ctx.fillRect(x,y,1,1);ctx.restore();
@@ -42,7 +43,7 @@ function refreshTask(){
   const seed=Number($('#seed-input').value);try{
     const next=taskSpec($('#task-select').value,seed,$('#protocol-select').value);
     $('#seed-input').setCustomValidity('');selectedTask=next;manualEpisode=0;newCup();drawTarget();
-    $('#task-difficulty').textContent=selectedTask.difficulty;syncUI();
+    $('#task-difficulty').textContent=selectedTask.difficulty;updateCalibrationUI();syncUI();
   }catch(error){$('#seed-input').setCustomValidity(error.message);$('#seed-input').reportValidity();}
 }
 $('#task-select').onchange=refreshTask;
@@ -53,7 +54,7 @@ $('#protocol-select').onchange=()=>{
 $('#criteria-button').onclick=()=>{
   $('#criteria-title').textContent=selectedTask.name;$('#task-description').textContent=selectedTask.instruction;
   const r=selectedTask.requirements;
-  $('#criteria-list').replaceChildren(...[['Shape overlap',`≥ ${(r.minShapeIoU*100).toFixed(2)}% IoU`],['Foam precision',`≥ ${Math.round((r.minShapePrecision??0)*100)}%`],['Cup volume',`${r.volumeML.join('–')} ml`],['Milk temperature',`${r.temperatureC.join('–')}°C`],['Spilled milk',`≤ ${r.maxSpillML} ml`],['Finish','Served · no scorched milk'],['Budget',`${selectedTask.limits.decisions} decisions · ${selectedTask.limits.simulationSeconds}s`]].map(([label,value])=>{const row=document.createElement('div');row.className='criteria-row';const span=document.createElement('span');span.textContent=label;const strong=document.createElement('strong');strong.textContent=value;row.append(span,strong);return row;}));
+  $('#criteria-list').replaceChildren(...[['Shape overlap',`≥ ${(r.minShapeIoU*100).toFixed(2)}% IoU`],['Penalized quality',`≥ ${(r.minShapeQuality*100).toFixed(2)}%`],['Boundary agreement',`≥ ${(r.minBoundaryF1*100).toFixed(2)}% F1 · 1 cell`],['Foam precision',`≥ ${Math.round((r.minShapePrecision??0)*100)}%`],['Cup volume',`${r.volumeML.join('–')} ml`],['Milk temperature',`${r.temperatureC.join('–')}°C`],['Spilled milk',`≤ ${r.maxSpillML} ml`],['Finish','Served · no scorched milk'],['Budget',`${selectedTask.limits.decisions} decisions · ${selectedTask.limits.simulationSeconds}s`]].map(([label,value])=>{const row=document.createElement('div');row.className='criteria-row';const span=document.createElement('span');span.textContent=label;const strong=document.createElement('strong');strong.textContent=value;row.append(span,strong);return row;}));
   $('#task-fingerprint').textContent=`${BENCH_VERSION} · ${selectedTask.id}@${selectedTask.version} · seed ${selectedTask.seed} · ${selectedTask.hash}`;
   $('#criteria-dialog').showModal();
 };
@@ -135,22 +136,30 @@ function renderCupHistory(){$('#cup-history').replaceChildren(...attempts.slice(
 function showHistory(){
   const scored=attempts.filter(a=>a.evaluation),passed=scored.filter(a=>a.evaluation.passed);
   $('#history-summary').textContent=attempts.length?`${passed.length} / ${scored.length} scored cups passed all checks · ${attempts.reduce((n,a)=>n+(a.calls||0),0)} API calls. Earlier unscored cups remain in the log.`:'No episodes yet. Try a manual pour or run an agent benchmark.';
-  const group=comparableRuns(attempts).at(-1)||[];
+  const latest=attempts.at(-1);
+  // Plan-session identity also keeps rejected episodes on their original x-axis.
+  const group=latest?.protocol?.startsWith('plan-')&&latest.experimentId
+    ?attempts.filter(a=>a.experimentId===latest.experimentId&&a.spaceHash===latest.spaceHash&&a.requestedModel===latest.requestedModel)
+    :comparableRuns(attempts).at(-1)||[];
   $('#learning-summary').replaceChildren();
   if(group.length>1){
-    const delta=group.at(-1).evaluation.score-group[0].evaluation.score;
-    const text=document.createElement('div');text.textContent=`${group.length} comparable ${group[0].protocol} episodes · shape match ${group[0].evaluation.score}% → ${group.at(-1).evaluation.score}% (${delta>=0?'+':''}${delta.toFixed(1)} points). Observed change, not proof of learning.`;
-    const plot=document.createElement('canvas');plot.width=620;plot.height=110;plot.style.cssText='width:100%;height:80px;display:block;margin-top:10px';plot.setAttribute('aria-label','Shape score by episode, from 0 to 100 percent');
+    const label=a=>a.evaluation?`${a.evaluation.score}%`:a.outcome;
+    const text=document.createElement('div');text.textContent=`${group.length} comparable ${group[0].protocol} episodes · ${label(group[0])} → ${label(group.at(-1))}. Circles: scored pours, including zero. Red X: rejected plan. Grey square: provider error. Observed change, not proof of learning.`;
+    const plot=document.createElement('canvas');plot.width=620;plot.height=110;plot.style.cssText='width:100%;height:80px;display:block;margin-top:10px';plot.setAttribute('aria-label','Shape score by episode, 0 to 100 percent. Rejected plans are red X markers; valid zero scores are circles.');
     const c=plot.getContext('2d');c.strokeStyle='#c9d5bb';c.beginPath();c.moveTo(10,95);c.lineTo(610,95);c.stroke();c.strokeStyle='#6e8b58';c.lineWidth=2;c.beginPath();
-    group.forEach((a,i)=>{const x=10+i/(group.length-1)*600,y=95-a.evaluation.score*.8;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.stroke();
-    group.forEach((a,i)=>{c.fillStyle='#587444';c.beginPath();c.arc(10+i/(group.length-1)*600,95-a.evaluation.score*.8,3,0,Math.PI*2);c.fill();});
+    let connected=false;group.forEach((a,i)=>{if(!a.evaluation){connected=false;return;}const x=10+i/(group.length-1)*600,y=95-a.evaluation.score*.8;if(connected)c.lineTo(x,y);else c.moveTo(x,y);connected=true;});c.stroke();
+    group.forEach((a,i)=>{const x=10+i/(group.length-1)*600;
+      if(a.outcome==='Rejected'){c.strokeStyle='#b33d37';c.beginPath();c.moveTo(x-4,91);c.lineTo(x+4,99);c.moveTo(x-4,99);c.lineTo(x+4,91);c.stroke();}
+      else if(!a.evaluation){c.fillStyle='#888';c.fillRect(x-3,92,6,6);}
+      else {c.fillStyle='#587444';c.beginPath();c.arc(x,95-a.evaluation.score*.8,3,0,Math.PI*2);c.fill();}
+    });
     $('#learning-summary').append(text,plot);
   }else $('#learning-summary').textContent='Plan comparisons keep the same parameter space, attempt budget and milk schedule. Compare no notes, raw past traces and agent-written notes. The CLI report separates held-out milk and held-out shapes and includes variance across seeds.';
   const pool=group.length?group:scored.length?scored:attempts,pair=pool.length>1?[pool[0],pool.at(-1)]:pool;
   $('#comparison-cups').replaceChildren(...pair.map((a,i)=>cupCard(a,`${i===0?'First':'Latest'} · #${a.number} · ${a.evaluation?`${a.evaluation.score}% match`:'unscored'}`)));
   $('#attempt-rows').replaceChildren(...attempts.toReversed().map(a=>{
     const row=document.createElement('tr');
-    const verdict=a.outcome==='Stopped'||a.error?a.outcome:a.evaluation?(a.evaluation.passed?'Pass':`Fail · ${a.evaluation.failedChecks.join(', ')}`):'Unscored';
+    const verdict=(a.outcome==='Stopped'||a.error?a.outcome:a.evaluation?(a.evaluation.passed?'Pass':`Fail · ${a.evaluation.failedChecks.join(', ')}`):'Unscored')+(a.formatErrors?.length?` · ${a.formatErrors.length} format errors`: '');
     for(const text of [`#${a.number}`,a.task?`${a.task.name} · ${a.protocol}`:'Legacy',a.evaluation?`${a.evaluation.score}%`:'—',verdict,`${a.spilledML.toFixed(1)} ml`,a.calls,a.models.join(', ')||a.requestedModel]){const td=document.createElement('td');td.textContent=text;row.append(td);}return row;
   }));
   $('#storage-note').textContent=`${storageAvailable?'Last 30 episodes saved in this browser.':'Storage unavailable or full; export to keep these episodes.'} Shape IoU and serving constraints are provisional metrics. Three or five episodes are exploratory, not a statistically validated learning claim.`;
@@ -208,7 +217,12 @@ $('#camera-button').onclick=()=>world?.cycleCamera();$('#physics-button').onclic
 $$('.close-dialog').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
 $('#help-button').onclick=()=>{releasePour();$('#help-dialog').showModal();};
-async function loadConfig(){try{const response=await fetch('/api/config');config=await response.json();$('#api-status').textContent=config.ready?`${config.models.mubit} / ${config.models.frontier}`:'Add MUBIT_BASE_URL, MUBIT_API_KEY and your model IDs to .env, then restart Bun.';$('#api-agent-button').disabled=!config.ready;$('#step-option').hidden=!config.stepMode;$('#demo-button').disabled=!config.calibration?.ready;$('#calibration-status').textContent=config.calibration?.ready?`Calibration passed · ${config.calibration.evaluations} evaluations · reference ${(config.calibration.referenceIoU*100).toFixed(1)}% overlap`:config.calibration?.reason||'Calibration unavailable.';$('#route-note').textContent=config.sharedGateway&&config.models.mubit===config.models.frontier?'Both routes currently use the same gateway and model. This is not yet an owned-model comparison.':'Route selection uses the configured model ID; adapter activation is unverified.';}catch{$('#api-status').textContent='Live agents need the local Bun server.';}}
+function updateCalibrationUI(){
+  const gate=calibrationStatus({taskId:selectedTask.id});
+  $('#demo-button').disabled=!gate.ready;$('#api-agent-button').disabled=!config.ready||!gate.ready;
+  $('#calibration-status').textContent=gate.ready?`Reference: ${(gate.referenceIoU*100).toFixed(1)}% IoU · ${(gate.referenceBoundaryF1*100).toFixed(1)}% boundary agreement`:gate.reason;
+}
+async function loadConfig(){try{const response=await fetch('/api/config');config=await response.json();$('#api-status').textContent=config.ready?`${config.models.mubit} / ${config.models.frontier}`:'Add MUBIT_BASE_URL, MUBIT_API_KEY and your model IDs to .env, then restart Bun.';$('#api-agent-button').disabled=!config.ready;$('#step-option').hidden=!config.stepMode;updateCalibrationUI();$('#route-note').textContent=config.sharedGateway&&config.models.mubit===config.models.frontier?'Both routes currently use the same gateway and model. This is not yet an owned-model comparison.':'Route selection uses the configured model ID; adapter activation is unverified.';}catch{$('#api-status').textContent='Live agents need the local Bun server.';}}
 $('#agent-button').onclick=()=>{releasePour();$('#agent-dialog').showModal();loadConfig();};$('#stop-agent').onclick=()=>{takeControl();$('#agent-dialog').close();sim.status='Manual control.';syncUI();};
 function sleepUntil(seconds,run){const end=sim.time+seconds;return new Promise((resolve,reject)=>{function check(){if(run!==generation)return reject(new Error('Control returned to user.'));if(sim.time>=end)return resolve();setTimeout(check,30);}check();});}
 async function localDemo(){
@@ -226,12 +240,12 @@ async function localDemo(){
   finally{if(run===generation){controller='manual';syncUI();}}
 }
 $('#demo-button').onclick=()=>{
-  if(!calibrationStatus().ready)return;
-  newCup();world?.setPaused(true);selectedTask=taskSpec('heart',42);$('#task-select').value='heart';drawTarget();
-  const result=runPlan({plan:calibration.referencePlan,task:selectedTask,conditions:NOMINAL_CONDITIONS,sim});
+  if(!calibrationStatus({taskId:selectedTask.id}).ready)return;
+  newCup();world?.setPaused(true);selectedTask=taskSpec(selectedTask.id,42);$('#seed-input').value=42;drawTarget();
+  const result=runPlan({plan:calibration.tasks[selectedTask.id].referencePlan,task:selectedTask,conditions:NOMINAL_CONDITIONS,sim});
   lastPlan=result;lastAgentInput=planContext({task:selectedTask,milk:NOMINAL_CONDITIONS,ablation:'no-notes'});
   attempts.push({...result,id:crypto.randomUUID(),number:(attempts.at(-1)?.number||0)+1,protocol:'reference',requests:0,calls:0,models:['calibrated reference'],requestedModel:'reference',tokens:0,costUSD:0,trace:[],planEvidence:result,spilledML:result.observation.spilledML,image:world?.capture()});
-  episodeFinished=true;activity='Served';activityDetail=`Reference · ${result.evaluation.score}% overlap`;$('#agent-dialog').close();renderCupHistory();syncUI();
+  episodeFinished=true;activity='Served';activityDetail=`Reference · ${result.evaluation.score}% shape quality`;$('#agent-dialog').close();renderCupHistory();syncUI();
 };
 async function runStepAgent(){
   try{selectedTask=taskSpec($('#task-select').value,Number($('#seed-input').value),$('#protocol-select').value);}
@@ -311,7 +325,7 @@ function showSession(){
   $('#agent-input-preview').textContent=JSON.stringify(lastAgentInput||{observation:sim.observe(),recentActions:[],...benchmarkContext({taskId:selectedTask.id,seed:selectedTask.seed,protocol:selectedTask.protocol})},null,2);
   $('#session-title').textContent=sim.served?'Cup served.':'Current cup.';
   const evaluation=evaluateCup(selectedTask,sim.observe(),sim.surface.foam);
-  const metrics=[`${evaluation.score}% shape match`,evaluation.passed?'All checks passed':`Checks: ${evaluation.failedChecks.join(', ')}`,`${Math.round(sim.espresso+sim.inCup)} ml in cup`,`${sim.spilled.toFixed(1)} ml spilled`,`${Math.round(sim.temperature)}°C milk`,`${events.length} actions`];
+  const metrics=[`${evaluation.score}% shape quality`,`${(evaluation.shapeIoU*100).toFixed(1)}% IoU · ${(evaluation.boundaryF1*100).toFixed(1)}% boundary`,evaluation.passed?'All checks passed':`Checks: ${evaluation.failedChecks.join(', ')}`,`${Math.round(sim.espresso+sim.inCup)} ml in cup`,`${sim.spilled.toFixed(1)} ml spilled`,`${Math.round(sim.temperature)}°C milk`,`${events.length} actions`];
   if(agentSteps)metrics.push(`${agentSteps} API calls`,`${agentUsage} reported tokens`,costKnown?`$${agentCost.toFixed(4)} reported`:'Cost not reported');
   $('#session-summary').replaceChildren(...metrics.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
   $('#action-log').replaceChildren(...(lastPlan?lastPlan.trace.path.filter((_,i)=>i%60===0).map(p=>({action:{command:`x ${p[1].toFixed(2)}, z ${p[2].toFixed(2)}`},observation:{time:p[0],milkInCupML:p[7]}})):events).slice(-40).toReversed().map(e=>{const row=document.createElement('div');row.className='log-row';for(const text of [e.observation.time.toFixed(1)+'s',e.action.command,Math.round(e.observation.milkInCupML)+' ml milk']){const s=document.createElement('span');s.textContent=text;row.append(s);}return row;}));$('#session-dialog').showModal();

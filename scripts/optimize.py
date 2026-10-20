@@ -22,10 +22,11 @@ def call(q):
 experiments=[]
 def save():
     out=pathlib.Path(args.output);out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(json.dumps(dict(schema='latte-bench/0.3',experiments=experiments)))
+    out.write_text(json.dumps(dict(schema='latte-bench/0.5',experiments=experiments)))
 try:
-    meta=call({'op':'meta'})
-    if not meta['calibration']['ready']:raise RuntimeError(meta['calibration']['reason'])
+    for task_id in [args.task,args.heldout_shape]:
+        meta=call({'op':'meta','taskId':task_id})
+        if not meta['calibration']['ready']:raise RuntimeError(meta['calibration']['reason'])
     for seed in seeds:
         best=None;source=None
         for kind in ['training','heldout-milk','heldout-shape']:
@@ -33,7 +34,7 @@ try:
             count=args.attempts if kind=='training' else args.test_attempts
             config=dict(taskId=task,targetSeed=42,seed=seed,attempts=count,ablation='optimizer',randomized=not args.default_milk,
                         split='holdout' if kind=='heldout-milk' else 'practice',evaluationKind=kind,source=source)
-            e=dict(id=str(uuid.uuid4()),schema='latte-bench/0.3',planVersion=meta['planVersion'],spaceHash=meta['spaceHash'],config=config,attempts=[])
+            e=dict(id=str(uuid.uuid4()),schema='latte-bench/0.5',planVersion=meta['planVersion'],spaceHash=meta['spaceHash'],config=config,attempts=[])
             experiments.append(e)
             es=cma.CMAEvolutionStrategy(meta['initial'],.23,{'bounds':[0,1],'seed':seed or 1,'popsize':8,'verbose':-9,'verb_log':0}) if kind=='training' else None
             population=[];losses=[]

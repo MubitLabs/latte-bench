@@ -1,0 +1,757 @@
+{
+  "protocol": {
+    "milk": "default nominal milk only",
+    "conditions": {
+      "version": "nominal/1",
+      "milkML": 220,
+      "temperatureC": 18,
+      "pitcherX": 0,
+      "pitcherZ": 0,
+      "flowMultiplier": 1,
+      "spreadMultiplier": 1,
+      "foamRetention": 1,
+      "velocityDamping": 0.965,
+      "foamMixing": 0.002,
+      "textureAmplitude": 0,
+      "flowPulse": 0,
+      "initialSwirl": 0,
+      "texturePhase": 0
+    },
+    "targetSeed": 42,
+    "randomSeed": 20261020,
+    "randomDistribution": "33 independent Uniform[0,1) coordinates; same 100 plans scored against each target",
+    "countPerTarget": 100,
+    "shapeFloors": {
+      "minShapeIoU": 0.5,
+      "minShapePrecision": 0.8,
+      "minBoundaryF1": 0.8
+    },
+    "thresholdRule": "Per target: max(predeclared floors, 90% of visually accepted reference IoU, precision and boundary F1), rounded down to four decimals. No baseline scores used. Unmatched targets stay uncalibrated.",
+    "score": "100 * min(IoU, boundary F1); precision and serving constraints are separate gates",
+    "passLine": "min(IoU/requiredIoU, boundaryF1/requiredF1, precision/requiredPrecision) >= 1; plus all serving checks",
+    "note": "Rosetta pass ratios are against predeclared diagnostic floors only; no calibrated pass threshold exists. No baseline-dependent threshold tuning."
+  },
+  "summary": {
+    "heart": {
+      "calibrated": true,
+      "requirements": {
+        "volumeML": [
+          190,
+          240
+        ],
+        "temperatureC": [
+          55,
+          65
+        ],
+        "maxSpillML": 5,
+        "minShapeIoU": 0.7826,
+        "minShapePrecision": 0.8534,
+        "minBoundaryF1": 0.8198
+      },
+      "reference": {
+        "version": "mask-iou-boundary/4",
+        "taskHash": "18e04ed1",
+        "score": 87,
+        "shapeIoU": 0.8695652173913043,
+        "shapeQuality": 0.8695652173913043,
+        "boundaryF1": 0.9108910891089108,
+        "boundaryPrecision": 0.8846153846153846,
+        "boundaryRecall": 0.9387755102040817,
+        "chamferCells": 0.60024164042571,
+        "hausdorffCells": 2.23606797749979,
+        "toleranceCells": 1,
+        "predictedBoundaryCells": 52,
+        "targetBoundaryCells": 49,
+        "shapeChecks": {
+          "overlap": true,
+          "precision": true,
+          "contour": true
+        },
+        "precision": 0.9482758620689655,
+        "recall": 0.9128630705394191,
+        "passed": true,
+        "checks": {
+          "shape": true,
+          "served": true,
+          "volume": true,
+          "temperature": true,
+          "spill": true,
+          "unscorched": true,
+          "time": true
+        },
+        "failedChecks": [],
+        "passRatio": 1.1111137949608574,
+        "nonShapePass": true,
+        "calibrated": true
+      },
+      "random": {
+        "count": 100,
+        "quality": {
+          "min": 0,
+          "p05": 0,
+          "median": 11.61834475487612,
+          "p95": 28.949820788530467,
+          "max": 37.9746835443038,
+          "mean": 12.822102920737791
+        },
+        "iou": {
+          "min": 0,
+          "p05": 2.3691798168712253,
+          "median": 19.067377988539814,
+          "p95": 39.412250959733235,
+          "max": 49.39759036144578,
+          "mean": 19.82800691265983
+        },
+        "boundary": {
+          "min": 0,
+          "p05": 0,
+          "median": 14.121899538825875,
+          "p95": 35.106025303920575,
+          "max": 46.351931330472105,
+          "mean": 15.631914416213913
+        },
+        "passRatio": {
+          "min": 0,
+          "p05": 0,
+          "median": 0.14497464861855522,
+          "p95": 0.353132724914985,
+          "max": 0.46321887709567944,
+          "mean": 0.15845613055443747
+        },
+        "shapePasses": 0,
+        "fullPasses": 0,
+        "servingPasses": 38
+      },
+      "naive": [
+        {
+          "name": "centre pour",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "18e04ed1",
+          "score": 43,
+          "shapeIoU": 0.6925925925925925,
+          "shapeQuality": 0.4301075268817204,
+          "boundaryF1": 0.4301075268817204,
+          "boundaryPrecision": 0.45454545454545453,
+          "boundaryRecall": 0.40816326530612246,
+          "chamferCells": 1.4094434843869212,
+          "hausdorffCells": 3.605551275463989,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 49,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": true,
+            "contour": false
+          },
+          "precision": 0.8657407407407407,
+          "recall": 0.7759336099585062,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.5246493374990491,
+          "nonShapePass": true,
+          "calibrated": true
+        },
+        {
+          "name": "no pull-through",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "18e04ed1",
+          "score": 71,
+          "shapeIoU": 0.8104838709677419,
+          "shapeQuality": 0.7096774193548386,
+          "boundaryF1": 0.7096774193548386,
+          "boundaryPrecision": 0.75,
+          "boundaryRecall": 0.673469387755102,
+          "chamferCells": 0.8559177495612054,
+          "hausdorffCells": 2.8284271247461903,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 49,
+          "shapeChecks": {
+            "overlap": true,
+            "precision": true,
+            "contour": false
+          },
+          "precision": 0.9663461538461539,
+          "recall": 0.8340248962655602,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.8656714068734309,
+          "nonShapePass": true,
+          "calibrated": true
+        },
+        {
+          "name": "off-centre (+0.35 x)",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "18e04ed1",
+          "score": 23.4,
+          "shapeIoU": 0.4504792332268371,
+          "shapeQuality": 0.23404255319148937,
+          "boundaryF1": 0.23404255319148937,
+          "boundaryPrecision": 0.24444444444444444,
+          "boundaryRecall": 0.22448979591836735,
+          "chamferCells": 2.952340967023659,
+          "hausdorffCells": 6.324555320336759,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 45,
+          "targetBoundaryCells": 49,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.6619718309859155,
+          "recall": 0.5850622406639004,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.28548737886251446,
+          "nonShapePass": true,
+          "calibrated": true
+        }
+      ],
+      "separation": {
+        "maxRandomPassRatio": 0.46321887709567944,
+        "maxNaivePassRatio": 0.8656714068734309,
+        "referencePassRatio": 1.1111137949608574
+      }
+    },
+    "tulip": {
+      "calibrated": true,
+      "requirements": {
+        "volumeML": [
+          190,
+          240
+        ],
+        "temperatureC": [
+          55,
+          65
+        ],
+        "maxSpillML": 5,
+        "minShapeIoU": 0.7761,
+        "minShapePrecision": 0.8294,
+        "minBoundaryF1": 0.8528
+      },
+      "reference": {
+        "version": "mask-iou-boundary/4",
+        "taskHash": "c4ab3b8a",
+        "score": 86.2,
+        "shapeIoU": 0.8623853211009175,
+        "shapeQuality": 0.8623853211009175,
+        "boundaryF1": 0.9475852597848478,
+        "boundaryPrecision": 0.9183673469387755,
+        "boundaryRecall": 0.9787234042553191,
+        "chamferCells": 0.5419384746596665,
+        "hausdorffCells": 1.4142135623730951,
+        "toleranceCells": 1,
+        "predictedBoundaryCells": 49,
+        "targetBoundaryCells": 47,
+        "shapeChecks": {
+          "overlap": true,
+          "precision": true,
+          "contour": true
+        },
+        "precision": 0.9215686274509803,
+        "recall": 0.9306930693069307,
+        "passed": true,
+        "checks": {
+          "shape": true,
+          "served": true,
+          "volume": true,
+          "temperature": true,
+          "spill": true,
+          "unscorched": true,
+          "time": true
+        },
+        "failedChecks": [],
+        "passRatio": 1.1111268717759588,
+        "nonShapePass": true,
+        "calibrated": true
+      },
+      "random": {
+        "count": 100,
+        "quality": {
+          "min": 0,
+          "p05": 0,
+          "median": 14.123005273611396,
+          "p95": 39.4727984502381,
+          "max": 54.36893203883495,
+          "mean": 15.649241058619387
+        },
+        "iou": {
+          "min": 0,
+          "p05": 2.732791385135135,
+          "median": 19.605049997206862,
+          "p95": 46.710070689478535,
+          "max": 62.06896551724138,
+          "mean": 21.352670553496704
+        },
+        "boundary": {
+          "min": 0,
+          "p05": 0,
+          "median": 17.270634784759075,
+          "p95": 44.15953564021567,
+          "max": 55.7361820715281,
+          "mean": 18.92367543695991
+        },
+        "passRatio": {
+          "min": 0,
+          "p05": 0,
+          "median": 0.16642332893052536,
+          "p95": 0.4628611450543867,
+          "max": 0.6535668629400574,
+          "mean": 0.18841142716371068
+        },
+        "shapePasses": 0,
+        "fullPasses": 0,
+        "servingPasses": 38
+      },
+      "naive": [
+        {
+          "name": "centre pour",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "c4ab3b8a",
+          "score": 50.5,
+          "shapeIoU": 0.7131147540983607,
+          "shapeQuality": 0.5052631578947369,
+          "boundaryF1": 0.5052631578947369,
+          "boundaryPrecision": 0.5,
+          "boundaryRecall": 0.5106382978723404,
+          "chamferCells": 1.3335137604729712,
+          "hausdorffCells": 3,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 47,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.8055555555555556,
+          "recall": 0.8613861386138614,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.5924755603831342,
+          "nonShapePass": true,
+          "calibrated": true
+        },
+        {
+          "name": "no pull-through",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "c4ab3b8a",
+          "score": 39.6,
+          "shapeIoU": 0.6465863453815262,
+          "shapeQuality": 0.39560439560439564,
+          "boundaryF1": 0.39560439560439564,
+          "boundaryPrecision": 0.4090909090909091,
+          "boundaryRecall": 0.3829787234042553,
+          "chamferCells": 1.5955121456347001,
+          "hausdorffCells": 4.123105625617661,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 47,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.7740384615384616,
+          "recall": 0.7970297029702971,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.4638888316186628,
+          "nonShapePass": true,
+          "calibrated": true
+        },
+        {
+          "name": "off-centre (+0.35 x)",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "c4ab3b8a",
+          "score": 10.9,
+          "shapeIoU": 0.3387096774193548,
+          "shapeQuality": 0.10869565217391305,
+          "boundaryF1": 0.10869565217391305,
+          "boundaryPrecision": 0.1111111111111111,
+          "boundaryRecall": 0.10638297872340426,
+          "chamferCells": 3.5379928796747215,
+          "hausdorffCells": 8,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 45,
+          "targetBoundaryCells": 47,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.49295774647887325,
+          "recall": 0.5198019801980198,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.1274573782527123,
+          "nonShapePass": true,
+          "calibrated": true
+        }
+      ],
+      "separation": {
+        "maxRandomPassRatio": 0.6535668629400574,
+        "maxNaivePassRatio": 0.5924755603831342,
+        "referencePassRatio": 1.1111268717759588
+      }
+    },
+    "rosetta": {
+      "calibrated": false,
+      "requirements": {
+        "volumeML": [
+          190,
+          240
+        ],
+        "temperatureC": [
+          55,
+          65
+        ],
+        "maxSpillML": 5,
+        "minShapeIoU": 0.5,
+        "minShapePrecision": 0.8,
+        "minBoundaryF1": 0.8
+      },
+      "reference": {
+        "version": "mask-iou-boundary/4",
+        "taskHash": "b2dbc74f",
+        "score": 60,
+        "shapeIoU": 0.6,
+        "shapeQuality": 0.6,
+        "boundaryF1": 0.6183368869936035,
+        "boundaryPrecision": 0.8333333333333334,
+        "boundaryRecall": 0.4915254237288136,
+        "chamferCells": 1.2233700514073722,
+        "hausdorffCells": 5,
+        "toleranceCells": 1,
+        "predictedBoundaryCells": 60,
+        "targetBoundaryCells": 118,
+        "shapeChecks": {
+          "overlap": true,
+          "precision": false,
+          "contour": false
+        },
+        "precision": 0.663594470046083,
+        "recall": 0.8622754491017964,
+        "passed": false,
+        "checks": {
+          "shape": false,
+          "served": true,
+          "volume": true,
+          "temperature": true,
+          "spill": true,
+          "unscorched": true,
+          "time": true
+        },
+        "failedChecks": [
+          "shape"
+        ],
+        "passRatio": 0.7729211087420043,
+        "nonShapePass": true,
+        "calibrated": false
+      },
+      "random": {
+        "count": 100,
+        "quality": {
+          "min": 0,
+          "p05": 3.394100570454131,
+          "median": 17.37716659504369,
+          "p95": 35.52626262626262,
+          "max": 47,
+          "mean": 17.62378603039399
+        },
+        "iou": {
+          "min": 0,
+          "p05": 3.394100570454131,
+          "median": 17.37716659504369,
+          "p95": 35.52626262626262,
+          "max": 47,
+          "mean": 17.62378603039399
+        },
+        "boundary": {
+          "min": 0,
+          "p05": 13.474543707973105,
+          "median": 41.992014517015605,
+          "p95": 57.651303820497276,
+          "max": 64.60331299040976,
+          "mean": 39.35441380817366
+        },
+        "passRatio": {
+          "min": 0,
+          "p05": 0.06788201140908262,
+          "median": 0.34754333190087383,
+          "p95": 0.6451529439157135,
+          "max": 0.7228915662650601,
+          "mean": 0.34188987236334484
+        },
+        "shapePasses": 0,
+        "fullPasses": 0,
+        "servingPasses": 38
+      },
+      "naive": [
+        {
+          "name": "centre pour",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "b2dbc74f",
+          "score": 42.5,
+          "shapeIoU": 0.5506072874493927,
+          "shapeQuality": 0.42495049504950494,
+          "boundaryF1": 0.42495049504950494,
+          "boundaryPrecision": 0.6590909090909091,
+          "boundaryRecall": 0.3135593220338983,
+          "chamferCells": 1.7102624827155957,
+          "hausdorffCells": 7,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 118,
+          "shapeChecks": {
+            "overlap": true,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.6296296296296297,
+          "recall": 0.8143712574850299,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.5311881188118811,
+          "nonShapePass": true,
+          "calibrated": false
+        },
+        {
+          "name": "no pull-through",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "b2dbc74f",
+          "score": 38.9,
+          "shapeIoU": 0.5060240963855421,
+          "shapeQuality": 0.3885618166526492,
+          "boundaryF1": 0.3885618166526492,
+          "boundaryPrecision": 0.6363636363636364,
+          "boundaryRecall": 0.2796610169491525,
+          "chamferCells": 1.849675977856525,
+          "hausdorffCells": 7,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 44,
+          "targetBoundaryCells": 118,
+          "shapeChecks": {
+            "overlap": true,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.6057692307692307,
+          "recall": 0.7544910179640718,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.4857022708158115,
+          "nonShapePass": true,
+          "calibrated": false
+        },
+        {
+          "name": "off-centre (+0.35 x)",
+          "version": "mask-iou-boundary/4",
+          "taskHash": "b2dbc74f",
+          "score": 28.8,
+          "shapeIoU": 0.288135593220339,
+          "shapeQuality": 0.288135593220339,
+          "boundaryF1": 0.38121170864533693,
+          "boundaryPrecision": 0.5333333333333333,
+          "boundaryRecall": 0.2966101694915254,
+          "chamferCells": 2.710142870467488,
+          "hausdorffCells": 9.848857801796104,
+          "toleranceCells": 1,
+          "predictedBoundaryCells": 45,
+          "targetBoundaryCells": 118,
+          "shapeChecks": {
+            "overlap": false,
+            "precision": false,
+            "contour": false
+          },
+          "precision": 0.39906103286384975,
+          "recall": 0.5089820359281437,
+          "passed": false,
+          "checks": {
+            "shape": false,
+            "served": true,
+            "volume": true,
+            "temperature": true,
+            "spill": true,
+            "unscorched": true,
+            "time": true
+          },
+          "failedChecks": [
+            "shape"
+          ],
+          "passRatio": 0.47651463580667114,
+          "nonShapePass": true,
+          "calibrated": false
+        }
+      ],
+      "separation": {
+        "maxRandomPassRatio": 0.7228915662650601,
+        "maxNaivePassRatio": 0.5311881188118811,
+        "referencePassRatio": 0.7729211087420043
+      }
+    }
+  },
+  "teardrop": {
+    "version": "mask-iou-boundary/4",
+    "taskHash": "18e04ed1",
+    "score": 73.1,
+    "shapeIoU": 0.8192771084337349,
+    "shapeQuality": 0.7311827956989247,
+    "boundaryF1": 0.7311827956989247,
+    "boundaryPrecision": 0.7727272727272727,
+    "boundaryRecall": 0.6938775510204082,
+    "chamferCells": 0.8254163902614147,
+    "hausdorffCells": 2.8284271247461903,
+    "toleranceCells": 1,
+    "predictedBoundaryCells": 44,
+    "targetBoundaryCells": 49,
+    "shapeChecks": {
+      "overlap": true,
+      "precision": true,
+      "contour": false
+    },
+    "precision": 0.9622641509433962,
+    "recall": 0.8464730290456431,
+    "passed": false,
+    "checks": {
+      "shape": false,
+      "served": true,
+      "volume": true,
+      "temperature": true,
+      "spill": true,
+      "unscorched": true,
+      "time": true
+    },
+    "failedChecks": [
+      "shape"
+    ],
+    "passRatio": 0.8919038737483834,
+    "nonShapePass": true,
+    "calibrated": true
+  },
+  "referenceWithoutPull": {
+    "version": "mask-iou-boundary/4",
+    "taskHash": "18e04ed1",
+    "score": 88.1,
+    "shapeIoU": 0.8814229249011858,
+    "shapeQuality": 0.8814229249011858,
+    "boundaryF1": 0.9700969272014849,
+    "boundaryPrecision": 0.9607843137254902,
+    "boundaryRecall": 0.9795918367346939,
+    "chamferCells": 0.5521644299306905,
+    "hausdorffCells": 1.4142135623730951,
+    "toleranceCells": 1,
+    "predictedBoundaryCells": 51,
+    "targetBoundaryCells": 49,
+    "shapeChecks": {
+      "overlap": true,
+      "precision": true,
+      "contour": true
+    },
+    "precision": 0.948936170212766,
+    "recall": 0.9253112033195021,
+    "passed": true,
+    "checks": {
+      "shape": true,
+      "served": true,
+      "volume": true,
+      "temperature": true,
+      "spill": true,
+      "unscorched": true,
+      "time": true
+    },
+    "failedChecks": [],
+    "passRatio": 1.111947703553745,
+    "nonShapePass": true,
+    "calibrated": true
+  }
+}

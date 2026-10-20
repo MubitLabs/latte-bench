@@ -1,0 +1,272 @@
+{
+  "target": {
+    "id": "heart",
+    "version": 1,
+    "hash": "7644c734",
+    "instruction": "Pour one centered heart with two rounded lobes, a clear notch, and a tapered point toward the front of the cup.",
+    "requirements": {
+      "volumeML": [
+        190,
+        240
+      ],
+      "temperatureC": [
+        55,
+        65
+      ],
+      "maxSpillML": 5,
+      "minShapeIoU": 0.7826,
+      "minShapePrecision": 0.8534
+    },
+    "limits": {
+      "plansPerAttempt": 1,
+      "simulationSeconds": 120
+    },
+    "coordinates": "x right, z front; normalized cup radius. Grid rows run from back to front.",
+    "gridSize": 32,
+    "targetFoam": [
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000001111110000000000000000",
+      "00000000011111111011111100000000",
+      "00000000111111111111111110000000",
+      "00000000111111111111111110000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111110000000",
+      "00000000011111111111111110000000",
+      "00000000011111111111111100000000",
+      "00000000001111111111111000000000",
+      "00000000000111111111110000000000",
+      "00000000000111111111100000000000",
+      "00000000000011111111000000000000",
+      "00000000000001111100000000000000",
+      "00000000000000110000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000"
+    ]
+  },
+  "milk": {
+    "volumeML": 229.04415007680655,
+    "startingTemperatureC": 17.586324471980333
+  },
+  "space": {
+    "version": "pour-plan/2",
+    "count": 33,
+    "encoding": "33 normalized numbers, each in [0,1]; no clipping or repair",
+    "parameters": [
+      {
+        "index": 0,
+        "name": "fillVolumeML",
+        "min": 100,
+        "max": 200
+      },
+      {
+        "index": 1,
+        "name": "fillHeightMM",
+        "min": 100,
+        "max": 220
+      },
+      {
+        "index": 2,
+        "name": "fillTiltDegrees",
+        "min": 45,
+        "max": 85
+      },
+      {
+        "index": 3,
+        "name": "segment1.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 4,
+        "name": "segment1.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 5,
+        "name": "segment1.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 6,
+        "name": "segment1.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 7,
+        "name": "segment1.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      },
+      {
+        "index": 8,
+        "name": "segment2.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 9,
+        "name": "segment2.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 10,
+        "name": "segment2.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 11,
+        "name": "segment2.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 12,
+        "name": "segment2.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      },
+      {
+        "index": 13,
+        "name": "segment3.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 14,
+        "name": "segment3.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 15,
+        "name": "segment3.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 16,
+        "name": "segment3.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 17,
+        "name": "segment3.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      },
+      {
+        "index": 18,
+        "name": "segment4.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 19,
+        "name": "segment4.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 20,
+        "name": "segment4.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 21,
+        "name": "segment4.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 22,
+        "name": "segment4.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      },
+      {
+        "index": 23,
+        "name": "segment5.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 24,
+        "name": "segment5.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 25,
+        "name": "segment5.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 26,
+        "name": "segment5.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 27,
+        "name": "segment5.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      },
+      {
+        "index": 28,
+        "name": "segment6.x",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 29,
+        "name": "segment6.z",
+        "min": -0.8,
+        "max": 0.8
+      },
+      {
+        "index": 30,
+        "name": "segment6.heightMM",
+        "min": 10,
+        "max": 180
+      },
+      {
+        "index": 31,
+        "name": "segment6.tiltDegrees",
+        "min": 0,
+        "max": 85
+      },
+      {
+        "index": 32,
+        "name": "segment6.durationSeconds",
+        "min": 0.1,
+        "max": 5
+      }
+    ],
+    "execution": "Fixed preparation and nominal high fill, followed by six continuous linear segments. Each endpoint sets position, height and tilt; each segment sets its duration. Controls interpolate from the previous endpoint at 60 Hz, starting at the high-fill position with tilt zero. Repeated endpoints hold steady; tilt <=25 stops flow. Final 0.5s settling pause, then serve. No sensor feedback or controller calls during execution."
+  },
+  "notes": ""
+}

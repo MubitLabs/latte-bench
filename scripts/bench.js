@@ -14,6 +14,8 @@ if(v['heldout-shape']===v.task)throw new Error('Held-out shape must differ from 
 const base=new URL(v.server),experiments=[];
 async function request(path,body){const r=await fetch(new URL(path,base),body?{method:'POST',headers:{'Content-Type':'application/json',Origin:base.origin},body:JSON.stringify(body)}:{});const data=await r.json();if(!r.ok)throw new Error(data.error);return data;}
 async function persist(){await mkdir(dirname(v.output),{recursive:true});await Bun.write(v.output,JSON.stringify({schema:BENCH_VERSION,experiments},null,2));}
+const preflight=await request('/api/config');
+for(const id of [v.task,v['heldout-shape']])if(!preflight.calibrations?.[id]?.ready)throw new Error(preflight.calibrations?.[id]?.reason||`Uncalibrated task: ${id}`);
 for(const seed of seeds){
   let sourceId;
   for(const kind of ['training','heldout-milk','heldout-shape']){

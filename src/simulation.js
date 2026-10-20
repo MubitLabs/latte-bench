@@ -1,16 +1,17 @@
+import {GRID_SIZE} from './grid.js';
 // A small incompressible 2D surface-flow solver, coupled to ballistic milk drops.
 // Length is normalized to cup radius on the surface; vertical distance is metres.
 import {NOMINAL_CONDITIONS} from './conditions.js';
 export const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 export class FluidSurface {
-  constructor(size = 96) {
-    this.n = size; const len = size * size;
+  constructor(size = GRID_SIZE) {
+    this.n = size; this.foamBudget={injected:0,retained:0,lostAtCapacity:0}; const len = size * size;
     for (const name of ['u','v','u0','v0','foam','foam0','pressure','divergence']) this[name] = new Float32Array(len);
     this.mask = new Uint8Array(len);
     for (let y=0;y<size;y++) for(let x=0;x<size;x++) this.mask[y*size+x] = Math.hypot((x+.5)/size*2-1,(y+.5)/size*2-1)<.985 ? 1:0;
   }
   reset(conditions=NOMINAL_CONDITIONS) {
-    this.conditions=conditions;
+    this.conditions=conditions;this.foamBudget={injected:0,retained:0,lostAtCapacity:0};
     for(const key of ['u','v','u0','v0','foam','foam0','pressure','divergence']) this[key].fill(0);
     for(let y=0;y<this.n;y++)for(let x=0;x<this.n;x++){
       const i=y*this.n+x;if(!this.mask[i])continue;
@@ -24,11 +25,11 @@ export class FluidSurface {
     return (field[i]*(1-fx)+field[i+1]*fx)*(1-fy)+(field[i+n]*(1-fx)+field[i+n+1]*fx)*fy;
   }
   deposit(x,y,volume,height,vx,vz,foamQuality) {
-    const n=this.n,cx=(x+1)*.5*n,cy=(y+1)*.5*n;
+    const n=this.n,cx=(x+1)*.5*n-.5,cy=(y+1)*.5*n-.5;
     const c=this.conditions||NOMINAL_CONDITIONS;
     const spread=(.013+height*.17)*n*c.spreadMultiplier;
     const visible=Math.exp(-height*28)*foamQuality*c.foamRetention;
-    const r=Math.ceil(spread*3);
+    const r=Math.ceil(spread*3);let overflow=0;
     for(let j=Math.max(1,Math.floor(cy-r));j<Math.min(n-1,cy+r);j++) for(let i=Math.max(1,Math.floor(cx-r));i<Math.min(n-1,cx+r);i++) {
       const k=j*n+i;if(!this.mask[k])continue;
       const dx=i-cx,dy=j-cy,d2=dx*dx+dy*dy;
@@ -37,7 +38,27 @@ export class FluidSurface {
       this.u[k]+=g*(dx/spread*.08+vx*.025)*volume;
       this.v[k]+=g*(dy/spread*.08+vz*.025)*volume;
       const texture=1+c.textureAmplitude*Math.sin(i*.7+c.texturePhase)*Math.cos(j*.61-c.texturePhase);
-      this.foam[k]=clamp(this.foam[k]+g*volume*.36*visible*texture*(1.8/spread)**2,0,1);
+      const added=g*volume*.36*visible*texture*(.05625*n/spread)**2;
+      this.foamBudget.injected+=added;const accepted=Math.min(1-this.foam[k],added);
+      this.foamBudget.retained+=accepted;overflow+=added-accepted;
+      this.foam[k]+=accepted;
+    }
+    // A bounded, buoyant surface layer: saturated cells displace incoming foam
+    // into the nearest available surface cells instead of deleting it. This
+    // isotropic thin-layer approximation knows no target, plan, or shape name.
+    if(overflow>1e-9){
+      const cells=[];
+      for(let j=1;j<n-1;j++)for(let i=1;i<n-1;i++){
+        const k=j*n+i;if(this.mask[k]&&this.foam[k]<1)cells.push({k,d:(i-cx)**2+(j-cy)**2});
+      }
+      cells.sort((a,b)=>a.d-b.d);
+      for(let start=0;start<cells.length&&overflow>1e-9;){
+        let end=start+1;while(end<cells.length&&Math.abs(cells[end].d-cells[start].d)<1e-8)end++;
+        const ring=cells.slice(start,end),capacity=ring.reduce((sum,{k})=>sum+1-this.foam[k],0),amount=Math.min(overflow,capacity);
+        for(const {k} of ring)this.foam[k]+=(1-this.foam[k])*amount/capacity;
+        this.foamBudget.retained+=amount;overflow-=amount;start=end;
+      }
+      this.foamBudget.lostAtCapacity+=overflow;
     }
   }
   step(dt) {
@@ -75,7 +96,7 @@ export class FluidSurface {
     }
   }
   coverage() { let count=0,area=0;for(let i=0;i<this.foam.length;i++)if(this.mask[i]){area++;if(this.foam[i]>.25)count++;}return count/area; }
-  snapshot(size=10) { return Array.from({length:size},(_,y)=>Array.from({length:size},(_,x)=>Math.round(this.sample(this.foam,(x+.5)/size*(this.n-2),(y+.5)/size*(this.n-2))*9)).join('')); }
+  snapshot(size=GRID_SIZE) { return Array.from({length:size},(_,y)=>Array.from({length:size},(_,x)=>Math.round(this.sample(this.foam,(x+.5)/size*this.n-.5,(y+.5)/size*this.n-.5)*9)).join('')); }
 }
 export const COMMANDS=['grind','extract','steam','pickup','move','pour','stop','serve','reset'];
 export function validateCommand(input) {

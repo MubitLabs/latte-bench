@@ -1,6 +1,6 @@
 {
   "name": "latte-bench",
-  "version": "0.3.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,8 +11,9 @@
     "bench": "bun scripts/bench.js",
     "verify": "bun scripts/verify.js",
     "baseline": "uv run scripts/optimize.py",
-    "calibrate": "uv run scripts/calibrate.py",
-    "report": "bun scripts/report.js"
+    "calibrate": "bun scripts/frozen3-preflight.js",
+    "report": "bun scripts/report.js",
+    "diagnose": "bun scripts/diagnose-original.js && bun scripts/diagnose-heart.js && uv run scripts/render-diagnosis.py && uv run scripts/diagnosis-report.py"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

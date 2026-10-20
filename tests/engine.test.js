@@ -28,7 +28,7 @@ test('high pours mix while low pours leave substantially more surface foam',()=>
 test('spatial action changes the actual deposited pattern',()=>{
   const left=prepared(),right=prepared();for(const[s,x]of[[left,-.5],[right,.5]]){s.act({command:'pour',x,z:0,height:12,tilt:60});advance(s,1.4);s.act({command:'stop'});advance(s,.3);}
   const centroid=s=>{let weighted=0,total=0;for(let i=0;i<s.surface.foam.length;i++){weighted+=s.surface.foam[i]*(i%s.surface.n);total+=s.surface.foam[i];}return weighted/total;};
-  expect(centroid(right)-centroid(left)).toBeGreaterThan(20);
+  expect(centroid(right)-centroid(left)).toBeGreaterThan(left.surface.n*.2);
 });
 test('overfilling the 240 ml cup spills the excess and conserves volume',()=>{
   const s=prepared();s.act({command:'pour',height:10,tilt:85});advance(s,15);s.act({command:'stop'});advance(s,.5);

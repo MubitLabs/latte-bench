@@ -1,0 +1,544 @@
+{
+  "target": {
+    "id": "heart",
+    "version": 1,
+    "hash": "cddef732",
+    "instruction": "Pour one centered heart with two rounded lobes, a clear notch, and a tapered point toward the front of the cup.",
+    "requirements": {
+      "volumeML": [
+        190,
+        240
+      ],
+      "temperatureC": [
+        55,
+        65
+      ],
+      "maxSpillML": 5,
+      "minShapeIoU": 0.7826,
+      "minShapePrecision": 0.8534,
+      "minBoundaryF1": 0.8198,
+      "minShapeQuality": 0.7826
+    },
+    "scoring": {
+      "version": "mask-iou-boundary-graded-concavity/6",
+      "quality": "max(0, min(mask IoU, boundary F1) - 0.25 * mean foam density in concave target cells)",
+      "concavity": "Convex hull of target cell centres minus target. Raw foam density in that region creates a continuous penalty of up to 25 percentage points. No binary concavity veto; no concave cells means zero penalty.",
+      "boundary": "Four-connected foreground outline; symmetric F1 within one Euclidean grid cell. Penalized quality, IoU, boundary F1, precision and all serving checks must pass."
+    },
+    "limits": {
+      "plansPerAttempt": 1,
+      "simulationSeconds": 120
+    },
+    "coordinates": "x right, z front; normalized cup radius. Grid rows run from back to front.",
+    "gridSize": 32,
+    "concavityFoam": [
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000100000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000"
+    ],
+    "targetFoam": [
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000001111110000000000000000",
+      "00000000011111111011111100000000",
+      "00000000111111111111111110000000",
+      "00000000111111111111111110000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111111000000",
+      "00000000111111111111111110000000",
+      "00000000011111111111111110000000",
+      "00000000011111111111111100000000",
+      "00000000001111111111111000000000",
+      "00000000000111111111110000000000",
+      "00000000000111111111100000000000",
+      "00000000000011111111000000000000",
+      "00000000000001111100000000000000",
+      "00000000000000110000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000",
+      "00000000000000000000000000000000"
+    ]
+  },
+  "milk": {
+    "volumeML": 220,
+    "startingTemperatureC": 18
+  },
+  "space": {
+    "version": "pour-plan/2",
+    "count": 33,
+    "encoding": "Submit exactly 33 normalized numbers in [0,1]. Each physical value = min + p * (max-min); equivalently p=(physical-min)/(max-min). Never submit physical units directly. No clipping. Two model format corrections are allowed before rejecting this episode.",
+    "parameters": [
+      {
+        "index": 0,
+        "name": "fillVolumeML",
+        "min": 100,
+        "max": 200,
+        "unit": "ml",
+        "meaning": "Nominal total cup volume after high fill, including 36 ml espresso; determines open-loop fill duration, not the final volume. Drawing adds more milk.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 100 + p[0] * 100"
+      },
+      {
+        "index": 1,
+        "name": "fillHeightMM",
+        "min": 100,
+        "max": 220,
+        "unit": "mm",
+        "meaning": "Spout height for the initial centre fill. High pours primarily sink/mix milk rather than paint surface foam.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 100 + p[1] * 120"
+      },
+      {
+        "index": 2,
+        "name": "fillTiltDegrees",
+        "min": 45,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Pitcher tilt during high fill; higher tilt increases flow.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 45 + p[2] * 40"
+      },
+      {
+        "index": 3,
+        "name": "segment1.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[3] * 1.6"
+      },
+      {
+        "index": 4,
+        "name": "segment1.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[4] * 1.6"
+      },
+      {
+        "index": 5,
+        "name": "segment1.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[5] * 170"
+      },
+      {
+        "index": 6,
+        "name": "segment1.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[6] * 85"
+      },
+      {
+        "index": 7,
+        "name": "segment1.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[7] * 4.9"
+      },
+      {
+        "index": 8,
+        "name": "segment2.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[8] * 1.6"
+      },
+      {
+        "index": 9,
+        "name": "segment2.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[9] * 1.6"
+      },
+      {
+        "index": 10,
+        "name": "segment2.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[10] * 170"
+      },
+      {
+        "index": 11,
+        "name": "segment2.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[11] * 85"
+      },
+      {
+        "index": 12,
+        "name": "segment2.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[12] * 4.9"
+      },
+      {
+        "index": 13,
+        "name": "segment3.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[13] * 1.6"
+      },
+      {
+        "index": 14,
+        "name": "segment3.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[14] * 1.6"
+      },
+      {
+        "index": 15,
+        "name": "segment3.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[15] * 170"
+      },
+      {
+        "index": 16,
+        "name": "segment3.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[16] * 85"
+      },
+      {
+        "index": 17,
+        "name": "segment3.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[17] * 4.9"
+      },
+      {
+        "index": 18,
+        "name": "segment4.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[18] * 1.6"
+      },
+      {
+        "index": 19,
+        "name": "segment4.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[19] * 1.6"
+      },
+      {
+        "index": 20,
+        "name": "segment4.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[20] * 170"
+      },
+      {
+        "index": 21,
+        "name": "segment4.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[21] * 85"
+      },
+      {
+        "index": 22,
+        "name": "segment4.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[22] * 4.9"
+      },
+      {
+        "index": 23,
+        "name": "segment5.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[23] * 1.6"
+      },
+      {
+        "index": 24,
+        "name": "segment5.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[24] * 1.6"
+      },
+      {
+        "index": 25,
+        "name": "segment5.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[25] * 170"
+      },
+      {
+        "index": 26,
+        "name": "segment5.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[26] * 85"
+      },
+      {
+        "index": 27,
+        "name": "segment5.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[27] * 4.9"
+      },
+      {
+        "index": 28,
+        "name": "segment6.x",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint horizontal position: negative left, zero centre, positive right.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[28] * 1.6"
+      },
+      {
+        "index": 29,
+        "name": "segment6.z",
+        "min": -0.8,
+        "max": 0.8,
+        "unit": "cup radii",
+        "meaning": "Segment endpoint depth position: negative back (top of map), positive front (bottom).",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = -0.8 + p[29] * 1.6"
+      },
+      {
+        "index": 30,
+        "name": "segment6.heightMM",
+        "min": 10,
+        "max": 180,
+        "unit": "mm",
+        "meaning": "Requested endpoint spout height. Low 10–30 mm pours deposit surface foam; high pours mix. Cup rim limits effective height when cup is low.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 10 + p[30] * 170"
+      },
+      {
+        "index": 31,
+        "name": "segment6.tiltDegrees",
+        "min": 0,
+        "max": 85,
+        "unit": "degrees",
+        "meaning": "Endpoint pitcher tilt: <=25 stops flow, larger tilt increases flow to a maximum at 85. Interpolates from previous endpoint.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0 + p[31] * 85"
+      },
+      {
+        "index": 32,
+        "name": "segment6.durationSeconds",
+        "min": 0.1,
+        "max": 5,
+        "unit": "seconds",
+        "meaning": "Time moving linearly from the previous endpoint to this one, including height and tilt changes. Repeat position/height to hold; positive tilt can continue depositing.",
+        "submittedRange": [
+          0,
+          1
+        ],
+        "decode": "physical = 0.1 + p[32] * 4.9"
+      }
+    ],
+    "execution": "Fixed preparation and nominal high fill, followed by six continuous linear segments. Each endpoint sets position, height and tilt; each segment sets its duration. Controls interpolate from the previous endpoint at 60 Hz, starting at the high-fill position with tilt zero. Repeated endpoints hold steady; tilt <=25 stops flow. Final 0.5s settling pause, then serve. No sensor feedback or controller calls during execution."
+  }
+}

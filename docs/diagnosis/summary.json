@@ -1,0 +1,115 @@
+{
+  "originalScorer": {
+    "self": 100,
+    "shifts": [
+      {
+        "cells": 1,
+        "score": 94.76021314387212
+      },
+      {
+        "cells": 2,
+        "score": 89.87012987012987
+      },
+      {
+        "cells": 4,
+        "score": 81.0152703260421
+      }
+    ],
+    "scales": [
+      {
+        "scale": 0.9,
+        "score": 81.07615139078888
+      },
+      {
+        "scale": 1.1,
+        "score": 82.53669552126458
+      }
+    ]
+  },
+  "currentScorer": {
+    "self": 100,
+    "shifts": [
+      {
+        "cells": 1,
+        "axis": "+x",
+        "score": 85.38461538461539
+      },
+      {
+        "cells": 2,
+        "axis": "+x",
+        "score": 73.38129496402878
+      },
+      {
+        "cells": 4,
+        "axis": "+x",
+        "score": 54.48717948717948
+      }
+    ],
+    "scales": [
+      {
+        "scale": 0.9,
+        "score": 81.32780082987551
+      },
+      {
+        "scale": 1.1,
+        "score": 81.69491525423729
+      }
+    ]
+  },
+  "originalRetention": 96.86395759717314,
+  "currentRetention": 92.33716475095785,
+  "canonicalIoU": 0.8192771084337349,
+  "reference": {
+    "version": "mask-iou/3",
+    "taskHash": "7644c734",
+    "score": 87,
+    "shapeIoU": 0.8695652173913043,
+    "precision": 0.9482758620689655,
+    "recall": 0.9128630705394191,
+    "passed": true,
+    "checks": {
+      "shape": true,
+      "served": true,
+      "volume": true,
+      "temperature": true,
+      "spill": true,
+      "unscorched": true,
+      "time": true
+    },
+    "failedChecks": []
+  },
+  "milk": {
+    "milkInCupML": 194.8,
+    "espressoML": 36,
+    "milkTemperatureC": 60.7,
+    "spilledML": 0
+  },
+  "agentAudit": {
+    "revealedMilkKeys": [
+      "volumeML",
+      "startingTemperatureC"
+    ],
+    "hiddenNamesAbsent": true,
+    "forbidden": [
+      "flowMultiplier",
+      "foamRetention",
+      "foamMixing",
+      "spreadMultiplier",
+      "textureAmplitude",
+      "texturePhase",
+      "flowPulse",
+      "initialSwirl",
+      "velocityDamping"
+    ],
+    "foamGrid": 32,
+    "targetGrid": 32,
+    "scorerGrid": 32
+  },
+  "calibration": {
+    "evaluations": 1001,
+    "referenceIoU": 0.8695652173913043,
+    "threshold": 0.7826,
+    "precisionThreshold": 0.8534,
+    "searchBestIoU": 0.9087301587301587
+  }
+}

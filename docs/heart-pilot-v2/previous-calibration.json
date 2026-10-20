@@ -1,0 +1,285 @@
+{
+  "schema": "shape-calibration/2",
+  "benchmark": "latte-bench/0.5",
+  "evaluatorVersion": "mask-iou-boundary/4",
+  "surfaceVersion": "foam-surface/3",
+  "gridSize": 32,
+  "planVersion": "pour-plan/2",
+  "spaceHash": "889db5c9",
+  "ready": false,
+  "thresholdRule": "Per target: max(predeclared floors, 90% of visually accepted reference IoU, precision and boundary F1), rounded down to four decimals. No baseline scores used. Unmatched targets stay uncalibrated.",
+  "floors": {
+    "minShapeIoU": 0.5,
+    "minShapePrecision": 0.8,
+    "minBoundaryF1": 0.8
+  },
+  "scorerSanity": {
+    "passed": true,
+    "tasks": [
+      {
+        "id": "heart",
+        "shifted": [
+          100,
+          91.3,
+          81.9,
+          74.5,
+          61.7
+        ],
+        "scaled": [
+          100,
+          91.3,
+          81.3,
+          74.3,
+          56.8
+        ],
+        "enlarged": [
+          100,
+          88.9,
+          81.7,
+          74.2,
+          62.9
+        ],
+        "boundarySelf": 1,
+        "passed": true
+      },
+      {
+        "id": "tulip",
+        "shifted": [
+          100,
+          86.6,
+          75.5,
+          66.5,
+          50.7
+        ],
+        "scaled": [
+          100,
+          89.6,
+          80.2,
+          71.8,
+          55.4
+        ],
+        "enlarged": [
+          100,
+          90.6,
+          83.1,
+          76.2,
+          65
+        ],
+        "boundarySelf": 1,
+        "passed": true
+      },
+      {
+        "id": "rosetta",
+        "shifted": [
+          100,
+          76,
+          60.8,
+          49.6,
+          38.5
+        ],
+        "scaled": [
+          100,
+          83.5,
+          68.3,
+          56.8,
+          36.9
+        ],
+        "enlarged": [
+          100,
+          86.4,
+          73.4,
+          61.7,
+          48.3
+        ],
+        "boundarySelf": 1,
+        "passed": true
+      }
+    ]
+  },
+  "referenceReplays": 3,
+  "priorExistenceSearch": {
+    "evaluations": 1001,
+    "taskId": "heart",
+    "source": "docs/shape-audit/previous-calibration.json",
+    "note": "Same physical simulator and 33-parameter space; previous IoU-only scores do not establish the new contour gate."
+  },
+  "tasks": {
+    "heart": {
+      "ready": true,
+      "requirements": {
+        "minShapeIoU": 0.7826,
+        "minShapePrecision": 0.8534,
+        "minBoundaryF1": 0.8198
+      },
+      "candidateRequirements": {
+        "minShapeIoU": 0.7826,
+        "minShapePrecision": 0.8534,
+        "minBoundaryF1": 0.8198
+      },
+      "referencePlan": {
+        "parameters": [
+          0.5,
+          0.5,
+          0.75,
+          0.33125,
+          0.3375,
+          0,
+          0,
+          0.06122448979591837,
+          0.33125,
+          0.3375,
+          0,
+          1,
+          0.8775510204081634,
+          0.66875,
+          0.38750000000000007,
+          0,
+          0,
+          0,
+          0.66875,
+          0.38750000000000007,
+          0,
+          1,
+          0.8367346938775511,
+          0.51875,
+          0.59375,
+          0,
+          0.7058823529411765,
+          0.12244897959183672,
+          0.51875,
+          0.8624999999999999,
+          0.4117647058823529,
+          0,
+          0.24489795918367344
+        ]
+      },
+      "referenceMetrics": {
+        "shapeIoU": 0.8695652173913043,
+        "precision": 0.9482758620689655,
+        "boundaryF1": 0.9108910891089108,
+        "shapeQuality": 0.8695652173913043
+      },
+      "visualMatch": true,
+      "description": "Visually reviewed 32x32 heart: two lobes, central notch, narrowing front. Explicit lobe placement is necessary in this stylized surface model; it is not validated barista physics.",
+      "reason": null
+    },
+    "tulip": {
+      "ready": true,
+      "requirements": {
+        "minShapeIoU": 0.7761,
+        "minShapePrecision": 0.8294,
+        "minBoundaryF1": 0.8528
+      },
+      "candidateRequirements": {
+        "minShapeIoU": 0.7761,
+        "minShapePrecision": 0.8294,
+        "minBoundaryF1": 0.8528
+      },
+      "referencePlan": {
+        "parameters": [
+          0.8,
+          0.5,
+          0.75,
+          0.5437500000000001,
+          0.25,
+          0,
+          1,
+          0.5918367346938775,
+          0.525,
+          0.475,
+          0,
+          0,
+          0,
+          0.525,
+          0.475,
+          0,
+          1,
+          0.5612244897959182,
+          0.4875,
+          0.6875,
+          0,
+          0,
+          0,
+          0.4875,
+          0.6875,
+          0,
+          1,
+          0.7142857142857142,
+          0.45,
+          0.9125,
+          0.4117647058823529,
+          0,
+          0.12244897959183672
+        ]
+      },
+      "referenceMetrics": {
+        "shapeIoU": 0.8623853211009175,
+        "precision": 0.9215686274509803,
+        "boundaryF1": 0.9475852597848478,
+        "shapeQuality": 0.8623853211009175
+      },
+      "visualMatch": true,
+      "description": "Three explicitly positioned pools match the current fused tulip silhouette. Its binary target already merges the layers; this is not a convincing layered real tulip.",
+      "reason": null
+    },
+    "rosetta": {
+      "ready": false,
+      "requirements": {
+        "minShapeIoU": 0.5,
+        "minShapePrecision": 0.8,
+        "minBoundaryF1": 0.8
+      },
+      "candidateRequirements": {
+        "minShapeIoU": 0.54,
+        "minShapePrecision": 0.8,
+        "minBoundaryF1": 0.8
+      },
+      "referencePlan": {
+        "parameters": [
+          0.75,
+          0.5,
+          0.75,
+          0.41875,
+          0.23750000000000002,
+          0,
+          0.7058823529411765,
+          0.18367346938775508,
+          0.65625,
+          0.3,
+          0,
+          0.7058823529411765,
+          0.18367346938775508,
+          0.3,
+          0.425,
+          0,
+          0.7058823529411765,
+          0.18367346938775508,
+          0.7500000000000001,
+          0.5499999999999999,
+          0,
+          0.7058823529411765,
+          0.18367346938775508,
+          0.18750000000000003,
+          0.69375,
+          0,
+          0.7058823529411765,
+          0.18367346938775508,
+          0.7999999999999999,
+          0.7999999999999999,
+          0,
+          0.7058823529411765,
+          0.18367346938775508
+        ]
+      },
+      "referenceMetrics": {
+        "shapeIoU": 0.6,
+        "precision": 0.663594470046083,
+        "boundaryF1": 0.6183368869936035,
+        "shapeQuality": 0.6
+      },
+      "visualMatch": false,
+      "description": "Best hand-designed zigzag candidate from 30 explicit recipes: missing four leaf pairs and the thin stem. Not accepted as a visible target match.",
+      "reason": "No visibly matching reference within the tested 33-parameter recipes; calibration withheld. Floors remain diagnostic-only."
+    }
+  }
+}

@@ -1,0 +1,14 @@
+import {taskSpec,targetMask,evaluateCup,BENCH_VERSION,EVALUATOR_VERSION} from '../src/benchmark.js';
+import {runPlan,planContext,calibrationStatus,SPACE_HASH} from '../src/plans.js';
+import {NOMINAL_CONDITIONS} from '../src/conditions.js';
+import old from '../docs/heart-frozen-v3/regression-inputs.json';
+import ref from '../tasks/reference-heart.json';
+const task=taskSpec('heart'),reference=runPlan({plan:ref.plan,task});
+const rows=old.rows.map(r=>({label:r.label,seed:r.seed,number:r.number,surface:r.surface,observation:r.observation,evaluation:evaluateCup(task,r.observation,r.surface)}));
+if(!reference.evaluation.passed||rows.some(r=>r.evaluation.passed))throw new Error('Reference/oval regression failed. No runs permitted.');
+const calibration=await Bun.file('tasks/calibration.json').json();
+calibration.tasks.heart.referenceMetrics={...calibration.tasks.heart.referenceMetrics,shapeQuality:reference.evaluation.shapeQuality,concavityMeanDensity:reference.evaluation.concavityMeanDensity,concavityPenalty:reference.evaluation.concavityPenalty};
+await Bun.write('tasks/calibration.json',JSON.stringify(calibration,null,2)+'\n');
+await Bun.write('docs/heart-frozen-v3/scorer-check.json',JSON.stringify({benchmark:BENCH_VERSION,evaluator:EVALUATOR_VERSION,spaceHash:SPACE_HASH,task,target:Array.from(targetMask(task)),rows,reference},null,2));
+await Bun.write('docs/heart-frozen-v3/agent-input.json',JSON.stringify(planContext({task,milk:NOMINAL_CONDITIONS,ablation:'no-notes'}),null,2));
+console.log(JSON.stringify([...rows,{label:'Reviewed reference',evaluation:reference.evaluation}].map(r=>({label:r.label,score:r.evaluation.score,penaltyPoints:r.evaluation.concavityPenalty*100,pass:r.evaluation.passed})),null,2));
