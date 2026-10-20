@@ -1,9 +1,10 @@
 import heart from '../tasks/heart.json';
 import tulip from '../tasks/tulip.json';
 import rosetta from '../tasks/rosetta.json';
+import calibration from '../tasks/calibration.json';
 export const TASKS=Object.freeze({heart,tulip,rosetta});
-export const BENCH_VERSION='latte-bench/0.2';
-export const EVALUATOR_VERSION='mask-iou/1';
+export const BENCH_VERSION='latte-bench/0.3';
+export const EVALUATOR_VERSION='mask-iou/2';
 export const PROTOCOLS=['independent','feedback','holdout'];
 export function fingerprint(value){let h=2166136261;for(const c of JSON.stringify(value)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return (h>>>0).toString(16).padStart(8,'0');}
 function random(seed){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
@@ -11,7 +12,8 @@ export function taskSpec(id='heart',seed=42,protocol='independent'){
   if(!Object.hasOwn(TASKS,id))throw new Error('Unknown benchmark task.');
   if(!Number.isInteger(seed)||seed<0||seed>0xffffffff)throw new Error('Seed must be a 32-bit unsigned integer.');
   if(!PROTOCOLS.includes(protocol))throw new Error('Unknown benchmark protocol.');
-  const task=TASKS[id];
+  const base=TASKS[id];
+  const task=calibration.ready?{...base,requirements:{...base.requirements,minShapeIoU:calibration.threshold,minShapePrecision:calibration.precisionThreshold??0}}:base;
   // Practice and independent trials share the same visible target. Held-out trials
   // use a separate deterministic transform stream; no earlier feedback is supplied.
   const rng=random(seed^(protocol==='holdout'?0x9e3779b9:0));
@@ -43,7 +45,7 @@ export function evaluateCup(spec,observation,foam,size=96){
     const actual=foam[i]>=.25,want=!!target[i];if(actual)predicted++;if(want)expected++;if(actual&&want)intersection++;if(actual||want)union++;
   }
   const iou=union?intersection/union:0,r=spec.requirements,volume=observation.espressoML+observation.milkInCupML;
-  const checks={shape:iou>=r.minShapeIoU,served:observation.served===true,
+  const checks={shape:iou>=r.minShapeIoU&&(predicted?intersection/predicted:0)>=(r.minShapePrecision??0),served:observation.served===true,
     volume:volume>=r.volumeML[0]&&volume<=r.volumeML[1]+.001,
     temperature:observation.milkTemperatureC>=r.temperatureC[0]&&observation.milkTemperatureC<=r.temperatureC[1],
     spill:observation.spilledML<=r.maxSpillML,unscorched:observation.scorched===false,
@@ -58,7 +60,7 @@ export function taskForAgent(spec){const mask=targetMask(spec,16);return {id:spe
 export function comparableRuns(attempts){
   // Never pool different tasks, target variants, protocols, budgets, or model IDs.
   const groups=new Map();
-  for(const a of attempts){if(!a.evaluation||!PROTOCOLS.includes(a.protocol)||a.outcome==='Stopped'||a.outcome==='Error')continue;
+  for(const a of attempts){if(!a.evaluation||(!PROTOCOLS.includes(a.protocol)&&!a.protocol?.startsWith('plan-'))||a.outcome==='Stopped'||a.outcome==='Error')continue;
     const key=JSON.stringify([a.experimentId,a.benchmark,a.environment?.version,a.environment?.split,a.task.hash,a.protocol,a.requestedModel,a.models]);
     if(!groups.has(key))groups.set(key,[]);groups.get(key).push(a);
   }return [...groups.values()];

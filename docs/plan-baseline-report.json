@@ -1,0 +1,1744 @@
+{
+  "schema": "latte-bench/0.3",
+  "groups": [
+    {
+      "config": {
+        "taskId": "heart",
+        "targetSeed": 42,
+        "attempts": 25,
+        "ablation": "optimizer",
+        "randomized": true,
+        "split": "practice",
+        "evaluationKind": "training",
+        "source": null
+      },
+      "models": [],
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "points": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 11.266666666666666,
+          "sampleVariance": 8.253333333333334,
+          "sd": 2.8728615235220327,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 5.8999999999999995,
+          "sampleVariance": 7.629999999999999,
+          "sd": 2.7622454633866265,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 6.133333333333333,
+          "sampleVariance": 2.333333333333333,
+          "sd": 1.5275252316519465,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 6,
+          "sampleVariance": 1.6899999999999995,
+          "sd": 1.2999999999999998,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 6.566666666666666,
+          "sampleVariance": 11.223333333333333,
+          "sd": 3.350124375800596,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 6,
+          "n": 3,
+          "mean": 6.833333333333333,
+          "sampleVariance": 0.703333333333333,
+          "sd": 0.8386497083606081,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 7,
+          "n": 3,
+          "mean": 6.166666666666667,
+          "sampleVariance": 4.863333333333332,
+          "sd": 2.205296654269745,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 8,
+          "n": 3,
+          "mean": 6.733333333333333,
+          "sampleVariance": 0.06333333333333332,
+          "sd": 0.2516611478423583,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 9,
+          "n": 3,
+          "mean": 5.8999999999999995,
+          "sampleVariance": 5.069999999999999,
+          "sd": 2.25166604983954,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 10,
+          "n": 3,
+          "mean": 5.366666666666667,
+          "sampleVariance": 8.423333333333334,
+          "sd": 2.902297940138699,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 11,
+          "n": 3,
+          "mean": 4.633333333333334,
+          "sampleVariance": 11.323333333333332,
+          "sd": 3.3650160970392595,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 12,
+          "n": 3,
+          "mean": 6.633333333333333,
+          "sampleVariance": 0.4633333333333337,
+          "sd": 0.6806859285554049,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 13,
+          "n": 3,
+          "mean": 4.433333333333334,
+          "sampleVariance": 8.253333333333336,
+          "sd": 2.8728615235220327,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 14,
+          "n": 3,
+          "mean": 4.033333333333333,
+          "sampleVariance": 9.603333333333332,
+          "sd": 3.0989245446337237,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 15,
+          "n": 3,
+          "mean": 4.433333333333334,
+          "sampleVariance": 1.373333333333333,
+          "sd": 1.171893055416463,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 16,
+          "n": 3,
+          "mean": 6.366666666666667,
+          "sampleVariance": 13.463333333333331,
+          "sd": 3.669241520169166,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 17,
+          "n": 3,
+          "mean": 4.6000000000000005,
+          "sampleVariance": 3.43,
+          "sd": 1.8520259177452134,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 18,
+          "n": 3,
+          "mean": 7.133333333333333,
+          "sampleVariance": 1.1233333333333329,
+          "sd": 1.0598742063723094,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 19,
+          "n": 3,
+          "mean": 4.8,
+          "sampleVariance": 0.27999999999999997,
+          "sd": 0.529150262212918,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 20,
+          "n": 3,
+          "mean": 3.266666666666667,
+          "sampleVariance": 4.093333333333333,
+          "sd": 2.0231987873991355,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 21,
+          "n": 3,
+          "mean": 3.9666666666666663,
+          "sampleVariance": 4.1033333333333335,
+          "sd": 2.0256686138984663,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 22,
+          "n": 3,
+          "mean": 4.933333333333334,
+          "sampleVariance": 7.323333333333332,
+          "sd": 2.7061657993059725,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 23,
+          "n": 3,
+          "mean": 5.5,
+          "sampleVariance": 2.770000000000001,
+          "sd": 1.664331697709324,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 24,
+          "n": 3,
+          "mean": 3.8666666666666667,
+          "sampleVariance": 11.463333333333331,
+          "sd": 3.3857544703261238,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 25,
+          "n": 3,
+          "mean": 5.866666666666667,
+          "sampleVariance": 4.503333333333332,
+          "sd": 2.1221058723196005,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        }
+      ],
+      "perSeed": [
+        {
+          "seed": 42,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 12.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 42
+            },
+            {
+              "attempt": 2,
+              "score": 9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104771
+            },
+            {
+              "attempt": 3,
+              "score": 5.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209500
+            },
+            {
+              "attempt": 4,
+              "score": 4.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314229
+            },
+            {
+              "attempt": 5,
+              "score": 9.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418958
+            },
+            {
+              "attempt": 6,
+              "score": 7.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 523687
+            },
+            {
+              "attempt": 7,
+              "score": 8.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 628416
+            },
+            {
+              "attempt": 8,
+              "score": 6.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 733145
+            },
+            {
+              "attempt": 9,
+              "score": 8.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 837874
+            },
+            {
+              "attempt": 10,
+              "score": 7.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 942603
+            },
+            {
+              "attempt": 11,
+              "score": 7.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1047332
+            },
+            {
+              "attempt": 12,
+              "score": 6.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1152061
+            },
+            {
+              "attempt": 13,
+              "score": 2.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1256790
+            },
+            {
+              "attempt": 14,
+              "score": 2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1361519
+            },
+            {
+              "attempt": 15,
+              "score": 3.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1466248
+            },
+            {
+              "attempt": 16,
+              "score": 10.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1570977
+            },
+            {
+              "attempt": 17,
+              "score": 6.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1675706
+            },
+            {
+              "attempt": 18,
+              "score": 6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1780435
+            },
+            {
+              "attempt": 19,
+              "score": 4.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1885164
+            },
+            {
+              "attempt": 20,
+              "score": 5.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1989893
+            },
+            {
+              "attempt": 21,
+              "score": 5.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2094622
+            },
+            {
+              "attempt": 22,
+              "score": 1.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2199351
+            },
+            {
+              "attempt": 23,
+              "score": 4.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2304080
+            },
+            {
+              "attempt": 24,
+              "score": 0,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2408809
+            },
+            {
+              "attempt": 25,
+              "score": 7.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2513538
+            }
+          ],
+          "attemptsUsed": 25,
+          "firstPassAttempt": null,
+          "costToFirstPassUSD": null,
+          "totalCostUSD": 0,
+          "passRate": 0,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": null
+        },
+        {
+          "seed": 43,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 13.4,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 43
+            },
+            {
+              "attempt": 2,
+              "score": 5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104772
+            },
+            {
+              "attempt": 3,
+              "score": 7.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209501
+            },
+            {
+              "attempt": 4,
+              "score": 7.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314230
+            },
+            {
+              "attempt": 5,
+              "score": 6.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418959
+            },
+            {
+              "attempt": 6,
+              "score": 6.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 523688
+            },
+            {
+              "attempt": 7,
+              "score": 4.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 628417
+            },
+            {
+              "attempt": 8,
+              "score": 7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 733146
+            },
+            {
+              "attempt": 9,
+              "score": 3.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 837875
+            },
+            {
+              "attempt": 10,
+              "score": 2.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 942604
+            },
+            {
+              "attempt": 11,
+              "score": 5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1047333
+            },
+            {
+              "attempt": 12,
+              "score": 7.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1152062
+            },
+            {
+              "attempt": 13,
+              "score": 7.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1256791
+            },
+            {
+              "attempt": 14,
+              "score": 7.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1361520
+            },
+            {
+              "attempt": 15,
+              "score": 4.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1466249
+            },
+            {
+              "attempt": 16,
+              "score": 4.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1570978
+            },
+            {
+              "attempt": 17,
+              "score": 3.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1675707
+            },
+            {
+              "attempt": 18,
+              "score": 8.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1780436
+            },
+            {
+              "attempt": 19,
+              "score": 5.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1885165
+            },
+            {
+              "attempt": 20,
+              "score": 2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1989894
+            },
+            {
+              "attempt": 21,
+              "score": 1.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2094623
+            },
+            {
+              "attempt": 22,
+              "score": 7.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2199352
+            },
+            {
+              "attempt": 23,
+              "score": 7.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2304081
+            },
+            {
+              "attempt": 24,
+              "score": 6.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2408810
+            },
+            {
+              "attempt": 25,
+              "score": 3.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2513539
+            }
+          ],
+          "attemptsUsed": 25,
+          "firstPassAttempt": 1,
+          "costToFirstPassUSD": 0,
+          "totalCostUSD": 0,
+          "passRate": 0.04,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": null
+        },
+        {
+          "seed": 44,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 44
+            },
+            {
+              "attempt": 2,
+              "score": 3.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104773
+            },
+            {
+              "attempt": 3,
+              "score": 4.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209502
+            },
+            {
+              "attempt": 4,
+              "score": 6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314231
+            },
+            {
+              "attempt": 5,
+              "score": 3.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418960
+            },
+            {
+              "attempt": 6,
+              "score": 6.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 523689
+            },
+            {
+              "attempt": 7,
+              "score": 5.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 628418
+            },
+            {
+              "attempt": 8,
+              "score": 6.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 733147
+            },
+            {
+              "attempt": 9,
+              "score": 6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 837876
+            },
+            {
+              "attempt": 10,
+              "score": 6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 942605
+            },
+            {
+              "attempt": 11,
+              "score": 1.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1047334
+            },
+            {
+              "attempt": 12,
+              "score": 6.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1152063
+            },
+            {
+              "attempt": 13,
+              "score": 3.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1256792
+            },
+            {
+              "attempt": 14,
+              "score": 2.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1361521
+            },
+            {
+              "attempt": 15,
+              "score": 5.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1466250
+            },
+            {
+              "attempt": 16,
+              "score": 4.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1570979
+            },
+            {
+              "attempt": 17,
+              "score": 3.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1675708
+            },
+            {
+              "attempt": 18,
+              "score": 7.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1780437
+            },
+            {
+              "attempt": 19,
+              "score": 5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1885166
+            },
+            {
+              "attempt": 20,
+              "score": 2.2,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 1989895
+            },
+            {
+              "attempt": 21,
+              "score": 4.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2094624
+            },
+            {
+              "attempt": 22,
+              "score": 5.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2199353
+            },
+            {
+              "attempt": 23,
+              "score": 4.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2304082
+            },
+            {
+              "attempt": 24,
+              "score": 5.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2408811
+            },
+            {
+              "attempt": 25,
+              "score": 6.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2513540
+            }
+          ],
+          "attemptsUsed": 25,
+          "firstPassAttempt": null,
+          "costToFirstPassUSD": null,
+          "totalCostUSD": 0,
+          "passRate": 0,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": null
+        }
+      ],
+      "notes": "Error/rejected attempts score zero and consume budget. Variance is across independent seeds at the same attempt index. Null variance means only one seed; null cost means unreported. Held-out memory/plans are frozen; source training costs are shown separately."
+    },
+    {
+      "config": {
+        "taskId": "heart",
+        "targetSeed": 42,
+        "attempts": 5,
+        "ablation": "optimizer",
+        "randomized": true,
+        "split": "holdout",
+        "evaluationKind": "heldout-milk",
+        "source": {
+          "id": "1865829a-b498-4696-b029-d32f114bc4b7",
+          "taskId": "heart",
+          "trainingAttempts": 25,
+          "bestPlan": {
+            "parameters": [
+              0.5,
+              0.6,
+              0.2,
+              0.35,
+              0.4,
+              0.6,
+              0.65,
+              0.4,
+              0.6,
+              0.4,
+              0.55,
+              0.4,
+              0.6,
+              0.55,
+              0.4,
+              0.5,
+              0.65,
+              0.3,
+              0.5,
+              0.5,
+              0.4
+            ]
+          }
+        }
+      },
+      "models": [],
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "points": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 8.733333333333334,
+          "sampleVariance": 14.333333333333332,
+          "sd": 3.7859388972001824,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 8.200000000000001,
+          "sampleVariance": 6.369999999999999,
+          "sd": 2.5238858928247923,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 8.266666666666666,
+          "sampleVariance": 14.123333333333331,
+          "sd": 3.7581023580170525,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 9.9,
+          "sampleVariance": 12.37,
+          "sd": 3.517101079013795,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 7.8999999999999995,
+          "sampleVariance": 4.839999999999999,
+          "sd": 2.1999999999999997,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        }
+      ],
+      "perSeed": [
+        {
+          "seed": 42,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 10.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147483690
+            },
+            {
+              "attempt": 2,
+              "score": 11.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147588419
+            },
+            {
+              "attempt": 3,
+              "score": 12.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147693148
+            },
+            {
+              "attempt": 4,
+              "score": 13.6,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147797877
+            },
+            {
+              "attempt": 5,
+              "score": 10.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147902606
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": 4,
+          "costToFirstPassUSD": 0,
+          "totalCostUSD": 0,
+          "passRate": 0.2,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "1865829a-b498-4696-b029-d32f114bc4b7",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.5,
+                0.6,
+                0.2,
+                0.35,
+                0.4,
+                0.6,
+                0.65,
+                0.4,
+                0.6,
+                0.4,
+                0.55,
+                0.4,
+                0.6,
+                0.55,
+                0.4,
+                0.5,
+                0.65,
+                0.3,
+                0.5,
+                0.5,
+                0.4
+              ]
+            }
+          }
+        },
+        {
+          "seed": 43,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 11.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147483691
+            },
+            {
+              "attempt": 2,
+              "score": 7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147588420
+            },
+            {
+              "attempt": 3,
+              "score": 6.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147693149
+            },
+            {
+              "attempt": 4,
+              "score": 9.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147797878
+            },
+            {
+              "attempt": 5,
+              "score": 7.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147902607
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": null,
+          "costToFirstPassUSD": null,
+          "totalCostUSD": 0,
+          "passRate": 0,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "ec23a01a-1e08-4c2b-be8c-b827bcac13e3",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.5,
+                0.6,
+                0.2,
+                0.35,
+                0.4,
+                0.6,
+                0.65,
+                0.4,
+                0.6,
+                0.4,
+                0.55,
+                0.4,
+                0.6,
+                0.55,
+                0.4,
+                0.5,
+                0.65,
+                0.3,
+                0.5,
+                0.5,
+                0.4
+              ]
+            }
+          }
+        },
+        {
+          "seed": 44,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 4.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147483692
+            },
+            {
+              "attempt": 2,
+              "score": 6.5,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147588421
+            },
+            {
+              "attempt": 3,
+              "score": 5.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147693150
+            },
+            {
+              "attempt": 4,
+              "score": 6.6,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147797879
+            },
+            {
+              "attempt": 5,
+              "score": 5.7,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 2147902608
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": null,
+          "costToFirstPassUSD": null,
+          "totalCostUSD": 0,
+          "passRate": 0,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "e6ae982c-49f6-49fe-83eb-16d46b5f4534",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.9952396675916747,
+                0.2129323589938472,
+                0.12592187069998131,
+                0.5304092573148989,
+                0.36536404123466937,
+                0.5095187022120543,
+                0.528514363746596,
+                0.4868683490261903,
+                0.7604641984684032,
+                0.829157837735648,
+                0.6479331586696921,
+                0.1625676758910947,
+                0.46075382179213153,
+                0.4891513355311941,
+                0.08112996751683135,
+                0.14390196596134552,
+                0.747585173983258,
+                0.000023611303034307776,
+                0.6576463624564114,
+                0.34318624215120924,
+                0.3465268520320932
+              ]
+            }
+          }
+        }
+      ],
+      "notes": "Error/rejected attempts score zero and consume budget. Variance is across independent seeds at the same attempt index. Null variance means only one seed; null cost means unreported. Held-out memory/plans are frozen; source training costs are shown separately."
+    },
+    {
+      "config": {
+        "taskId": "tulip",
+        "targetSeed": 42,
+        "attempts": 5,
+        "ablation": "optimizer",
+        "randomized": true,
+        "split": "practice",
+        "evaluationKind": "heldout-shape",
+        "source": {
+          "id": "1865829a-b498-4696-b029-d32f114bc4b7",
+          "taskId": "heart",
+          "trainingAttempts": 25,
+          "bestPlan": {
+            "parameters": [
+              0.5,
+              0.6,
+              0.2,
+              0.35,
+              0.4,
+              0.6,
+              0.65,
+              0.4,
+              0.6,
+              0.4,
+              0.55,
+              0.4,
+              0.6,
+              0.55,
+              0.4,
+              0.5,
+              0.65,
+              0.3,
+              0.5,
+              0.5,
+              0.4
+            ]
+          }
+        }
+      },
+      "models": [],
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "points": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 12.466666666666667,
+          "sampleVariance": 27.85333333333333,
+          "sd": 5.277625728803941,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 12.700000000000001,
+          "sampleVariance": 27.189999999999998,
+          "sd": 5.214403129793476,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 12.1,
+          "sampleVariance": 11.189999999999998,
+          "sd": 3.345145736735546,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 11.5,
+          "sampleVariance": 8.830000000000002,
+          "sd": 2.9715315916207254,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 11.933333333333332,
+          "sampleVariance": 37.30333333333333,
+          "sd": 6.107645481962204,
+          "meanCostUSD": 0,
+          "meanCumulativeCostUSD": 0,
+          "rejected": 0,
+          "errors": 0
+        }
+      ],
+      "perSeed": [
+        {
+          "seed": 42,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 15,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 42
+            },
+            {
+              "attempt": 2,
+              "score": 17,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104771
+            },
+            {
+              "attempt": 3,
+              "score": 14.6,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209500
+            },
+            {
+              "attempt": 4,
+              "score": 12.8,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314229
+            },
+            {
+              "attempt": 5,
+              "score": 17.5,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418958
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": 1,
+          "costToFirstPassUSD": 0,
+          "totalCostUSD": 0,
+          "passRate": 0.8,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "1865829a-b498-4696-b029-d32f114bc4b7",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.5,
+                0.6,
+                0.2,
+                0.35,
+                0.4,
+                0.6,
+                0.65,
+                0.4,
+                0.6,
+                0.4,
+                0.55,
+                0.4,
+                0.6,
+                0.55,
+                0.4,
+                0.5,
+                0.65,
+                0.3,
+                0.5,
+                0.5,
+                0.4
+              ]
+            }
+          }
+        },
+        {
+          "seed": 43,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 16,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 43
+            },
+            {
+              "attempt": 2,
+              "score": 14.2,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104772
+            },
+            {
+              "attempt": 3,
+              "score": 13.4,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209501
+            },
+            {
+              "attempt": 4,
+              "score": 13.6,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314230
+            },
+            {
+              "attempt": 5,
+              "score": 12.9,
+              "passed": true,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418959
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": 1,
+          "costToFirstPassUSD": 0,
+          "totalCostUSD": 0,
+          "passRate": 1,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "ec23a01a-1e08-4c2b-be8c-b827bcac13e3",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.5,
+                0.6,
+                0.2,
+                0.35,
+                0.4,
+                0.6,
+                0.65,
+                0.4,
+                0.6,
+                0.4,
+                0.55,
+                0.4,
+                0.6,
+                0.55,
+                0.4,
+                0.5,
+                0.65,
+                0.3,
+                0.5,
+                0.5,
+                0.4
+              ]
+            }
+          }
+        },
+        {
+          "seed": 44,
+          "curve": [
+            {
+              "attempt": 1,
+              "score": 6.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 44
+            },
+            {
+              "attempt": 2,
+              "score": 6.9,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 104773
+            },
+            {
+              "attempt": 3,
+              "score": 8.3,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 209502
+            },
+            {
+              "attempt": 4,
+              "score": 8.1,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 314231
+            },
+            {
+              "attempt": 5,
+              "score": 5.4,
+              "passed": false,
+              "outcome": "Served",
+              "costUSD": 0,
+              "cumulativeCostUSD": 0,
+              "milkSeed": 418960
+            }
+          ],
+          "attemptsUsed": 5,
+          "firstPassAttempt": null,
+          "costToFirstPassUSD": null,
+          "totalCostUSD": 0,
+          "passRate": 0,
+          "costNote": "Reported API cost; local compute not priced.",
+          "source": {
+            "id": "e6ae982c-49f6-49fe-83eb-16d46b5f4534",
+            "taskId": "heart",
+            "trainingAttempts": 25,
+            "bestPlan": {
+              "parameters": [
+                0.9952396675916747,
+                0.2129323589938472,
+                0.12592187069998131,
+                0.5304092573148989,
+                0.36536404123466937,
+                0.5095187022120543,
+                0.528514363746596,
+                0.4868683490261903,
+                0.7604641984684032,
+                0.829157837735648,
+                0.6479331586696921,
+                0.1625676758910947,
+                0.46075382179213153,
+                0.4891513355311941,
+                0.08112996751683135,
+                0.14390196596134552,
+                0.747585173983258,
+                0.000023611303034307776,
+                0.6576463624564114,
+                0.34318624215120924,
+                0.3465268520320932
+              ]
+            }
+          }
+        }
+      ],
+      "notes": "Error/rejected attempts score zero and consume budget. Variance is across independent seeds at the same attempt index. Null variance means only one seed; null cost means unreported. Held-out memory/plans are frozen; source training costs are shown separately."
+    }
+  ]
+}

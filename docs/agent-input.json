@@ -1,46 +1,8 @@
 {
-  "observation": {
-    "time": 0,
-    "groundsG": 0,
-    "espressoML": 0,
-    "milkRemainingML": 229,
-    "milkInCupML": 0,
-    "spilledML": 0,
-    "milkTemperatureC": 17.6,
-    "scorched": false,
-    "held": false,
-    "grinding": false,
-    "extracting": false,
-    "steaming": false,
-    "pouring": false,
-    "served": false,
-    "controls": {
-      "x": 0.08459179043769835,
-      "z": 0.040736169945448625,
-      "height": 80,
-      "tilt": 48
-    },
-    "effectiveHeightMM": 112.5,
-    "surfaceCoverage": 0,
-    "surfaceFoam": [
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000",
-      "0000000000"
-    ],
-    "status": "Grind a dose to start."
-  },
-  "recentActions": [],
-  "task": {
+  "target": {
     "id": "heart",
     "version": 1,
-    "hash": "b785437c",
+    "hash": "b5bedd60",
     "instruction": "Pour one centered heart with two rounded lobes, a clear notch, and a tapered point toward the front of the cup.",
     "requirements": {
       "volumeML": [
@@ -52,10 +14,11 @@
         65
       ],
       "maxSpillML": 5,
-      "minShapeIoU": 0.55
+      "minShapeIoU": 0.1292,
+      "minShapePrecision": 0.9
     },
     "limits": {
-      "decisions": 32,
+      "plansPerAttempt": 1,
       "simulationSeconds": 120
     },
     "coordinates": "x right, z front; normalized cup radius. Grid rows run from back to front.",
@@ -78,10 +41,143 @@
       "0000000000000000"
     ]
   },
-  "protocol": "independent",
-  "previousEpisodes": [],
-  "budget": {
-    "decisionsRemaining": 32,
-    "simulationSecondsRemaining": 120
-  }
+  "milk": {
+    "volumeML": 229.04415007680655,
+    "startingTemperatureC": 17.586324471980333
+  },
+  "space": {
+    "version": "pour-plan/1",
+    "count": 21,
+    "encoding": "21 normalized numbers, each in [0,1]; no clipping or repair",
+    "parameters": [
+      {
+        "index": 0,
+        "name": "fillVolumeML",
+        "min": 180,
+        "max": 210
+      },
+      {
+        "index": 1,
+        "name": "drawingTiltDegrees",
+        "min": 45,
+        "max": 85
+      },
+      {
+        "index": 2,
+        "name": "drawingHeightMM",
+        "min": 10,
+        "max": 40
+      },
+      {
+        "index": 3,
+        "name": "pour1.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 4,
+        "name": "pour1.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 5,
+        "name": "pour1.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      },
+      {
+        "index": 6,
+        "name": "pour2.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 7,
+        "name": "pour2.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 8,
+        "name": "pour2.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      },
+      {
+        "index": 9,
+        "name": "pour3.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 10,
+        "name": "pour3.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 11,
+        "name": "pour3.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      },
+      {
+        "index": 12,
+        "name": "pour4.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 13,
+        "name": "pour4.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 14,
+        "name": "pour4.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      },
+      {
+        "index": 15,
+        "name": "pour5.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 16,
+        "name": "pour5.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 17,
+        "name": "pour5.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      },
+      {
+        "index": 18,
+        "name": "pour6.x",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 19,
+        "name": "pour6.z",
+        "min": -0.75,
+        "max": 0.75
+      },
+      {
+        "index": 20,
+        "name": "pour6.durationSeconds",
+        "min": 0.15,
+        "max": 1.5
+      }
+    ],
+    "execution": "A fixed preparation and nominal fill schedule is compiled before execution from revealed starting volume/temperature. Then six stationary timed pours, a 0.3s settling pause, and serve. No sensor feedback, early stops, top-ups or controller calls during execution. Position changes are instantaneous, as in the original optimizer."
+  },
+  "notes": ""
 }

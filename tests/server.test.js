@@ -1,8 +1,8 @@
 import {test,expect,beforeAll,afterAll} from 'bun:test';
 let mock,child,base,requests=[];
 beforeAll(async()=>{
-  mock=Bun.serve({hostname:'127.0.0.1',port:0,async fetch(req){const body=await req.json();requests.push(body);return Response.json({model:body.model,choices:[{message:{content:JSON.stringify({command:'pour',x:.2,z:0,height:20,tilt:65,duration:1})}}],usage:{prompt_tokens:120,completion_tokens:32,cost:.02}});}});
-  child=Bun.spawn([process.execPath,'server.js'],{cwd:import.meta.dir+'/..',env:{...process.env,PORT:'0',MUBIT_BASE_URL:String(mock.url)+'v1',MUBIT_API_KEY:'mock-key-never-send',MUBIT_MODEL:'mock-owned',FRONTIER_MODEL:'mock-frontier',FRONTIER_BASE_URL:'',FRONTIER_API_KEY:'',MUBIT_EXTRA_BODY:'{"route":"mock-route"}'},stdout:'pipe',stderr:'pipe'});
+  mock=Bun.serve({hostname:'127.0.0.1',port:0,async fetch(req){const body=await req.json();requests.push(body);const plan=body.messages[0].content.startsWith('Plan then execute'),notes=body.messages[0].content.startsWith('Review the completed');return Response.json({model:body.model,choices:[{message:{content:JSON.stringify(plan?{parameters:Array(21).fill(.5)}:notes?{notes:'A note from the mock model.'}:{command:'pour',x:.2,z:0,height:20,tilt:65,duration:1})}}],usage:{prompt_tokens:120,completion_tokens:32,cost:.02}});}});
+  child=Bun.spawn([process.execPath,'server.js'],{cwd:import.meta.dir+'/..',env:{...process.env,PORT:'0',ENABLE_STEP_MODE:'1',MUBIT_BASE_URL:String(mock.url)+'v1',MUBIT_API_KEY:'mock-key-never-send',MUBIT_MODEL:'mock-owned',FRONTIER_MODEL:'mock-frontier',FRONTIER_BASE_URL:'',FRONTIER_API_KEY:'',MUBIT_EXTRA_BODY:'{"route":"mock-route"}'},stdout:'pipe',stderr:'pipe'});
   const data=await child.stdout.getReader().read();base=new TextDecoder().decode(data.value).match(/http:\/\/127\.0\.0\.1:\d+/)?.[0];if(!base)throw new Error('Test server failed to start');
 },10000);
 afterAll(()=>{child?.kill();mock?.stop(true);});
@@ -24,4 +24,16 @@ test('benchmark task and feedback reach the model while held-out requests reject
   const before=requests.length;
   expect((await post({lane:'mubit',observation:{},history:[],protocol:'holdout',feedback})).status).toBe(400);
   expect(requests.length).toBe(before);
+});
+
+test('plan endpoint runs a full attempt then reflects, with no mid-pour model calls',async()=>{
+  const created=await fetch(base+'/api/experiments',{method:'POST',headers:{'Content-Type':'application/json',Origin:base},body:JSON.stringify({attempts:1,randomized:false,ablation:'notes'})});
+  expect(created.status).toBe(200);const {id}=await created.json(),before=requests.length;
+  const response=await fetch(base+`/api/experiments/${id}/attempt`,{method:'POST',headers:{Origin:base}});
+  expect(response.status).toBe(200);const result=await response.json();
+  expect(requests.length-before).toBe(2);expect(result.attempt.plan.parameters).toHaveLength(21);
+  expect(result.attempt.trace.path.length).toBeGreaterThan(100);expect(result.notes).toBe('A note from the mock model.');
+  const input=JSON.parse(requests[before].messages[1].content);
+  expect(Object.keys(input.milk)).toEqual(['volumeML','startingTemperatureC']);expect(input.observation).toBeUndefined();
+  expect((await fetch(base+`/api/experiments/${id}/attempt`,{method:'POST',headers:{Origin:base}})).status).toBe(409);
 });

@@ -1,10 +1,6 @@
-# Latte Bench
+# Latte Bench · plan then execute
 
-A small, interactive environment for evaluating how agents operate a coffee workstation and adapt from feedback. Vanilla JavaScript, Three.js, Rapier, and Bun. No React.
-
-The scene is the environment. A model receives physical observations and a target, chooses bounded controls, and gets an evaluation of the resulting cup. The same controls are available to a person.
-
-![Latte Bench workstation](preview.jpg)
+A lightweight, vanilla JavaScript / Three.js workstation for testing planning and adaptation in a stylized latte simulator. Bun runs the app and physics. uv runs the development-only CMA-ES baseline. No React.
 
 ## Run
 
@@ -13,154 +9,126 @@ bun install
 bun run dev
 ```
 
-Open http://127.0.0.1:3000. Use the task selector for **Heart**, **Tulip**, or **Rosetta**. The instruction below the scene shows the next preparation step. Drag on **Your cup** to aim; height controls mixing versus surface deposition, and tilt controls milk flow. **Serve & score** records the result. **Results** contains the episode history, cup images, scores, and exports.
+Open http://127.0.0.1:3000. **Run benchmark** selects the model route, attempt budget, milk seed and memory ablation. **Try without an API → Run calibrated reference** executes the passing default-milk witness. **Trace** exposes the planning input and exports full execution evidence. Physical buttons remain available for manual exploration.
 
-Keyboard: `1` grind, `2` extract, `3` toggle steam, `4` pick up, `5` serve; `WASD` / arrows move; `Q/E` change height; hold `Space` to pour.
-
-## Gateway configuration
-
-Bun loads `.env` automatically. Copy `.env.example` only when creating a new configuration:
+Bun loads `.env`; keys stay server-side and are ignored by Git:
 
 ```dotenv
 MUBIT_BASE_URL=https://api.mubit.ai/openai/v1/
 MUBIT_API_KEY=your-key
-MUBIT_MODEL=your-model-or-route-id
-FRONTIER_MODEL=your-baseline-model
+MUBIT_MODEL=your-model-id
+FRONTIER_MODEL=your-comparison-model-id
 ```
 
-Keys are server-only, ignored by Git, and never served as static files. Optional `FRONTIER_BASE_URL` / `FRONTIER_API_KEY` use a separate endpoint; otherwise both routes use the Mubit gateway. Optional `MUBIT_EXTRA_BODY` forwards documented provider fields only on the Mubit route. The UI identifies when both routes use the same gateway and model. Restart Bun after editing credentials.
+Optional `FRONTIER_BASE_URL` / `FRONTIER_API_KEY` select another OpenAI-compatible backend. Otherwise both routes use the gateway. Configure documented gateway-specific fields through `MUBIT_EXTRA_BODY`. Restart after changing credentials. Provider-side memory, routing and weight updates remain outside this benchmark's control; fix those when comparing controllers.
 
-**Run benchmark** selects the route, episode count, protocol, and seed. Up to 32 model requests per episode may be billed. The UI offers 1, 3, or 5 episodes. A request error stops the batch. Taking manual control cancels pending browser work; an already accepted upstream call can still be billed.
+## One plan, one attempt
 
-## Task files
+The model returns **only** `{"parameters": [21 numbers]}`. Every value must be finite and in `[0,1]`; no clipping, retry, additional controls or silent correction is allowed. Invalid JSON, wrong lengths and out-of-bounds values produce a clear rejection and consume an attempt. Provider failures are recorded as failed attempts too.
 
-Each task is a versioned JSON file:
+[`src/plans.js`](src/plans.js) is the single parameter schema, validator, decoder and executor used by both agents and CMA-ES. These are the previous optimizer's 21 coordinates and physical bounds, with a new, explicitly open-loop decoder:
 
-- [`tasks/heart.json`](tasks/heart.json): one centered heart.
-- [`tasks/tulip.json`](tasks/tulip.json): three stacked lobes.
-- [`tasks/rosetta.json`](tasks/rosetta.json): paired leaves around a stem.
+| Coordinates | Meaning after linear decoding |
+| --- | --- |
+| 0 | Nominal pre-drawing cup volume, 180–210 ml |
+| 1 | Drawing tilt, 45–85° |
+| 2 | Drawing height, 10–40 mm |
+| 3–20 | Six triples: x ∈ [−0.75,0.75], z ∈ [−0.75,0.75], duration ∈ [0.15,1.5] s |
 
-A task specifies its instruction, target geometry, serving constraints, target-variation ranges, and decision/time limits. `src/benchmark.js` registers the files and rasterizes their primitives into a mask. Add a new JSON file and register it in `TASKS` to extend the suite. Increment a task's version when changing its geometry or constraints.
+The decoder compiles the **entire** schedule before simulation: grind, extract, heat toward 62°C from the revealed starting temperature, pick up, nominal fill, six stationary drawing pours, settle, serve. Fill duration comes from the nominal flow equation and revealed milk volume. Position transitions are instantaneous, as in the previous search space. Durations round to 60 Hz ticks. Hidden milk parameters never alter the compiled schedule. There are no mid-pour model calls, sensor-driven corrections, adaptive top-ups or early stops. The simulator executes as fast as the CPU permits; the browser displays the completed cup. Rendering time does not determine the result.
 
-The seed deterministically translates, rotates, and scales the visible target. It does **not** seed the upstream language model. Each episode also samples a reproducible milk batch from [`tasks/environment.json`](tasks/environment.json). Independent and feedback runs share a batch schedule; holdout uses a separate seed namespace. Reset within an episode replays its batch. Volume (205–245 ml), starting temperature (14–22°C), initial pitcher offset, flow, deposition spread, foam retention, velocity damping, mixing, spatial texture and flow pulsation vary. These are stylized ranges, not measured milk properties. Full conditions are exported for reproduction; the model only receives observable state. Seeds whose low 31 bits match share a physical schedule; the high bit is reserved for the holdout namespace. The target fingerprint records the exact configuration and transform; it is an identity check, not a cryptographic integrity guarantee.
+The old step controller is disabled by default. Enable it only for comparison with `ENABLE_STEP_MODE=1` in the server environment, then use the revealed UI checkbox or `bun run bench --step --live ...`. Legacy step results are a different protocol and must not be pooled with plan runs.
 
-## Evaluation v0.2
+## Calibration before agents or randomized benchmarks
 
-The evaluator reads the **actual 96×96 foam field**, not a preset image, model-written score, or completion message. Foam density ≥ 0.25 is classified as visible foam. Shape match is fixed-orientation intersection-over-union (IoU) against the target mask. Empty and completely white cups are penalized by this metric.
+The server and optimizer check the calibration manifest, parameter-space fingerprint, scorer sanity and an exact physical reference replay before allowing experiments. The supplied calibration is complete:
 
-A cup passes only when **all** of these are true:
+- Exact Heart, Tulip and Rosetta masks score 100%.
+- Increasing translations and scale changes degrade overlap gradually; recorded curves are in [`tasks/calibration.json`](tasks/calibration.json).
+- A **1,001-evaluation** CMA-ES search on **default milk only** found a feasible Heart plan with **14.3639% IoU, 100% precision, 240 ml, 61.1°C and 2 ml spilled**.
+- The frozen operational pass requirements are **IoU ≥ 0.1292 and precision ≥ 0.90**, plus served, 190–240 ml, 55–65°C, ≤5 ml spills, unscorched and ≤120 simulated seconds.
+- Thresholds are 90% of the reference IoU and precision, rounded down to four decimals. Precision prevents an all-white cup from passing the lower overlap threshold. These same thresholds are frozen for unseen shapes; they are not calibrated on held-out shape results.
 
-- Shape IoU ≥ 0.55.
-- Cup served, with 190–240 ml total volume.
-- Milk at 55–65°C and never scorched in the final cup.
-- At most 5 ml spilled from the final cup.
-- Episode within its 120-second simulation-time budget.
+**The reference is a weak visual pattern, not a convincing heart.** This existence proof establishes reachability of an operational simulator threshold, not realistic latte-art mastery. Do not compare these v0.3 pass rates with the old 55% threshold. The search curve is preserved in [`docs/calibration-search.json`](docs/calibration-search.json); the parameter vector is in the manifest and can be replayed without any API.
 
-The controller is capped at 32 decisions. Resetting the cup does not reset the episode time budget; discarded cups remain visible in the action trace, though preparation/shape checks concern the final cup. API waiting time is excluded: simulation time pauses during requests, and browser actions advance in fixed 1/60-second steps with a bounded final partial step. Reported model usage and optional USD `usage.cost` are recorded separately; prices are not inferred.
-
-**These are provisional geometric targets and thresholds.** They are not calibrated to barista judgments, taste, or real milk physics. We have not established a passing physical reference policy for every shape. The bundled scripted controller is a smoke-test baseline, not a solution. Do not use these pass rates as a validated ranking of model intelligence.
-
-## Measuring adaptation
-
-| Protocol | Target | Prior episode information |
-| --- | --- | --- |
-| Independent baseline | Seeded target, identical within a batch | None; fresh episode context |
-| Feedback practice | Same seeded target as baseline | Up to three prior scores, failed checks, and action sequences from this batch |
-| Held-out target | Separate deterministic transform stream | None |
-
-The model receives JSON, not screenshots. See the complete [input example](docs/agent-input.json), or open **Trace → Input preview** in the UI (after an API call this shows its last actual input). The model sees the target instruction, serving requirements, a 16×16 target mask, actual physical state, a 10×10 foam observation, recent within-episode actions, and the remaining decision/time budget. Each action advances 0.05–5 seconds, then returns a new observation; shorter pours enable closed-loop correction. Current `surfaceFoam` is a 10×10 density grid (0–9), while `targetFoam` is a 16×16 binary mask (0/1). Both use x to the right and z from back to front. `recentActions` pairs commands with state immediately after dispatch, before timed evolution; the top-level observation is the latest post-duration state. The server also supplies a system prompt describing controls and simulator rules. Hidden batch coefficients and the full 96×96 evaluator field are not sent. Feedback practice explicitly adds earlier episode evidence to the prompt; this measures **in-context adaptation**, not weight training. The server rejects feedback in independent and held-out modes.
-
-Results plot only comparable episodes: same experiment, benchmark/environment version, milk split, task fingerprint, protocol, requested model, and returned model identity. v0.1 fixed-condition results are not comparable to v0.2 randomized conditions. Manual and scripted runs are excluded from learning curves. Raw episode scores and first-to-last deltas are observations, not statistical evidence of learning. For a defensible experiment, collect larger repeated baselines, compare feedback practice under matched conditions, and evaluate a frozen learned controller on held-out tasks/seeds with confidence intervals. The UI's three/five-episode runs are exploratory.
-
-No training-status API, adapter identity signal, or adapter-creation threshold has been established for the configured gateway. Adapter status is **unverified**. No progress meter claims that model weights are being trained or owned adapters have been created. A changing response or returned model name alone is not proof of an adapter update. Gateway-side memory, routing, and weights are not reset or controlled by the independent protocol; a rigorous comparison requires a fixed backend policy as well.
-
-## Headless runner and evidence verification
-
-A local scripted smoke test makes no API calls:
+Recalibrate after changing the physical model, plan decoder or scoring rules:
 
 ```sh
-bun run bench --task heart --episodes 3 --seed 42 --output results/baseline.json
-bun run verify results/baseline.json
+bun run calibrate --evaluations 1001
 ```
 
-For real models, keep `bun run dev` running and explicitly add `--live`:
+Calibration records the candidate score curve and full reference evidence in `results/calibration-evidence.json`. The published calibration uses Heart, seed 42 and nominal milk. It is separate from all experimental attempt budgets and is not used to initialize the optimizer ablation.
+
+## Inputs, reflection and memory
+
+Before each attempt, the model receives the target mask/instruction/constraints, the shared plan schema, **starting milk volume and temperature**, and the selected memory. The full planning payload example is in [`docs/agent-input.json`](docs/agent-input.json). It receives no current foam observation, hidden flow/spread/mixing coefficients, raw history in notes mode, or simulator controls during execution.
+
+After every attempt, a second model call receives the submitted plan, a compact trace summary, score breakdown (IoU, precision/recall, volume, temperature, spills and all serving checks), and the **96×96 final foam map**, quantized to density digits 0–9 for the prompt. Full-precision evidence is logged separately. This call writes a replacement note of at most 4,000 characters. Invalid notes are recorded; they do not replace the previous valid note. Rejected plans receive error feedback. All three model ablations get the same two-call opportunity, even when notes will be discarded:
+
+| Ablation | Context on the next attempt |
+| --- | --- |
+| `no-notes` | Target and revealed milk only; generated notes discarded |
+| `raw-history` | Target, milk and all prior plans, raw traces and feedback; notes discarded |
+| `notes` | Target, milk and the model's latest replacement note; no raw history |
+| `optimizer` | CMA-ES with the identical 21 bounds and fixed executor; one simulator evaluation per attempt |
+
+Raw-history prompts deliberately grow without hidden truncation. A provider context-limit failure consumes the attempt and appears in the report. This ablation can be substantially more expensive. Gateway-side memory is not reset by any of these conditions.
+
+## Milk schedule and full traces
+
+Milk randomization is enabled only after calibration. [`tasks/environment.json`](tasks/environment.json) defines seeded volume, starting temperature, flow, foam retention/spread, mixing, texture, initial pitcher offset and surface motion. The same experiment seed and zero-based attempt index produce identical batches across every controller. The high seed bit is reserved for the milk-holdout namespace, so seeds with matching low 31 bits share physical schedules; use small, distinct seeds. Target seed is fixed at 42 by default, independently of milk seeds.
+
+Every executed experimental attempt logs:
+
+- The submitted normalized plan, decoded action schedule, task and environment snapshots and version fingerprints.
+- Pitcher position, height, tilt, flow and cup volume at **60 Hz**.
+- Full-precision **96×96 foam fields every 1 simulated second**, including time zero, plus the final field.
+- Scores, constraint checks, model identities, token usage, per-call reported cost, notes before/after and errors.
+
+Live evidence is saved under `results/experiments/<id>.json` after each attempt. The UI keeps recent metadata locally and exports full evidence for the current server experiment. Restarting the server ends resumable in-memory sessions; saved files remain. Stopping the UI prevents future attempts; an already dispatched attempt may finish and be billed. `results/` is Git-ignored.
+
+## Matched experiments and reports
+
+Run the local optimizer (no model/API calls):
 
 ```sh
-bun run bench --live --route mubit --task heart --episodes 5 --mode feedback --seed 42 --output results/practice.json
-bun run bench --live --route frontier --task heart --episodes 5 --mode independent --seed 42 --output results/control.json
+bun run baseline --attempts 25 --seeds 42,43,44 --test-attempts 5 --heldout-shape tulip --output results/optimizer-plans.json
 ```
 
-The runner accepts `--mode independent|feedback|holdout`, `--task heart|tulip|rosetta`, `--episodes 1..20`, and a 32-bit unsigned `--seed`. `--milk-split holdout` changes milk conditions independently of the target protocol, allowing exact comparison with optimizer milk holdouts. By default the `holdout` protocol changes both the target transform and milk split. CLI live runs use the same local server, prompts, action validation, physics, and evaluator as the browser. `--help` lists options. A scripted run does not simulate learning even when a protocol option is supplied; it is labeled scripted.
+With the server running, execute each model ablation at the same budgets:
 
-Exports include the environment configuration, task snapshot/fingerprint, protocol, benchmark and prompt versions, model IDs, usage, decisions, actions, observations, full foam field, and evaluation breakdown. `bun run verify <export.json>` recomputes each saved score and verdict from that evidence without API calls and rejects mismatched task definitions. It verifies scoring evidence, not the authenticity of the export or replay of a remote model. The last 30 browser episodes are stored locally; export if storage becomes full. `results/` is ignored by Git.
-
-## Computer-use interface
-
-The HTML buttons and sliders are accessible to a computer-use agent. The browser also exposes:
-
-```js
-coffeeWorkstation.observe();
-coffeeWorkstation.task();
-await coffeeWorkstation.act({ command: 'grind', duration: 2.2 });
-coffeeWorkstation.evaluate();
-coffeeWorkstation.capture();
-coffeeWorkstation.exportTrace();
-coffeeWorkstation.reset();
+```sh
+bun run bench --live --attempts 25 --seeds 42,43,44 --ablation no-notes --test-attempts 5 --heldout-shape tulip --output results/no-notes.json
+bun run bench --live --attempts 25 --seeds 42,43,44 --ablation raw-history --test-attempts 5 --heldout-shape tulip --output results/raw-history.json
+bun run bench --live --attempts 25 --seeds 42,43,44 --ablation notes --test-attempts 5 --heldout-shape tulip --output results/notes.json
+bun run report results/optimizer-plans.json results/no-notes.json results/raw-history.json results/notes.json
 ```
 
-Controls are `grind`, `extract`, `steam`, `pickup`, `move`, `pour`, `stop`, `serve`, and `reset`. Optional numeric fields: `x,z ∈ [-1.4,1.4]`, height 10–220 mm, tilt 0–85°, duration 0.05–5 seconds. The UI and model controller use the same validation. The convenience browser bridge uses real-time manual control and is not the deterministic batch runner; use the API runner for timed benchmark episodes.
+Those model commands each allow **210 billed calls**: three seeds × (25 training + 5 milk holdout + 5 shape holdout) × two calls. No model calls occur without `--live`. `--default-milk` disables randomized conditions for a control experiment.
 
-## Physics and validation
+The optimizer uses pinned `cma==4.4.0` and `numpy==2.2.6` through uv. It receives one final objective per candidate: IoU minus one per failed non-shape serving constraint. There is no averaging over extra uncounted simulator runs. Its covariance updates after each population of eight candidates; incomplete final populations still count toward the budget. Frozen evaluation uses the best training vector. The initial vector is the same fixed generic prior for every seed, not the calibrated witness.
 
-Rapier handles rigid-body gravity and collision response for the sugar cubes, counter, and kinematic tools. Tool proxies are simplified; the explicit rim constraint prevents the pitcher lip being lowered into an underfilled cup. Milk droplets follow ballistic trajectories and conserve volume across pitcher, airborne drops, cup, and spills. The circular surface uses semi-Lagrangian transport, pressure projection, and foam deposition. This is a real-time 2D surface approximation coupled to 3D droplets, not full 3D CFD or PhysX. Foam appearance comes from height-based deposition and heuristic outward transport. The solver has no explicit density-driven microfoam/crema layering, surface tension, bubble drainage or calibrated rheology. Randomization tests robustness to these heuristics; it does not validate the physical model. Switching rigid-body engines would not supply the missing milk physics. Claims are limited to control/adaptation within this environment. Real-pouring transfer would require a calibrated multiphase model and independent experimental validation.
+Each experiment explicitly separates:
+
+1. **Training:** adaptive notes, raw history or optimizer state.
+2. **Held-out milk:** same shape and target, disjoint milk seed namespace, frozen training notes/history/vector.
+3. **Held-out shape:** unseen Tulip target, practice milk schedule, the same frozen training memory/vector. No held-out results are used to update memory or select a plan.
+
+`results/report.html` and `results/report.json` contain score versus attempt, sample variance/standard deviation across seeds, sample counts, rejected/error counts, per-attempt and cumulative API cost, first passing attempt, and total cost to first pass. Training source costs are retained separately for holdouts. Missing provider prices remain **unknown**, never zero; first pass is **not reached** when no attempt passes. Optimizer API dollars are zero, but local compute is not free. Reports keep different protocols, shapes, budgets, spaces and returned model identities in separate groups. Error/rejected attempts score zero in these aggregate curves.
+
+The checked local pilot includes 25 optimizer training attempts plus two five-attempt holdouts for each of seeds 42/43/44. No live model ablation results are claimed; the model pipeline is integration-tested with a local mock gateway. Three seeds are a development pilot, not a statistically validated learning claim.
+
+## Verify
 
 ```sh
 bun test
 bun run build
+bun run verify results/optimizer-plans.json
+bun run verify --replay results/calibration-evidence.json
 ```
 
-Tests cover physical invariants, control limits, repeat-run reset/cancellation, episode budgets, target determinism, evaluator edge cases, protocol isolation, model grouping, and the server adapter against a mock gateway. `dist/` is a static build for manual/scripted operation; live models require the Bun server.
+The verifier recomputes scores and checks plan/environment identity. `--replay` additionally compares the complete physical replay, including recorded path and foam snapshots. Old exports require their matching benchmark/scorer version. Tests cover malformed plans, exact schedules, no hidden-condition leakage, full trace cadence, rejection budgets, memory isolation, frozen holdouts, cost accounting, scorer sanity, reference reachability and the two-call API sequence.
 
+## Physical scope
 
-## Optimizer baseline, first attempts, and transfer
-
-Run a real full-covariance [CMA-ES implementation](https://cma-es.github.io/apidocs-pycma/cma.evolution_strategy.CMAEvolutionStrategy.html), installed with uv. This development-only Python runner drives the existing Bun simulator; nothing is added to the browser bundle, and it makes no model/API calls.
-
-```sh
-bun run baseline --task heart --candidates 49 --train-seeds 2 --test-seeds 5 --output results/optimizer-heart.json
-bun run verify results/optimizer-heart.json
-```
-
-The search has 21 bounded parameters: initial fill, drawing tilt/height and six (x, z, duration) pours. Preparation and volume/flow feedback are hand-written priors. The policy receives the same observable physical fields as models, not latent batch coefficients or direct access to the foam solver. Both use 32 decisions / 120 simulated seconds. This restricted policy family is an early baseline, not an upper bound on optimizer performance. CMA-ES maximizes mean IoU minus one per failed non-shape serving constraint. It gets final scores from the evaluator, with two fixed training batches per candidate (common random numbers). Every simulator evaluation counts toward the training budget; 49 candidates × 2 batches = 98 episodes, not 49 episodes.
-
-After search, the chosen vector is frozen. Evaluate the initial and optimized feedback policies, plus the optimized vector with feedback disabled, on five separate milk seeds. The target stays fixed for this robustness test. The open-loop run is an ablation, not an independently optimized rival. Reports include parameters, search curve, conditions, scores, decisions, simulated time, wall time and full holdout fields/traces for verification. API cost is zero; local compute cost is not priced. Five seeds and one optimizer seed are a pilot, not a statistically validated comparison.
-
-The initial pilot (seed 42, five held-out milk batches per row) produced:
-
-| Policy / task | Additional training episodes | Held-out mean shape IoU | Full passes |
-| --- | ---: | ---: | ---: |
-| Initial feedback policy / Heart | 0 | 7.60% | 0/5 |
-| CMA-ES feedback policy / Heart | 98 | 9.82% | 0/5 |
-| Same Heart vector, feedback disabled | 0 | 9.24% | 0/5 |
-| Cold-start CMA-ES / Tulip | 34 | 10.28% | 0/5 |
-| Heart-initialized CMA-ES / Tulip | 34 (+98 source episodes) | 10.80% | 0/5 |
-
-The low scores are a calibration warning. They neither establish that the task is unsolvable nor that LLMs outperform search. The Heart run took about 43 seconds of local wall time; all runs made zero API calls. The open-loop Tulip ablations actually scored slightly higher than their feedback counterparts (11.14% cold / 11.64% warm), so this pilot does not establish a consistent feedback advantage either.
-
-For transfer, retain a Heart-trained policy, then compare warm and cold starts on Tulip with the same *additional* budget:
-
-```sh
-bun run baseline --task tulip --candidates 17 --train-seeds 2 --test-seeds 5 --warm-start results/optimizer-heart.json --output results/tulip-warm.json
-bun run baseline --task tulip --candidates 17 --train-seeds 2 --test-seeds 5 --output results/tulip-cold.json
-```
-
-Warm start reuses the parameter vector only; covariance is reinitialized. Source training cost is reported separately. Do not select the source vector by looking at target holdouts. [Recorded pilot results](docs/baseline-pilot.json) contain the measured first-attempt and holdout scores; complete evidence is reproducible with the commands above.
-
-The live runner can likewise reuse prior model traces on a new shape. This is explicitly **in-context transfer**, with source task names attached:
-
-```sh
-bun run bench --live --task tulip --mode feedback --transfer-from results/heart-model.json --episodes 5 --output results/tulip-model-warm.json
-bun run bench --live --task tulip --mode feedback --episodes 5 --output results/tulip-model-cold.json
-```
-
-Compare first attempts, score versus *environment episodes*, attempts to the first full pass (null if never achieved), holdout pass rate/shape overlap, tokens, API calls and reported cost. Keep target, milk schedules, observation/action budgets and model identity matched. Freeze any learned policy/memory before final holdouts. The existing fresh-context holdout protocol does not itself freeze gateway-side learning. A model need not win this benchmark; an optimizer matching or beating it is a valid finding. No matched randomized LLM comparison has been run in this pilot, and there is still no established passing physical reference policy for every task.
+Rapier supplies rigid-body collisions. Milk uses ballistic droplets and a stylized 2D surface solver. It has no validated density-driven microfoam/crema layering, surface tension, drainage or rheology. Randomization measures robustness to this model's assumptions. Neither a passing plan nor a successful transfer experiment establishes real-world barista skill or model weight learning.
