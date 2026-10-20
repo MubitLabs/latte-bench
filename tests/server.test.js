@@ -15,3 +15,13 @@ test('agent receives actual observations and returns a validated timed action',a
   expect(requests.at(-1).route).toBe('mock-route');expect(JSON.parse(requests.at(-1).messages[1].content).observation.espressoML).toBe(36);
 });
 test('frontier route has its own model and omits Mubit routing fields',async()=>{expect((await post({lane:'frontier',observation:{},history:[]})).status).toBe(200);expect(requests.at(-1).model).toBe('mock-frontier');expect(requests.at(-1).route).toBeUndefined();});
+test('benchmark task and feedback reach the model while held-out requests reject feedback',async()=>{
+  const feedback=[{score:12,failedChecks:['shape'],actions:[{command:'grind',duration:2}]}];
+  const response=await post({lane:'mubit',observation:{},history:[],taskId:'tulip',seed:7,protocol:'feedback',feedback});
+  expect(response.status).toBe(200);expect((await response.json()).promptVersion).toBe('latte-controller/2');
+  const prompt=JSON.parse(requests.at(-1).messages[1].content);
+  expect(prompt.task.id).toBe('tulip');expect(prompt.task.targetFoam).toHaveLength(16);expect(prompt.previousEpisodes).toEqual(feedback);
+  const before=requests.length;
+  expect((await post({lane:'mubit',observation:{},history:[],protocol:'holdout',feedback})).status).toBe(400);
+  expect(requests.length).toBe(before);
+});

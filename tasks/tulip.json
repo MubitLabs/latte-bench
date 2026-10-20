@@ -1,0 +1,12 @@
+{
+  "id": "tulip", "version": 1, "name": "Tulip", "difficulty": "Intermediate",
+  "instruction": "Build three stacked, rounded tulip lobes along the cup's vertical axis, then finish with a narrow central pull-through.",
+  "target": {"primitives": [
+    {"shape": "heart", "x": 0, "z": -0.32, "scale": 0.22},
+    {"shape": "heart", "x": 0, "z": 0.00, "scale": 0.29},
+    {"shape": "heart", "x": 0, "z": 0.35, "scale": 0.36}
+  ]},
+  "requirements": {"volumeML": [190, 240], "temperatureC": [55, 65], "maxSpillML": 5, "minShapeIoU": 0.55},
+  "variants": {"translation": 0.06, "rotationDegrees": 12, "scaleRange": [0.94, 1.06]},
+  "limits": {"decisions": 32, "simulationSeconds": 120}
+}

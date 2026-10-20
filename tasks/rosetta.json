@@ -1,0 +1,18 @@
+{
+  "id": "rosetta", "version": 1, "name": "Rosetta", "difficulty": "Advanced",
+  "instruction": "Create four pairs of leaf-like lobes, mirrored around a thin central stem. The leaves should narrow toward the back of the cup.",
+  "target": {"primitives": [
+    {"shape": "ellipse", "x": -0.13, "z": -0.42, "rx": 0.17, "rz": 0.075, "rotation": -25},
+    {"shape": "ellipse", "x": 0.13, "z": -0.42, "rx": 0.17, "rz": 0.075, "rotation": 25},
+    {"shape": "ellipse", "x": -0.20, "z": -0.18, "rx": 0.24, "rz": 0.085, "rotation": -25},
+    {"shape": "ellipse", "x": 0.20, "z": -0.18, "rx": 0.24, "rz": 0.085, "rotation": 25},
+    {"shape": "ellipse", "x": -0.26, "z": 0.08, "rx": 0.30, "rz": 0.09, "rotation": -25},
+    {"shape": "ellipse", "x": 0.26, "z": 0.08, "rx": 0.30, "rz": 0.09, "rotation": 25},
+    {"shape": "ellipse", "x": -0.30, "z": 0.36, "rx": 0.34, "rz": 0.10, "rotation": -25},
+    {"shape": "ellipse", "x": 0.30, "z": 0.36, "rx": 0.34, "rz": 0.10, "rotation": 25},
+    {"shape": "ellipse", "x": 0, "z": 0.02, "rx": 0.035, "rz": 0.64, "rotation": 0}
+  ]},
+  "requirements": {"volumeML": [190, 240], "temperatureC": [55, 65], "maxSpillML": 5, "minShapeIoU": 0.55},
+  "variants": {"translation": 0.06, "rotationDegrees": 12, "scaleRange": [0.94, 1.06]},
+  "limits": {"decisions": 32, "simulationSeconds": 120}
+}

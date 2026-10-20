@@ -1,0 +1,8 @@
+{
+  "id": "heart", "version": 1, "name": "Heart", "difficulty": "Foundation",
+  "instruction": "Pour one centered heart with two rounded lobes, a clear notch, and a tapered point toward the front of the cup.",
+  "target": {"primitives": [{"shape": "heart", "x": 0, "z": 0.02, "scale": 0.5}]},
+  "requirements": {"volumeML": [190, 240], "temperatureC": [55, 65], "maxSpillML": 5, "minShapeIoU": 0.55},
+  "variants": {"translation": 0.06, "rotationDegrees": 12, "scaleRange": [0.94, 1.06]},
+  "limits": {"decisions": 32, "simulationSeconds": 120}
+}

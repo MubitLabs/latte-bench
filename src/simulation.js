@@ -100,8 +100,8 @@ export class CoffeeSimulation {
   }
   step(dt){
     dt=clamp(dt,0,.04);this.time+=dt;
-    if(this.grinding){this.grounds=Math.min(18,this.grounds+9*dt);if(this.grounds>=18){this.grinding=false;this.status='Dose ready. Extract the shot.';}}
-    if(this.extracting){this.espresso=Math.min(36,this.espresso+9*dt);if(this.espresso>=36){this.extracting=false;this.status='Espresso ready.';}}
+    if(this.grinding){this.grounds=Math.min(18,this.grounds+9*dt);if(this.grounds>=18-1e-8){this.grounds=18;this.grinding=false;this.status='Dose ready. Extract the shot.';}}
+    if(this.extracting){this.espresso=Math.min(36,this.espresso+9*dt);if(this.espresso>=36-1e-8){this.espresso=36;this.extracting=false;this.status='Espresso ready.';}}
     if(this.steaming){this.temperature=Math.min(100,this.temperature+8*dt);if(this.temperature>75)this.scorched=true;}
     else this.temperature=Math.max(18,this.temperature-dt*.08);
     const c=this.controls,vx=clamp((c.x-this.previous.x)/Math.max(dt,.001),-5,5),vz=clamp((c.z-this.previous.z)/Math.max(dt,.001),-5,5);

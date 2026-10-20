@@ -50,3 +50,9 @@ test('stopping while a model is thinking prevents its action and subsequent tria
   expect(h.actions).toHaveLength(0);expect(h.decisions).toHaveLength(0);
   expect(h.resets).toBe(1);expect(h.results[0].outcome).toBe('Stopped');expect(h.paused).toBe(false);
 });
+test('resetting a cup cannot reset the episode time budget',async()=>{
+  const h=harness();h.options.count=1;h.options.maxSimulationSeconds=11;
+  h.options.decide=async()=>({action:{command:'reset',duration:5}});
+  await runTrials(h.options);
+  expect(h.decisions).toHaveLength(3);expect(h.results[0]).toMatchObject({outcome:'Time limit',episodeSeconds:11});
+});

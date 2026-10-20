@@ -11,6 +11,10 @@ test('workstation enforces preparation and serves only a filled cup',()=>{
   const s=new CoffeeSimulation();s.act({command:'extract'});advance(s,1);expect(s.espresso).toBe(0);s.act({command:'serve'});expect(s.served).toBe(false);
   s.act({command:'grind'});advance(s,2.1);expect(s.grounds).toBe(18);s.act({command:'extract'});advance(s,4.1);expect(s.espresso).toBe(36);
 });
+test('exact advertised preparation durations do not fail due to floating-point accumulation',()=>{
+  const s=new CoffeeSimulation();s.act({command:'grind'});advance(s,2);expect(s.grounds).toBe(18);expect(s.grinding).toBe(false);
+  s.act({command:'extract'});advance(s,4);expect(s.espresso).toBe(36);expect(s.extracting).toBe(false);
+});
 test('milk mass is conserved across airborne drops, cup and spills',()=>{
   const s=prepared();s.act({command:'pour',x:.2,z:0,height:30,tilt:65});advance(s,2);s.act({command:'move',x:1.3,z:0});advance(s,1);s.act({command:'stop'});advance(s,.4);
   expect(s.inCup).toBeGreaterThan(20);expect(s.spilled).toBeGreaterThan(5);

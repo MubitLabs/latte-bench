@@ -1,10 +1,15 @@
 import { CoffeeSimulation, clamp, validateCommand } from './simulation.js';
 import { createWorkstation } from './workstation.js';
 import { runTrials, summarizeAttempt } from './attempts.js';
+import { TASKS, BENCH_VERSION, EVALUATOR_VERSION, taskSpec, targetMask, evaluateCup, comparableRuns } from './benchmark.js';
+import { mountIcons } from './icons.js';
+import { feedbackFrom, PROMPT_VERSION } from './protocol.js';
 
 const $=selector=>document.querySelector(selector), $$=selector=>[...document.querySelectorAll(selector)];
+mountIcons();
 const sim=new CoffeeSimulation();let world,controller='manual',generation=0,aborter=null,agentSteps=0,agentUsage=0,agentCost=0,costKnown=true,sound=false,audio;
 let events=[],keys=new Set(),pendingMove={x:0,z:0},moveClock=0,uiClock=0,config={ready:false};
+let selectedTask=taskSpec(),manualCupRecorded=false,scoreClock=0,episodeFinished=false;
 const storageKey='mubit-coffee-attempts-v1';
 let attempts=[],activeAttempt=null,thinkingSince=0,activity='Idle',activityDetail='',storageAvailable=true;
 try{const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');if(Array.isArray(saved))attempts=saved.filter(a=>a?.id&&a.observation&&Array.isArray(a.models)&&Array.isArray(a.trace)).slice(-30);}catch{storageAvailable=false;}
@@ -12,13 +17,62 @@ const startTime=Date.now();
 function record(action){events.push({timestamp:new Date().toISOString(),action,observation:sim.observe()});if(events.length>2000)events.shift();}
 function execute(action,{manual=false}={}){
   if(manual&&controller!=='manual')takeControl();
+  if(manual){episodeFinished=false;world?.setPaused(false);}
   const command=validateCommand(action);sim.act(command);record(command);syncUI();
   if(sound&&command.command!=='move')beep(command.command==='pour'?380:650);
+  if(manual&&command.command==='serve'&&sim.served&&!manualCupRecorded)saveNonAgentCup('human');
   return sim.observe();
 }
-function takeControl(){if(activeAttempt)finishAttempt({outcome:'Stopped',error:null});generation++;aborter?.abort();thinkingSince=0;world?.setPaused(false);controller='manual';sim.act({command:'stop'});keys.clear();pendingMove={x:0,z:0};syncUI();}
-function resetCup(){sim.reset();events=[];agentSteps=0;agentUsage=0;agentCost=0;costKnown=true;$('#height').value=80;$('#tilt').value=48;}
+function takeControl(){if(activeAttempt)finishAttempt({outcome:'Stopped',error:null});generation++;aborter?.abort();thinkingSince=0;episodeFinished=false;world?.cancelAdvance();world?.setPaused(false);controller='manual';sim.act({command:'stop'});keys.clear();pendingMove={x:0,z:0};syncUI();}
+function resetCup(){sim.reset();manualCupRecorded=false;episodeFinished=false;events=[];agentSteps=0;agentUsage=0;agentCost=0;costKnown=true;$('#height').value=80;$('#tilt').value=48;$('#score-value').textContent='—';}
 function newCup(){takeControl();resetCup();syncUI();}
+function drawTarget(){
+  const canvas=$('#target-view'),ctx=canvas.getContext('2d'),n=160,mask=targetMask(selectedTask,n);
+  ctx.clearRect(0,0,n,n);ctx.fillStyle='#ece7d8';ctx.beginPath();ctx.arc(80,80,74,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#725035';ctx.beginPath();ctx.arc(80,80,66,0,Math.PI*2);ctx.fill();
+  ctx.save();ctx.translate(14,14);ctx.scale(132/n,132/n);ctx.fillStyle='#fff4d8';
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(mask[y*n+x])ctx.fillRect(x,y,1,1);ctx.restore();
+}
+function refreshTask(){
+  const seed=Number($('#seed-input').value);try{
+    const next=taskSpec($('#task-select').value,seed,$('#protocol-select').value);
+    $('#seed-input').setCustomValidity('');newCup();selectedTask=next;drawTarget();
+    $('#task-difficulty').textContent=selectedTask.difficulty;syncUI();
+  }catch(error){$('#seed-input').setCustomValidity(error.message);$('#seed-input').reportValidity();}
+}
+$('#task-select').onchange=refreshTask;
+$('#seed-input').onchange=refreshTask;
+$('#protocol-select').onchange=()=>{
+  $('#protocol-description').textContent={independent:'Fresh context each episode. Establish the model’s baseline variability.',feedback:'Each episode receives up to three earlier results and action traces from this experiment. Measures adaptation using feedback in context.',holdout:'A separate seeded target transform, with fresh context and no prior feedback. Tests performance on a new target, not a weight update.'}[$('#protocol-select').value];refreshTask();
+};
+$('#criteria-button').onclick=()=>{
+  $('#criteria-title').textContent=selectedTask.name;$('#task-description').textContent=selectedTask.instruction;
+  const r=selectedTask.requirements;
+  $('#criteria-list').replaceChildren(...[['Shape overlap',`≥ ${Math.round(r.minShapeIoU*100)}% IoU`],['Cup volume',`${r.volumeML.join('–')} ml`],['Milk temperature',`${r.temperatureC.join('–')}°C`],['Spilled milk',`≤ ${r.maxSpillML} ml`],['Finish','Served · no scorched milk'],['Budget',`${selectedTask.limits.decisions} decisions · ${selectedTask.limits.simulationSeconds}s`]].map(([label,value])=>{const row=document.createElement('div');row.className='criteria-row';const span=document.createElement('span');span.textContent=label;const strong=document.createElement('strong');strong.textContent=value;row.append(span,strong);return row;}));
+  $('#task-fingerprint').textContent=`${BENCH_VERSION} · ${selectedTask.id}@${selectedTask.version} · seed ${selectedTask.seed} · ${selectedTask.hash}`;
+  $('#criteria-dialog').showModal();
+};
+function saveNonAgentCup(kind){
+  manualCupRecorded=true;
+  agentSteps=agentUsage=agentCost=0;costKnown=true;
+  activeAttempt={id:crypto.randomUUID(),experimentId:crypto.randomUUID(),number:(attempts.at(-1)?.number||0)+1,index:1,total:1,
+    task:structuredClone(selectedTask),protocol:kind,benchmark:BENCH_VERSION,requestedModel:kind,models:[kind],requests:0,decisions:[],startedAt:new Date().toISOString()};
+  finishAttempt({outcome:'Served',error:null});episodeFinished=true;world?.setPaused(true);syncUI();
+}
+function instruction(){
+  if(thinkingSince)return ['AI','Agent is thinking.',`Decision ${activeAttempt?.requests||1} of 32 · simulation time is paused.`];
+  if(episodeFinished){const last=attempts.at(-1);return [last?.evaluation?.passed?'✓':'!',last?.evaluation?.passed?'Task passed.':'Episode finished.',`${last?.evaluation?.score??0}% shape match · ${last?.evaluation?.failedChecks.join(', ')||'all checks passed'}. See Results.`];}
+  if(sim.served)return ['✓','Cup complete.',`Shape match ${evaluateCup(selectedTask,sim.observe(),sim.surface.foam).score}%. Open Results for the full verdict.`];
+  if(sim.scorched)return ['!','The milk is scorched.','Start a new cup. Stop steaming before 75°C.'];
+  if(sim.grounds<18)return ['01',sim.grinding?'Grinding your dose…':'Grind your coffee.',sim.grinding?'Wait for 18 g, then press Extract.':'Press Grind to prepare an 18 g dose.'];
+  if(sim.espresso<36)return ['02',sim.extracting?'Pulling the espresso…':'Extract the espresso.',sim.extracting?'Wait for the 36 ml shot.':'Press Extract to pull a 36 ml shot.'];
+  if(sim.steaming)return ['03','Watch the milk temperature.','Press Steam again at 55–65°C to stop.'];
+  if(sim.temperature<55&&sim.held)return ['03','Put the pitcher down to steam.','Press Pick up again to put it down, then heat the milk to 55–65°C.'];
+  if(sim.temperature<55&&!sim.held)return ['03','Steam the milk.','Press Steam, then stop it at 55–65°C.'];
+  if(!sim.held)return ['04','Pick up the pitcher.','Press Pick up. Aim on Your cup, then hold Pour.'];
+  if(sim.espresso+sim.inCup<190)return ['04','Fill first. Draw second.','Pour high to fill. Lower the spout as the surface rises.'];
+  return ['05',`Draw your ${selectedTask.name.toLowerCase()}.`,'Pour low and move gently. Press Serve & score when finished.'];
+}
 function syncUI(){
   $('#dose-value').textContent=`${Math.round(sim.grounds)} / 18 g`;$('#shot-value').textContent=`${Math.round(sim.espresso)} / 36 ml`;$('#temp-step').textContent=Math.round(sim.temperature)+'°C';$('#pour-step').textContent=Math.round(sim.inCup)+' ml';
   for(const [name,done,active] of [['grind',sim.grounds>=18,sim.grinding],['extract',sim.espresso>=36,sim.extracting],['steam',sim.temperature>=55&&!sim.scorched,sim.steaming],['pour',sim.inCup>=120,sim.pouring]]){const row=$(`[data-step="${name}"]`);row.classList.toggle('done',done);row.classList.toggle('active',active);row.querySelector('.step-check').textContent=done?'✓':{grind:'1',extract:'2',steam:'3',pour:'4'}[name];}
@@ -35,6 +89,7 @@ function syncUI(){
   $('#aim-dot').style.left=(50+sim.controls.x*39)+'%';$('#aim-dot').style.top=(48+sim.controls.z*39)+'%';
   const secs=Math.floor(sim.time);$('#run-time').textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');$('#trace-count').textContent=events.length;
   $('#agent-button').classList.toggle('active',controller!=='manual');
+  const [number,title,copy]=instruction();$('#instruction-number').textContent=number;$('#instruction-title').textContent=title;$('#instruction-copy').textContent=copy;
   syncPractice();
 }
 function syncPractice(){
@@ -49,11 +104,13 @@ function syncPractice(){
   $('#practice-model').textContent=`Model · ${latest?.models?.at(-1)||latest?.requestedModel||'—'}`;
   $('#pause-practice').hidden=controller!=='api';$('#attempt-count').textContent=attempts.length;
 }
-function finishAttempt({outcome,error}){
+function finishAttempt({outcome,error,episodeSeconds=sim.time}){
   if(!activeAttempt)return;
+  const observation={...sim.observe(),episodeSeconds};
   const attempt=summarizeAttempt({...activeAttempt,outcome,error,finishedAt:new Date().toISOString(),
-    observation:sim.observe(),calls:activeAttempt.requests,responses:agentSteps,tokens:agentUsage,costUSD:costKnown&&activeAttempt.requests===agentSteps?agentCost:null,
-    image:world?.capture(),trace:structuredClone(events)});
+    observation,calls:activeAttempt.requests,responses:agentSteps,tokens:agentUsage,costUSD:costKnown&&activeAttempt.requests===agentSteps?agentCost:null,
+    image:world?.capture(),trace:structuredClone(events),surface:Array.from(sim.surface.foam),surfaceSize:sim.surface.n,
+    evaluation:evaluateCup(activeAttempt.task||selectedTask,observation,sim.surface.foam)});
   attempts.push(attempt);attempts=attempts.slice(-30);activeAttempt=null;thinkingSince=0;
   activity=outcome;activityDetail=error||`${Math.round(attempt.volumeML)} ml in cup · ${attempt.spilledML.toFixed(1)} ml spilled${attempt.scorched?' · scorched milk':''}`;
   try{localStorage.setItem(storageKey,JSON.stringify(attempts));}catch{storageAvailable=false;}
@@ -68,25 +125,38 @@ function cupCard(attempt,label){
 }
 function renderCupHistory(){$('#cup-history').replaceChildren(...attempts.slice(-3).map(a=>cupCard(a)));syncPractice();if($('#history-dialog').open)showHistory();}
 function showHistory(){
-  const completed=attempts.filter(a=>a.outcome==='Served');
-  $('#history-summary').textContent=attempts.length?`${completed.length} of ${attempts.length} cups served · ${attempts.reduce((n,a)=>n+a.calls,0)} model calls. Compare the actual surfaces below.`:'No recorded attempts yet. Start a fresh API attempt to begin.';
-  const pair=attempts.length>1?[attempts[0],attempts.at(-1)]:attempts;
-  $('#comparison-cups').replaceChildren(...pair.map((a,i)=>cupCard(a,`${i===0?'First':'Latest'} · #${a.number} · ${Math.round(a.coverage*100)}% foam`)));
+  const scored=attempts.filter(a=>a.evaluation),passed=scored.filter(a=>a.evaluation.passed);
+  $('#history-summary').textContent=attempts.length?`${passed.length} / ${scored.length} scored cups passed all checks · ${attempts.reduce((n,a)=>n+(a.calls||0),0)} API calls. Earlier unscored cups remain in the log.`:'No episodes yet. Try a manual pour or run an agent benchmark.';
+  const group=comparableRuns(attempts).at(-1)||[];
+  $('#learning-summary').replaceChildren();
+  if(group.length>1){
+    const delta=group.at(-1).evaluation.score-group[0].evaluation.score;
+    const text=document.createElement('div');text.textContent=`${group.length} comparable ${group[0].protocol} episodes · shape match ${group[0].evaluation.score}% → ${group.at(-1).evaluation.score}% (${delta>=0?'+':''}${delta.toFixed(1)} points). Observed change, not proof of learning.`;
+    const plot=document.createElement('canvas');plot.width=620;plot.height=110;plot.style.cssText='width:100%;height:80px;display:block;margin-top:10px';plot.setAttribute('aria-label','Shape score by episode, from 0 to 100 percent');
+    const c=plot.getContext('2d');c.strokeStyle='#c9d5bb';c.beginPath();c.moveTo(10,95);c.lineTo(610,95);c.stroke();c.strokeStyle='#6e8b58';c.lineWidth=2;c.beginPath();
+    group.forEach((a,i)=>{const x=10+i/(group.length-1)*600,y=95-a.evaluation.score*.8;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.stroke();
+    group.forEach((a,i)=>{c.fillStyle='#587444';c.beginPath();c.arc(10+i/(group.length-1)*600,95-a.evaluation.score*.8,3,0,Math.PI*2);c.fill();});
+    $('#learning-summary').append(text,plot);
+  }else $('#learning-summary').textContent='Learning needs comparable episodes. Baseline starts fresh; feedback practice supplies earlier results; held-out evaluation removes that feedback. Adapter activation remains unverified.';
+  const pool=group.length?group:scored.length?scored:attempts,pair=pool.length>1?[pool[0],pool.at(-1)]:pool;
+  $('#comparison-cups').replaceChildren(...pair.map((a,i)=>cupCard(a,`${i===0?'First':'Latest'} · #${a.number} · ${a.evaluation?`${a.evaluation.score}% match`:'unscored'}`)));
   $('#attempt-rows').replaceChildren(...attempts.toReversed().map(a=>{
     const row=document.createElement('tr');
-    for(const text of [`#${a.number}`,a.error?`${a.outcome}: ${a.error}`:a.outcome,`${a.spilledML.toFixed(1)} ml`,`${Math.round(a.temperatureC)}°${a.scorched?' · scorched':''}`,a.calls,a.tokens,a.models.join(', ')||a.requestedModel]){const td=document.createElement('td');td.textContent=text;row.append(td);}return row;
+    const verdict=a.outcome==='Stopped'||a.error?a.outcome:a.evaluation?(a.evaluation.passed?'Pass':`Fail · ${a.evaluation.failedChecks.join(', ')}`):'Unscored';
+    for(const text of [`#${a.number}`,a.task?`${a.task.name} · ${a.protocol}`:'Legacy',a.evaluation?`${a.evaluation.score}%`:'—',verdict,`${a.spilledML.toFixed(1)} ml`,a.calls,a.models.join(', ')||a.requestedModel]){const td=document.createElement('td');td.textContent=text;row.append(td);}return row;
   }));
-  $('#storage-note').textContent=`${storageAvailable?'Last 30 attempts saved in this browser.':'Browser storage unavailable or full; export to keep these attempts.'} Foam coverage is not an art-quality score. Adapter status and training threshold are not available from the current integration.`;
+  $('#storage-note').textContent=`${storageAvailable?'Last 30 episodes saved in this browser.':'Storage unavailable or full; export to keep these episodes.'} Shape IoU and serving constraints are provisional v0.1 metrics. Three or five episodes are exploratory, not a statistically validated learning claim.`;
   if(!$('#history-dialog').open)$('#history-dialog').showModal();
 }
 $('#history-button').onclick=showHistory;
 $('#pause-practice').onclick=takeControl;
 $('#export-attempts').onclick=()=>{
-  const data={schema:'mubit-coffee-attempts/v1',adapterStatus:'unverified',trainingThreshold:null,attempts};
+  const data={schema:BENCH_VERSION,evaluator:EVALUATOR_VERSION,adapterStatus:'unverified',trainingThreshold:null,attempts};
   const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  const a=document.createElement('a');a.href=url;a.download='coffee-attempts.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  const a=document.createElement('a');a.href=url;a.download='latte-bench-results.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 renderCupHistory();
+drawTarget();
 $$('[data-command]').forEach(button=>button.onclick=()=>execute({command:button.dataset.command},{manual:true}));
 $('#reset-button').onclick=newCup;
 $('#height').oninput=e=>execute({command:'move',height:Number(e.target.value)},{manual:true});$('#tilt').oninput=e=>execute({command:'move',tilt:Number(e.target.value)},{manual:true});
@@ -101,7 +171,7 @@ window.addEventListener('keydown',e=>{
   if($('dialog[open]')||isEditing())return;
   const key=e.key.toLowerCase();if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(key))e.preventDefault();
   if(e.repeat)return;
-  if(['w','a','s','d','q','e','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){if(controller!=='manual')takeControl();keys.add(key);}
+  if(['w','a','s','d','q','e','arrowup','arrowdown','arrowleft','arrowright'].includes(key)){if(controller!=='manual'||episodeFinished)takeControl();keys.add(key);}
   const map={'1':'grind','2':'extract','3':'steam','4':'pickup','5':'serve',' ':'pour'};
   if(map[key])execute({command:map[key]},{manual:true});
 });
@@ -121,6 +191,7 @@ function update(dt){
     if(x||z||h){sim.controls.x=clamp(sim.controls.x+x*dt*.75,-1.4,1.4);sim.controls.z=clamp(sim.controls.z+z*dt*.75,-1.4,1.4);sim.controls.height=clamp(sim.controls.height+h*dt*65,10,220);moveClock+=dt;if(moveClock>.1){execute({command:'move',...sim.controls});moveClock=0;}}
   }
   uiClock+=dt;if(uiClock>.09){syncUI();uiClock=0;}
+  scoreClock+=dt;if(scoreClock>.5){$('#score-value').textContent=sim.espresso?`${evaluateCup(selectedTask,sim.observe(),sim.surface.foam).score}%`:'—';scoreClock=0;}
 }
 function beep(freq){try{audio ||= new(window.AudioContext||window.webkitAudioContext)();audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.03,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.12);}catch{}}
 $('#sound-button').onclick=()=>{sound=!sound;$('#sound-button').classList.toggle('active',sound);$('#sound-button').setAttribute('aria-label',sound?'Disable sound':'Enable sound');if(sound)beep(600);};
@@ -141,28 +212,35 @@ async function localDemo(){
     const t0=sim.time;
     while(sim.time-t0<4.6){const t=sim.time-t0;execute({command:'move',x:Math.sin(t*16)*(.32-t*.032),z:.5-t*.196,height:12,tilt:58});await sleepUntil(.045,run);}
     for(let i=0;i<14;i++){execute({command:'move',x:0,z:-.4+i*.077,height:40,tilt:58});await sleepUntil(.06,run);}
-    execute({command:'stop'});await sleepUntil(.5,run);execute({command:'serve'});
+    execute({command:'stop'});await sleepUntil(.5,run);execute({command:'serve'});if(sim.served)saveNonAgentCup('scripted');
   }catch(error){if(run===generation)sim.status=error.message;}
   finally{if(run===generation){controller='manual';syncUI();}}
 }
 $('#demo-button').onclick=localDemo;
 async function runAgent(){
+  try{selectedTask=taskSpec($('#task-select').value,Number($('#seed-input').value),$('#protocol-select').value);}
+  catch(error){$('#seed-input').setCustomValidity(error.message);$('#seed-input').reportValidity();return;}
+  drawTarget();
   takeControl();controller='api';const run=++generation;const lane=$('#agent-route').value;
+  const experimentId=crypto.randomUUID(),runTask=structuredClone(selectedTask);
   const count=Number($('#attempt-limit').value);aborter=new AbortController();const signal=aborter.signal;$('#agent-dialog').close();
   await runTrials({
-    count,reset:resetCup,observe:()=>sim.observe(),cancelled:()=>run!==generation,
+    count,maxSteps:runTask.limits.decisions,maxSimulationSeconds:runTask.limits.simulationSeconds,reset:resetCup,observe:()=>sim.observe(),cancelled:()=>run!==generation,
     pause:value=>{if(run===generation)world?.setPaused(value);},
-    act:action=>{if(run===generation)execute(action);},wait:seconds=>sleepUntil(seconds,run),
+    act:action=>{if(run===generation)execute(action);},wait:seconds=>world.advance(seconds),
     onStart:(index,total)=>{
-      activeAttempt={id:crypto.randomUUID(),number:(attempts.at(-1)?.number||0)+1,index,total,lane,
+      activeAttempt={id:crypto.randomUUID(),experimentId,benchmark:BENCH_VERSION,promptVersion:PROMPT_VERSION,task:runTask,protocol:runTask.protocol,number:(attempts.at(-1)?.number||0)+1,index,total,lane,
         requestedModel:config.models?.[lane]||'unknown',requests:0,models:[],decisions:[],startedAt:new Date().toISOString()};
-      activity='Starting';activityDetail='Fresh cup · independent trial';syncUI();
+      activity='Starting';activityDetail=`Fresh cup · ${runTask.protocol}`;syncUI();
     },
     decide:async step=>{
       activeAttempt.requests++;activity='Thinking';thinkingSince=performance.now();sim.status=`Waiting for model · decision ${step}/32`;syncUI();
       const response=await fetch('/api/step',{method:'POST',headers:{'Content-Type':'application/json'},signal,
-        body:JSON.stringify({lane,observation:sim.observe(),history:events.slice(-10).map(e=>({action:e.action,observation:e.observation}))})});
+        body:JSON.stringify({lane,taskId:runTask.id,seed:runTask.seed,protocol:runTask.protocol,
+          feedback:runTask.protocol==='feedback'?feedbackFrom(attempts.filter(a=>a.experimentId===experimentId)):[],
+          observation:sim.observe(),history:events.slice(-10).map(e=>({action:e.action,observation:e.observation}))})});
       const result=await response.json();if(!response.ok)throw new Error(result.error||'Agent request failed.');
+      if(result.taskHash!==runTask.hash)throw new Error('Task definition changed. Reload before continuing the benchmark.');
       return {...result,action:validateCommand(result.action),latencyMS:Math.round(performance.now()-thinkingSince)};
     },
     onDecision:result=>{
@@ -174,29 +252,42 @@ async function runAgent(){
     },
     onFinish:result=>{if(run===generation){finishAttempt(result);syncUI();}}
   });
-  if(run===generation){world?.setPaused(false);thinkingSince=0;sim.pouring=false;sim.steaming=false;controller='manual';sim.status=activityDetail;syncUI();}
+  if(run===generation){world?.setPaused(true);episodeFinished=true;thinkingSince=0;sim.pouring=false;sim.steaming=false;controller='manual';sim.status=activityDetail;syncUI();}
 }
 $('#api-agent-button').onclick=runAgent;
 function showSession(){
   releasePour();$('#session-title').textContent=sim.served?'Cup served.':'Current cup.';
-  const metrics=[`${Math.round(sim.espresso+sim.inCup)} ml in cup`,`${sim.spilled.toFixed(1)} ml spilled`,`${Math.round(sim.temperature)}°C milk`,`${Math.round(sim.surface.coverage()*100)}% foam coverage`,`${events.length} actions`];
+  const evaluation=evaluateCup(selectedTask,sim.observe(),sim.surface.foam);
+  const metrics=[`${evaluation.score}% shape match`,evaluation.passed?'All checks passed':`Checks: ${evaluation.failedChecks.join(', ')}`,`${Math.round(sim.espresso+sim.inCup)} ml in cup`,`${sim.spilled.toFixed(1)} ml spilled`,`${Math.round(sim.temperature)}°C milk`,`${events.length} actions`];
   if(agentSteps)metrics.push(`${agentSteps} API calls`,`${agentUsage} reported tokens`,costKnown?`$${agentCost.toFixed(4)} reported`:'Cost not reported');
   $('#session-summary').replaceChildren(...metrics.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
   $('#action-log').replaceChildren(...events.slice(-40).toReversed().map(e=>{const row=document.createElement('div');row.className='log-row';for(const text of [e.observation.time.toFixed(1)+'s',e.action.command,Math.round(e.observation.milkInCupML)+' ml milk']){const s=document.createElement('span');s.textContent=text;row.append(s);}return row;}));$('#session-dialog').showModal();
 }
 $('#session-button').onclick=showSession;
-$('#export-button').onclick=()=>{const data={schema:'mubit-coffee-workstation/v2',createdAt:new Date(startTime).toISOString(),physics:'Rapier rigid bodies + ballistic droplets + 2D surface fluid approximation',observation:sim.observe(),actions:events,agent:{steps:agentSteps,tokens:agentUsage,costUSD:costKnown?agentCost:null}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='coffee-workstation-trace.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+$('#export-button').onclick=()=>{
+  const observation=sim.observe();
+  const data={schema:BENCH_VERSION,evaluator:EVALUATOR_VERSION,createdAt:new Date(startTime).toISOString(),
+    attempts:[{number:'current',task:selectedTask,protocol:activeAttempt?.protocol||'manual',observation,
+      surface:Array.from(sim.surface.foam),surfaceSize:sim.surface.n,evaluation:evaluateCup(selectedTask,observation,sim.surface.foam),
+      trace:events,agent:{steps:agentSteps,tokens:agentUsage,costUSD:costKnown?agentCost:null}}]};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  const a=document.createElement('a');a.href=url;a.download='latte-bench-episode.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
 // Public computer-use bridge. This intentionally exposes observations and the same bounded
 // control actions as the UI; it exposes no credentials or synthetic success scores.
 window.coffeeWorkstation=Object.freeze({
   observe:()=>sim.observe(),
   async act(raw){
-    const action=validateCommand(raw);execute(action,{manual:true});const run=generation;
+    const action=validateCommand(raw);
+    if(action.command==='reset'){newCup();return sim.observe();}
+    if(sim.served)return sim.observe();
+    execute(action,{manual:true});const run=generation;
     await sleepUntil(action.duration??.6,run);
     if(action.command==='pour')execute({command:'stop'});
     return sim.observe();
   },
   reset:newCup,capture:()=>world?.capture(),exportTrace:()=>structuredClone(events),
+  task:()=>structuredClone(selectedTask),evaluate:()=>evaluateCup(selectedTask,sim.observe(),sim.surface.foam),
   actions:['grind','extract','steam','pickup','move','pour','stop','serve','reset'],
 });
 try{world=await createWorkstation($('#scene'),sim,command=>execute({command},{manual:true}));world.setUpdate(update);$('#loading').hidden=true;$('#physics-status').textContent='PHYSICS ACTIVE';$('#physics-led').classList.add('ready');syncUI();}

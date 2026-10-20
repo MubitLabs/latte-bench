@@ -49,7 +49,6 @@ export async function createWorkstation(canvas,sim,onAction){
   const handle=box(.12,.13,.57,m.black,machine,[-.28,.83,1.04],.025);handle.rotation.x=-.1;
   for(const x of [-.37,-.19])cyl(.026,.026,.16,m.brass,machine,[x,.75,.78]);
   const gauge=cyl(.16,.16,.05,m.cream,machine,[-.68,1.42,.64],16);gauge.rotation.x=Math.PI/2;const needle=box(.014,.1,.012,m.dark,machine,[-.68,1.43,.68],0);needle.rotation.z=-.6;
-  const tag=label('mubit',.53,.21,'#466b5f','#e7e8cf',65);tag.position.set(.02,1.43,.64);machine.add(tag);
   const interactables=[],pressers=[];
   function button(parent,pos,command,color=m.green,size=.14){const mount=box(size+.07,size+.07,.045,m.tealDark,parent,pos,.015);const b=box(size,size,.065,color,parent,[pos[0],pos[1],pos[2]+.045],.016);b.userData.command=command;interactables.push(b);pressers.push({mesh:b,z:b.position.z,command});return b;}
   const extractButton=button(machine,[.63,1.43,.65],'extract');const steamButton=button(machine,[.94,1.43,.65],'steam',m.red);
@@ -98,8 +97,8 @@ export async function createWorkstation(canvas,sim,onAction){
   // Both the actual physical buttons and the accessible console dispatch the same commands.
   canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(clickable,false)[0];hover=hit?.object||null;canvas.style.cursor=hover?'pointer':'default';});
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;const r=canvas.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(clickable,false)[0];if(hit)onAction(hit.object.userData.command);});
-  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);let vertical=h<730?8.7:8.9;if(w<700)vertical=12.8;const aspect=w/h;camera.left=-vertical*aspect/2;camera.right=vertical*aspect/2;camera.top=vertical/2;camera.bottom=-vertical/2;camera.updateProjectionMatrix();}
-  window.addEventListener('resize',resize);resize();
+  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);const aspect=w/h,vertical=Math.max(8.5,10/aspect);camera.left=-vertical*aspect/2;camera.right=vertical*aspect/2;camera.top=vertical/2;camera.bottom=-vertical/2;camera.updateProjectionMatrix();}
+  const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(canvas);resize();
   const scratch=new THREE.Object3D(),lip=new THREE.Vector3(),rotation=new THREE.Quaternion();const topdown=$canvasContext();
   function $canvasContext(){return document.querySelector('#surface-view').getContext('2d');}
   const fieldCanvas=document.createElement('canvas');fieldCanvas.width=sim.surface.n;fieldCanvas.height=sim.surface.n;const fc=fieldCanvas.getContext('2d'),pixels=fc.createImageData(sim.surface.n,sim.surface.n);let lastSurface=0;
@@ -120,10 +119,15 @@ export async function createWorkstation(canvas,sim,onAction){
     if(sim.espresso>0)out.drawImage(textureCanvas,30,25,260,260);else{out.fillStyle='#ddd6bd';out.beginPath();out.arc(160,155,130,0,Math.PI*2);out.fill();out.fillStyle='#cac5ad';out.beginPath();out.arc(160,155,105,0,Math.PI*2);out.fill();}
     out.strokeStyle='#efe5c8';out.lineWidth=3;out.beginPath();out.arc(160,155,132,0,Math.PI*2);out.stroke();
   }
-  let previousTime=performance.now(),accumulator=0,frameId,paused=false;let update=()=>{};
+  let previousTime=performance.now(),accumulator=0,frameId,paused=false,pendingAdvance=null;let update=()=>{};
+  function cancelAdvance(){if(pendingAdvance){const pending=pendingAdvance;pendingAdvance=null;pending.reject(new Error('Control returned to user.'));}}
+  function advance(seconds){cancelAdvance();paused=false;return new Promise((resolve,reject)=>{pendingAdvance={remaining:seconds,resolve,reject};});}
   function frame(now){
     frameId=requestAnimationFrame(frame);const elapsed=Math.min((now-previousTime)/1000,.08);previousTime=now;accumulator+=elapsed;
-    while(accumulator>=1/60){update(1/60);if(!paused)sim.step(1/60);
+    while(accumulator>=1/60){update(1/60);if(!paused){
+      const dt=pendingAdvance?Math.min(1/60,pendingAdvance.remaining):1/60;sim.step(dt);
+      if(pendingAdvance){pendingAdvance.remaining-=dt;if(pendingAdvance.remaining<1e-9){const pending=pendingAdvance;pendingAdvance=null;paused=true;pending.resolve();}}
+    }
       const cupTarget=sim.espresso>=36?new THREE.Vector3(.2,1.53,1.02):new THREE.Vector3(-.43,1.53,.08);cup.position.lerp(cupTarget,.06);
       cupBody.setNextKinematicTranslation(cup.position);
       liquid.position.y=.17+(sim.espresso+sim.inCup)/240*.39;liquid.visible=sim.espresso>0;
@@ -151,5 +155,5 @@ export async function createWorkstation(canvas,sim,onAction){
     renderer.render(scene,camera);
   }
   drawSurface();frameId=requestAnimationFrame(frame);
-  return {setPaused(value){paused=value;},setUpdate(fn){update=fn;},dropSugar,world,cycleCamera(){cameraMode=(cameraMode+1)%3;const positions=[[10,10,13],[2,13,9],[9,7,11]];camera.position.set(...positions[cameraMode]);camera.lookAt(look);},capture(){drawSurface();return textureCanvas.toDataURL('image/png');},dispose(){cancelAnimationFrame(frameId);window.removeEventListener('resize',resize);world.free();renderer.dispose();}};
+  return {advance,cancelAdvance,setPaused(value){paused=value;},setUpdate(fn){update=fn;},dropSugar,world,cycleCamera(){cameraMode=(cameraMode+1)%3;const positions=[[10,10,13],[2,13,9],[9,7,11]];camera.position.set(...positions[cameraMode]);camera.lookAt(look);},capture(){drawSurface();return textureCanvas.toDataURL('image/png');},dispose(){cancelAdvance();cancelAnimationFrame(frameId);resizeObserver.disconnect();world.free();renderer.dispose();}};
 }

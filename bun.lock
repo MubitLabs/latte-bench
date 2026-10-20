@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "mubit-latte-lab",
+      "name": "latte-bench",
       "dependencies": {
         "@dimforge/rapier3d-compat": "^0.21.0",
         "three": "^0.180.0",
