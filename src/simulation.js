@@ -1,5 +1,6 @@
 // A small incompressible 2D surface-flow solver, coupled to ballistic milk drops.
 // Length is normalized to cup radius on the surface; vertical distance is metres.
+import {NOMINAL_CONDITIONS} from './conditions.js';
 export const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 export class FluidSurface {
   constructor(size = 96) {
@@ -8,7 +9,15 @@ export class FluidSurface {
     this.mask = new Uint8Array(len);
     for (let y=0;y<size;y++) for(let x=0;x<size;x++) this.mask[y*size+x] = Math.hypot((x+.5)/size*2-1,(y+.5)/size*2-1)<.985 ? 1:0;
   }
-  reset() { for(const key of ['u','v','u0','v0','foam','foam0','pressure','divergence']) this[key].fill(0); }
+  reset(conditions=NOMINAL_CONDITIONS) {
+    this.conditions=conditions;
+    for(const key of ['u','v','u0','v0','foam','foam0','pressure','divergence']) this[key].fill(0);
+    for(let y=0;y<this.n;y++)for(let x=0;x<this.n;x++){
+      const i=y*this.n+x;if(!this.mask[i])continue;
+      this.u[i]=-(y/this.n*2-1)*conditions.initialSwirl;
+      this.v[i]=(x/this.n*2-1)*conditions.initialSwirl;
+    }
+  }
   sample(field, x, y) {
     const n=this.n; x=clamp(x,0,n-1.001); y=clamp(y,0,n-1.001);
     const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,i=iy*n+ix;
@@ -16,27 +25,30 @@ export class FluidSurface {
   }
   deposit(x,y,volume,height,vx,vz,foamQuality) {
     const n=this.n,cx=(x+1)*.5*n,cy=(y+1)*.5*n;
-    const spread=(.013+height*.17)*n;
-    const visible=Math.exp(-height*28)*foamQuality;
+    const c=this.conditions||NOMINAL_CONDITIONS;
+    const spread=(.013+height*.17)*n*c.spreadMultiplier;
+    const visible=Math.exp(-height*28)*foamQuality*c.foamRetention;
     const r=Math.ceil(spread*3);
     for(let j=Math.max(1,Math.floor(cy-r));j<Math.min(n-1,cy+r);j++) for(let i=Math.max(1,Math.floor(cx-r));i<Math.min(n-1,cx+r);i++) {
       const k=j*n+i;if(!this.mask[k])continue;
       const dx=i-cx,dy=j-cy,d2=dx*dx+dy*dy;
       const g=Math.exp(-d2/(2*spread*spread));
-      // Radial momentum pushes existing surface foam outward, producing layered pours.
+      // Heuristic outward transport, not density-driven microfoam/crema layering.
       this.u[k]+=g*(dx/spread*.08+vx*.025)*volume;
       this.v[k]+=g*(dy/spread*.08+vz*.025)*volume;
-      this.foam[k]=clamp(this.foam[k]+g*volume*.36*visible*(1.8/spread)**2,0,1);
+      const texture=1+c.textureAmplitude*Math.sin(i*.7+c.texturePhase)*Math.cos(j*.61-c.texturePhase);
+      this.foam[k]=clamp(this.foam[k]+g*volume*.36*visible*texture*(1.8/spread)**2,0,1);
     }
   }
   step(dt) {
     const n=this.n,len=n*n;
+    const c=this.conditions||NOMINAL_CONDITIONS;
     this.u0.set(this.u);this.v0.set(this.v);
     // Semi-Lagrangian transport of surface velocity.
     for(let y=1;y<n-1;y++)for(let x=1;x<n-1;x++){
       const i=y*n+x;if(!this.mask[i])continue;
       const bx=x-this.u0[i]*dt*n,by=y-this.v0[i]*dt*n;
-      this.u[i]=this.sample(this.u0,bx,by)*.965;this.v[i]=this.sample(this.v0,bx,by)*.965;
+      this.u[i]=this.sample(this.u0,bx,by)*c.velocityDamping;this.v[i]=this.sample(this.v0,bx,by)*c.velocityDamping;
     }
     this.pressure.fill(0);
     for(let y=1;y<n-1;y++)for(let x=1;x<n-1;x++){
@@ -59,7 +71,7 @@ export class FluidSurface {
       const i=y*n+x;if(!this.mask[i])continue;
       const f=this.sample(this.foam0,x-this.u[i]*dt*n,y-this.v[i]*dt*n);
       const neighbors=(this.foam0[i-1]+this.foam0[i+1]+this.foam0[i-n]+this.foam0[i+n])*.25;
-      this.foam[i]=clamp(f*.998+neighbors*.002,0,1);
+      this.foam[i]=clamp(f*(1-c.foamMixing)+neighbors*c.foamMixing,0,1);
     }
   }
   coverage() { let count=0,area=0;for(let i=0;i<this.foam.length;i++)if(this.mask[i]){area++;if(this.foam[i]>.25)count++;}return count/area; }
@@ -75,11 +87,12 @@ export function validateCommand(input) {
   return result;
 }
 export class CoffeeSimulation {
-  constructor(){this.surface=new FluidSurface();this.reset();}
-  reset(){
-    this.surface.reset();this.time=0;this.grounds=0;this.espresso=0;this.milk=220;this.inCup=0;this.spilled=0;this.temperature=18;this.scorched=false;
+  constructor(conditions=NOMINAL_CONDITIONS){this.surface=new FluidSurface();this.reset(conditions);}
+  reset(conditions=this.conditions){
+    this.conditions={...conditions};
+    this.surface.reset(this.conditions);this.time=0;this.grounds=0;this.espresso=0;this.milk=conditions.milkML;this.inCup=0;this.spilled=0;this.temperature=conditions.temperatureC;this.scorched=false;
     this.grinding=false;this.extracting=false;this.steaming=false;this.held=false;this.pouring=false;this.served=false;
-    this.controls={x:0,z:0,height:80,tilt:48};this.previous={x:0,z:0};this.drops=[];this.impacts=[];this.spillMarks=[];this.flow=0;this.status='Grind a dose to start.';this.history=[];this.fluidClock=0;
+    this.controls={x:conditions.pitcherX,z:conditions.pitcherZ,height:80,tilt:48};this.previous={x:this.controls.x,z:this.controls.z};this.drops=[];this.impacts=[];this.spillMarks=[];this.flow=0;this.status='Grind a dose to start.';this.history=[];this.fluidClock=0;
   }
   act(raw){
     const a=validateCommand(raw);
@@ -103,11 +116,12 @@ export class CoffeeSimulation {
     if(this.grinding){this.grounds=Math.min(18,this.grounds+9*dt);if(this.grounds>=18-1e-8){this.grounds=18;this.grinding=false;this.status='Dose ready. Extract the shot.';}}
     if(this.extracting){this.espresso=Math.min(36,this.espresso+9*dt);if(this.espresso>=36-1e-8){this.espresso=36;this.extracting=false;this.status='Espresso ready.';}}
     if(this.steaming){this.temperature=Math.min(100,this.temperature+8*dt);if(this.temperature>75)this.scorched=true;}
-    else this.temperature=Math.max(18,this.temperature-dt*.08);
+    else this.temperature=Math.max(Math.min(18,this.conditions.temperatureC),this.temperature-dt*.08);
     const c=this.controls,vx=clamp((c.x-this.previous.x)/Math.max(dt,.001),-5,5),vz=clamp((c.z-this.previous.z)/Math.max(dt,.001),-5,5);
     this.previous={x:c.x,z:c.z};
     const angle=Math.max(0,(c.tilt-25)/60*Math.PI/2);
-    this.flow=this.pouring&&this.held&&this.milk>0&&!this.served?Math.sin(angle)*32*Math.sqrt(this.milk/220):0;
+    const pulse=1+this.conditions.flowPulse*Math.sin(this.time*5+this.conditions.texturePhase);
+    this.flow=this.pouring&&this.held&&this.milk>0&&!this.served?Math.sin(angle)*32*this.conditions.flowMultiplier*pulse*Math.sqrt(this.milk/220):0;
     if(this.flow>0){
       const amount=Math.min(this.milk,this.flow*dt);this.milk-=amount;
       const height=this.effectiveHeight()/1000;

@@ -3,12 +3,15 @@ import { createWorkstation } from './workstation.js';
 import { runTrials, summarizeAttempt } from './attempts.js';
 import { TASKS, BENCH_VERSION, EVALUATOR_VERSION, taskSpec, targetMask, evaluateCup, comparableRuns } from './benchmark.js';
 import { mountIcons } from './icons.js';
-import { feedbackFrom, PROMPT_VERSION } from './protocol.js';
+import { episodeConditions } from './conditions.js';
+import { feedbackFrom, benchmarkContext, PROMPT_VERSION } from './protocol.js';
 
 const $=selector=>document.querySelector(selector), $$=selector=>[...document.querySelectorAll(selector)];
 mountIcons();
-const sim=new CoffeeSimulation();let world,controller='manual',generation=0,aborter=null,agentSteps=0,agentUsage=0,agentCost=0,costKnown=true,sound=false,audio;
+const sim=new CoffeeSimulation(episodeConditions());let world,controller='manual',generation=0,aborter=null,agentSteps=0,agentUsage=0,agentCost=0,costKnown=true,sound=false,audio;
 let events=[],keys=new Set(),pendingMove={x:0,z:0},moveClock=0,uiClock=0,config={ready:false};
+let lastAgentInput=null;
+let manualEpisode=1;
 let selectedTask=taskSpec(),manualCupRecorded=false,scoreClock=0,episodeFinished=false;
 const storageKey='mubit-coffee-attempts-v1';
 let attempts=[],activeAttempt=null,thinkingSince=0,activity='Idle',activityDetail='',storageAvailable=true;
@@ -24,7 +27,7 @@ function execute(action,{manual=false}={}){
   return sim.observe();
 }
 function takeControl(){if(activeAttempt)finishAttempt({outcome:'Stopped',error:null});generation++;aborter?.abort();thinkingSince=0;episodeFinished=false;world?.cancelAdvance();world?.setPaused(false);controller='manual';sim.act({command:'stop'});keys.clear();pendingMove={x:0,z:0};syncUI();}
-function resetCup(){sim.reset();manualCupRecorded=false;episodeFinished=false;events=[];agentSteps=0;agentUsage=0;agentCost=0;costKnown=true;$('#height').value=80;$('#tilt').value=48;$('#score-value').textContent='—';}
+function resetCup(conditions=episodeConditions(selectedTask.seed,manualEpisode++,selectedTask.protocol==='holdout'?'holdout':'practice')){sim.reset(conditions);lastAgentInput=null;manualCupRecorded=false;episodeFinished=false;events=[];agentSteps=0;agentUsage=0;agentCost=0;costKnown=true;$('#height').value=80;$('#tilt').value=48;$('#score-value').textContent='—';}
 function newCup(){takeControl();resetCup();syncUI();}
 function drawTarget(){
   const canvas=$('#target-view'),ctx=canvas.getContext('2d'),n=160,mask=targetMask(selectedTask,n);
@@ -36,7 +39,7 @@ function drawTarget(){
 function refreshTask(){
   const seed=Number($('#seed-input').value);try{
     const next=taskSpec($('#task-select').value,seed,$('#protocol-select').value);
-    $('#seed-input').setCustomValidity('');newCup();selectedTask=next;drawTarget();
+    $('#seed-input').setCustomValidity('');selectedTask=next;manualEpisode=0;newCup();drawTarget();
     $('#task-difficulty').textContent=selectedTask.difficulty;syncUI();
   }catch(error){$('#seed-input').setCustomValidity(error.message);$('#seed-input').reportValidity();}
 }
@@ -101,6 +104,7 @@ function syncPractice(){
   $('#decision-progress').value=activeAttempt?agentSteps:latest?.calls||0;
   $('#practice-calls').textContent=`${activeAttempt?activeAttempt.requests:latest?.calls||0} / 32 calls`;
   $('#practice-tokens').textContent=`${(activeAttempt?agentUsage:latest?.tokens||0).toLocaleString()} tokens`;
+  $('#environment-info').textContent=`Milk batch ${sim.conditions.seed} · ${Math.round(sim.conditions.milkML)} ml initially · ${sim.conditions.temperatureC.toFixed(1)}°C initially`;
   $('#practice-model').textContent=`Model · ${latest?.models?.at(-1)||latest?.requestedModel||'—'}`;
   $('#pause-practice').hidden=controller!=='api';$('#attempt-count').textContent=attempts.length;
 }
@@ -108,7 +112,7 @@ function finishAttempt({outcome,error,episodeSeconds=sim.time}){
   if(!activeAttempt)return;
   const observation={...sim.observe(),episodeSeconds};
   const attempt=summarizeAttempt({...activeAttempt,outcome,error,finishedAt:new Date().toISOString(),
-    observation,calls:activeAttempt.requests,responses:agentSteps,tokens:agentUsage,costUSD:costKnown&&activeAttempt.requests===agentSteps?agentCost:null,
+    observation,environment:{...sim.conditions},calls:activeAttempt.requests,responses:agentSteps,tokens:agentUsage,costUSD:costKnown&&activeAttempt.requests===agentSteps?agentCost:null,
     image:world?.capture(),trace:structuredClone(events),surface:Array.from(sim.surface.foam),surfaceSize:sim.surface.n,
     evaluation:evaluateCup(activeAttempt.task||selectedTask,observation,sim.surface.foam)});
   attempts.push(attempt);attempts=attempts.slice(-30);activeAttempt=null;thinkingSince=0;
@@ -145,7 +149,7 @@ function showHistory(){
     const verdict=a.outcome==='Stopped'||a.error?a.outcome:a.evaluation?(a.evaluation.passed?'Pass':`Fail · ${a.evaluation.failedChecks.join(', ')}`):'Unscored';
     for(const text of [`#${a.number}`,a.task?`${a.task.name} · ${a.protocol}`:'Legacy',a.evaluation?`${a.evaluation.score}%`:'—',verdict,`${a.spilledML.toFixed(1)} ml`,a.calls,a.models.join(', ')||a.requestedModel]){const td=document.createElement('td');td.textContent=text;row.append(td);}return row;
   }));
-  $('#storage-note').textContent=`${storageAvailable?'Last 30 episodes saved in this browser.':'Storage unavailable or full; export to keep these episodes.'} Shape IoU and serving constraints are provisional v0.1 metrics. Three or five episodes are exploratory, not a statistically validated learning claim.`;
+  $('#storage-note').textContent=`${storageAvailable?'Last 30 episodes saved in this browser.':'Storage unavailable or full; export to keep these episodes.'} Shape IoU and serving constraints are provisional metrics. Three or five episodes are exploratory, not a statistically validated learning claim.`;
   if(!$('#history-dialog').open)$('#history-dialog').showModal();
 }
 $('#history-button').onclick=showHistory;
@@ -223,9 +227,10 @@ async function runAgent(){
   drawTarget();
   takeControl();controller='api';const run=++generation;const lane=$('#agent-route').value;
   const experimentId=crypto.randomUUID(),runTask=structuredClone(selectedTask);
+  let environmentIndex=0;
   const count=Number($('#attempt-limit').value);aborter=new AbortController();const signal=aborter.signal;$('#agent-dialog').close();
   await runTrials({
-    count,maxSteps:runTask.limits.decisions,maxSimulationSeconds:runTask.limits.simulationSeconds,reset:resetCup,observe:()=>sim.observe(),cancelled:()=>run!==generation,
+    count,maxSteps:runTask.limits.decisions,maxSimulationSeconds:runTask.limits.simulationSeconds,reset:()=>resetCup(episodeConditions(runTask.seed,environmentIndex++,runTask.protocol==='holdout'?'holdout':'practice')),observe:()=>sim.observe(),cancelled:()=>run!==generation,
     pause:value=>{if(run===generation)world?.setPaused(value);},
     act:action=>{if(run===generation)execute(action);},wait:seconds=>world.advance(seconds),
     onStart:(index,total)=>{
@@ -233,12 +238,13 @@ async function runAgent(){
         requestedModel:config.models?.[lane]||'unknown',requests:0,models:[],decisions:[],startedAt:new Date().toISOString()};
       activity='Starting';activityDetail=`Fresh cup · ${runTask.protocol}`;syncUI();
     },
-    decide:async step=>{
+    decide:async (step,budget)=>{
       activeAttempt.requests++;activity='Thinking';thinkingSince=performance.now();sim.status=`Waiting for model · decision ${step}/32`;syncUI();
-      const response=await fetch('/api/step',{method:'POST',headers:{'Content-Type':'application/json'},signal,
-        body:JSON.stringify({lane,taskId:runTask.id,seed:runTask.seed,protocol:runTask.protocol,
-          feedback:runTask.protocol==='feedback'?feedbackFrom(attempts.filter(a=>a.experimentId===experimentId)):[],
-          observation:sim.observe(),history:events.slice(-10).map(e=>({action:e.action,observation:e.observation}))})});
+      const body={lane,budget,taskId:runTask.id,seed:runTask.seed,protocol:runTask.protocol,
+        feedback:runTask.protocol==='feedback'?feedbackFrom(attempts.filter(a=>a.experimentId===experimentId)):[],
+        observation:sim.observe(),history:events.slice(-10).map(e=>({action:e.action,observation:e.observation}))};
+      lastAgentInput={observation:body.observation,recentActions:body.history,...benchmarkContext(body)};
+      const response=await fetch('/api/step',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify(body)});
       const result=await response.json();if(!response.ok)throw new Error(result.error||'Agent request failed.');
       if(result.taskHash!==runTask.hash)throw new Error('Task definition changed. Reload before continuing the benchmark.');
       return {...result,action:validateCommand(result.action),latencyMS:Math.round(performance.now()-thinkingSince)};
@@ -256,7 +262,10 @@ async function runAgent(){
 }
 $('#api-agent-button').onclick=runAgent;
 function showSession(){
-  releasePour();$('#session-title').textContent=sim.served?'Cup served.':'Current cup.';
+  releasePour();
+  $('#agent-input-label').textContent=lastAgentInput?'Last input sent to the agent':'Input preview · current state, fresh context';
+  $('#agent-input-preview').textContent=JSON.stringify(lastAgentInput||{observation:sim.observe(),recentActions:[],...benchmarkContext({taskId:selectedTask.id,seed:selectedTask.seed,protocol:selectedTask.protocol})},null,2);
+  $('#session-title').textContent=sim.served?'Cup served.':'Current cup.';
   const evaluation=evaluateCup(selectedTask,sim.observe(),sim.surface.foam);
   const metrics=[`${evaluation.score}% shape match`,evaluation.passed?'All checks passed':`Checks: ${evaluation.failedChecks.join(', ')}`,`${Math.round(sim.espresso+sim.inCup)} ml in cup`,`${sim.spilled.toFixed(1)} ml spilled`,`${Math.round(sim.temperature)}°C milk`,`${events.length} actions`];
   if(agentSteps)metrics.push(`${agentSteps} API calls`,`${agentUsage} reported tokens`,costKnown?`$${agentCost.toFixed(4)} reported`:'Cost not reported');
@@ -267,7 +276,7 @@ $('#session-button').onclick=showSession;
 $('#export-button').onclick=()=>{
   const observation=sim.observe();
   const data={schema:BENCH_VERSION,evaluator:EVALUATOR_VERSION,createdAt:new Date(startTime).toISOString(),
-    attempts:[{number:'current',task:selectedTask,protocol:activeAttempt?.protocol||'manual',observation,
+    attempts:[{number:'current',task:selectedTask,protocol:activeAttempt?.protocol||'manual',benchmark:BENCH_VERSION,environment:{...sim.conditions},observation,
       surface:Array.from(sim.surface.foam),surfaceSize:sim.surface.n,evaluation:evaluateCup(selectedTask,observation,sim.surface.foam),
       trace:events,agent:{steps:agentSteps,tokens:agentUsage,costUSD:costKnown?agentCost:null}}]};
   const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
@@ -290,5 +299,5 @@ window.coffeeWorkstation=Object.freeze({
   task:()=>structuredClone(selectedTask),evaluate:()=>evaluateCup(selectedTask,sim.observe(),sim.surface.foam),
   actions:['grind','extract','steam','pickup','move','pour','stop','serve','reset'],
 });
-try{world=await createWorkstation($('#scene'),sim,command=>execute({command},{manual:true}));world.setUpdate(update);$('#loading').hidden=true;$('#physics-status').textContent='PHYSICS ACTIVE';$('#physics-led').classList.add('ready');syncUI();}
+try{world=await createWorkstation($('#scene'),sim,command=>execute({command},{manual:true}));world.setUpdate(update);$('#loading').hidden=true;$('#physics-status').textContent='STYLIZED SIMULATION';$('#physics-led').classList.add('ready');syncUI();}
 catch(error){$('#loading').textContent='The 3D workstation could not initialize. Reload in a browser with WebGL and WebAssembly enabled.';$('#physics-status').textContent='PHYSICS UNAVAILABLE';console.error(error);}

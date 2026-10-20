@@ -8,7 +8,7 @@ export async function runTrials({count, reset, observe, decide, act, wait, pause
       for(let step=0;step<maxSteps&&!observe().served&&episodeSeconds<maxSimulationSeconds;step++){
         if(cancelled())break;
         pause(true);
-        const result=await decide(step+1);
+        const result=await decide(step+1,{decisionsRemaining:maxSteps-step,simulationSecondsRemaining:maxSimulationSeconds-episodeSeconds});
         if(cancelled())break;
         onDecision(result);
         pause(false);

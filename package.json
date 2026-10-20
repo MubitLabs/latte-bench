@@ -1,6 +1,6 @@
 {
   "name": "latte-bench",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "build": "bun build src/main.js --outdir dist/src --minify && cp index.html dist/index.html && cp src/style.css dist/src/style.css",
     "test": "bun test",
     "bench": "bun scripts/bench.js",
-    "verify": "bun scripts/verify.js"
+    "verify": "bun scripts/verify.js",
+    "baseline": "uv run scripts/optimize.py"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

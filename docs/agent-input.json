@@ -1,0 +1,87 @@
+{
+  "observation": {
+    "time": 0,
+    "groundsG": 0,
+    "espressoML": 0,
+    "milkRemainingML": 229,
+    "milkInCupML": 0,
+    "spilledML": 0,
+    "milkTemperatureC": 17.6,
+    "scorched": false,
+    "held": false,
+    "grinding": false,
+    "extracting": false,
+    "steaming": false,
+    "pouring": false,
+    "served": false,
+    "controls": {
+      "x": 0.08459179043769835,
+      "z": 0.040736169945448625,
+      "height": 80,
+      "tilt": 48
+    },
+    "effectiveHeightMM": 112.5,
+    "surfaceCoverage": 0,
+    "surfaceFoam": [
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000"
+    ],
+    "status": "Grind a dose to start."
+  },
+  "recentActions": [],
+  "task": {
+    "id": "heart",
+    "version": 1,
+    "hash": "b785437c",
+    "instruction": "Pour one centered heart with two rounded lobes, a clear notch, and a tapered point toward the front of the cup.",
+    "requirements": {
+      "volumeML": [
+        190,
+        240
+      ],
+      "temperatureC": [
+        55,
+        65
+      ],
+      "maxSpillML": 5,
+      "minShapeIoU": 0.55
+    },
+    "limits": {
+      "decisions": 32,
+      "simulationSeconds": 120
+    },
+    "coordinates": "x right, z front; normalized cup radius. Grid rows run from back to front.",
+    "targetFoam": [
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000011100100000",
+      "0000111111111000",
+      "0000111111111000",
+      "0000111111111000",
+      "0000111111111000",
+      "0000111111110000",
+      "0000011111100000",
+      "0000001111000000",
+      "0000000110000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000",
+      "0000000000000000"
+    ]
+  },
+  "protocol": "independent",
+  "previousEpisodes": [],
+  "budget": {
+    "decisionsRemaining": 32,
+    "simulationSecondsRemaining": 120
+  }
+}

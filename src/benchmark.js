@@ -2,7 +2,7 @@ import heart from '../tasks/heart.json';
 import tulip from '../tasks/tulip.json';
 import rosetta from '../tasks/rosetta.json';
 export const TASKS=Object.freeze({heart,tulip,rosetta});
-export const BENCH_VERSION='latte-bench/0.1';
+export const BENCH_VERSION='latte-bench/0.2';
 export const EVALUATOR_VERSION='mask-iou/1';
 export const PROTOCOLS=['independent','feedback','holdout'];
 export function fingerprint(value){let h=2166136261;for(const c of JSON.stringify(value)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return (h>>>0).toString(16).padStart(8,'0');}
@@ -59,7 +59,7 @@ export function comparableRuns(attempts){
   // Never pool different tasks, target variants, protocols, budgets, or model IDs.
   const groups=new Map();
   for(const a of attempts){if(!a.evaluation||!PROTOCOLS.includes(a.protocol)||a.outcome==='Stopped'||a.outcome==='Error')continue;
-    const key=JSON.stringify([a.experimentId,a.task.hash,a.protocol,a.requestedModel,a.models]);
+    const key=JSON.stringify([a.experimentId,a.benchmark,a.environment?.version,a.environment?.split,a.task.hash,a.protocol,a.requestedModel,a.models]);
     if(!groups.has(key))groups.set(key,[]);groups.get(key).push(a);
   }return [...groups.values()];
 }

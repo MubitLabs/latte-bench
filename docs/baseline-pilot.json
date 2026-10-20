@@ -1,0 +1,1061 @@
+{
+  "date": "2026-10-20",
+  "purpose": "Exploratory optimizer check, not an LLM comparison",
+  "runs": [
+    {
+      "schema": "latte-bench/0.2",
+      "policyVersion": "six-pour/1",
+      "optimizer": "pycma/4.4.0 full-covariance CMA-ES",
+      "task": "heart",
+      "seed": 42,
+      "trainingSeeds": 2,
+      "heldoutSeeds": 5,
+      "sourceTask": null,
+      "sourceTrainingEpisodes": 0,
+      "bestParameters": [
+        0.0025939406403228528,
+        0.3390322586245934,
+        0.48158700509858665,
+        0.4259640153709845,
+        0.25431144278314166,
+        0.7789462116126435,
+        0.6114256935245835,
+        0.31998254988776353,
+        0.1124833848466417,
+        0.8368514279801053,
+        0.45226392717184916,
+        0.42676497776040245,
+        0.709434804723229,
+        0.45070173144226877,
+        0.3341107758674302,
+        0.5888799159528323,
+        0.5603220269908988,
+        0.4301783123877442,
+        0.7271370444773643,
+        0.6522673756167721,
+        0.6660027832686358
+      ],
+      "trainingEpisodes": 98,
+      "evaluationEpisodes": 15,
+      "apiCalls": 0,
+      "apiCostUSD": 0,
+      "wallSeconds": 42.911,
+      "heldout": {
+        "initialClosedLoop": {
+          "meanShape": 7.6,
+          "passRate": 0,
+          "scores": [
+            7.6,
+            7.9,
+            8.1,
+            7.4,
+            7
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "optimizedClosedLoop": {
+          "meanShape": 9.82,
+          "passRate": 0,
+          "scores": [
+            10,
+            9.2,
+            10.1,
+            10,
+            9.8
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "optimizedOpenLoop": {
+          "meanShape": 9.24,
+          "passRate": 0,
+          "scores": [
+            9.6,
+            8.2,
+            9.6,
+            8.8,
+            10
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "limitations": [
+        "Stylized simulation; no real-world skill claim.",
+        "Milk holdouts vary conditions, not the target geometry.",
+        "Open-loop is a frozen-vector ablation, not a separately optimized competitor.",
+        "No matched LLM run in this report. Local compute is not free.",
+        "Warm-start transfer requires a separate cold-start run with matched budget."
+      ],
+      "firstCandidateMeanShape": 7.5,
+      "bestTrainingMeanShape": 10.25,
+      "curve": [
+        {
+          "candidate": 1,
+          "environmentEpisodes": 2,
+          "objective": 0.07501139990880074,
+          "meanShape": 7.5,
+          "passRate": 0
+        },
+        {
+          "candidate": 2,
+          "environmentEpisodes": 4,
+          "objective": 0.04803886789573493,
+          "meanShape": 4.800000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 3,
+          "environmentEpisodes": 6,
+          "objective": 0.05598760044542089,
+          "meanShape": 5.6,
+          "passRate": 0
+        },
+        {
+          "candidate": 4,
+          "environmentEpisodes": 8,
+          "objective": 0.044595053157730095,
+          "meanShape": 4.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 5,
+          "environmentEpisodes": 10,
+          "objective": 0.06910837570796644,
+          "meanShape": 6.9,
+          "passRate": 0
+        },
+        {
+          "candidate": 6,
+          "environmentEpisodes": 12,
+          "objective": 0.07774737802097584,
+          "meanShape": 7.75,
+          "passRate": 0
+        },
+        {
+          "candidate": 7,
+          "environmentEpisodes": 14,
+          "objective": 0.06953944368445053,
+          "meanShape": 6.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 8,
+          "environmentEpisodes": 16,
+          "objective": 0.07894290445593431,
+          "meanShape": 7.9,
+          "passRate": 0
+        },
+        {
+          "candidate": 9,
+          "environmentEpisodes": 18,
+          "objective": 0.08636076164478546,
+          "meanShape": 8.65,
+          "passRate": 0
+        },
+        {
+          "candidate": 10,
+          "environmentEpisodes": 20,
+          "objective": 0.07090876153047701,
+          "meanShape": 7.1,
+          "passRate": 0
+        },
+        {
+          "candidate": 11,
+          "environmentEpisodes": 22,
+          "objective": 0.046855424253255784,
+          "meanShape": 4.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 12,
+          "environmentEpisodes": 24,
+          "objective": 0.05565263592540896,
+          "meanShape": 5.55,
+          "passRate": 0
+        },
+        {
+          "candidate": 13,
+          "environmentEpisodes": 26,
+          "objective": 0.08559442146512258,
+          "meanShape": 8.55,
+          "passRate": 0
+        },
+        {
+          "candidate": 14,
+          "environmentEpisodes": 28,
+          "objective": 0.0115816403876253,
+          "meanShape": 1.15,
+          "passRate": 0
+        },
+        {
+          "candidate": 15,
+          "environmentEpisodes": 30,
+          "objective": 0.07460629209692385,
+          "meanShape": 7.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 16,
+          "environmentEpisodes": 32,
+          "objective": 0.07579436223862539,
+          "meanShape": 7.550000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 17,
+          "environmentEpisodes": 34,
+          "objective": 0.07019284909070897,
+          "meanShape": 7,
+          "passRate": 0
+        },
+        {
+          "candidate": 18,
+          "environmentEpisodes": 36,
+          "objective": 0.06972618781174064,
+          "meanShape": 6.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 19,
+          "environmentEpisodes": 38,
+          "objective": 0.07291607987761016,
+          "meanShape": 7.3,
+          "passRate": 0
+        },
+        {
+          "candidate": 20,
+          "environmentEpisodes": 40,
+          "objective": 0.009452445172893835,
+          "meanShape": 0.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 21,
+          "environmentEpisodes": 42,
+          "objective": 0.06707484979973298,
+          "meanShape": 6.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 22,
+          "environmentEpisodes": 44,
+          "objective": 0.051512344810002234,
+          "meanShape": 5.15,
+          "passRate": 0
+        },
+        {
+          "candidate": 23,
+          "environmentEpisodes": 46,
+          "objective": 0.05186859369451101,
+          "meanShape": 5.199999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 24,
+          "environmentEpisodes": 48,
+          "objective": 0.05654911554627266,
+          "meanShape": 5.65,
+          "passRate": 0
+        },
+        {
+          "candidate": 25,
+          "environmentEpisodes": 50,
+          "objective": 0.08453248414531246,
+          "meanShape": 8.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 26,
+          "environmentEpisodes": 52,
+          "objective": 0.09030937215650592,
+          "meanShape": 9.05,
+          "passRate": 0
+        },
+        {
+          "candidate": 27,
+          "environmentEpisodes": 54,
+          "objective": 0.08005833015024191,
+          "meanShape": 8,
+          "passRate": 0
+        },
+        {
+          "candidate": 28,
+          "environmentEpisodes": 56,
+          "objective": 0.08686730506155951,
+          "meanShape": 8.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 29,
+          "environmentEpisodes": 58,
+          "objective": 0.09386079861036868,
+          "meanShape": 9.350000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 30,
+          "environmentEpisodes": 60,
+          "objective": 0.08249772105742936,
+          "meanShape": 8.25,
+          "passRate": 0
+        },
+        {
+          "candidate": 31,
+          "environmentEpisodes": 62,
+          "objective": 0.02051528070733262,
+          "meanShape": 2.05,
+          "passRate": 0
+        },
+        {
+          "candidate": 32,
+          "environmentEpisodes": 64,
+          "objective": 0.047450134406656144,
+          "meanShape": 4.75,
+          "passRate": 0
+        },
+        {
+          "candidate": 33,
+          "environmentEpisodes": 66,
+          "objective": 0.05687689627802073,
+          "meanShape": 5.699999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 34,
+          "environmentEpisodes": 68,
+          "objective": 0.0700539531864833,
+          "meanShape": 7,
+          "passRate": 0
+        },
+        {
+          "candidate": 35,
+          "environmentEpisodes": 70,
+          "objective": 0.05967844958038876,
+          "meanShape": 5.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 36,
+          "environmentEpisodes": 72,
+          "objective": 0.0713450476158679,
+          "meanShape": 7.15,
+          "passRate": 0
+        },
+        {
+          "candidate": 37,
+          "environmentEpisodes": 74,
+          "objective": 0.028002852563685898,
+          "meanShape": 2.8,
+          "passRate": 0
+        },
+        {
+          "candidate": 38,
+          "environmentEpisodes": 76,
+          "objective": -0.9080785983699338,
+          "meanShape": 9.149999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 39,
+          "environmentEpisodes": 78,
+          "objective": 0.07065833579808736,
+          "meanShape": 7.050000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 40,
+          "environmentEpisodes": 80,
+          "objective": 0.10260255617398475,
+          "meanShape": 10.25,
+          "passRate": 0
+        },
+        {
+          "candidate": 41,
+          "environmentEpisodes": 82,
+          "objective": 0.062328129850032686,
+          "meanShape": 6.199999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 42,
+          "environmentEpisodes": 84,
+          "objective": 0.10097856318334503,
+          "meanShape": 10.100000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 43,
+          "environmentEpisodes": 86,
+          "objective": 0.08940676687313723,
+          "meanShape": 8.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 44,
+          "environmentEpisodes": 88,
+          "objective": 0.09251077145174613,
+          "meanShape": 9.25,
+          "passRate": 0
+        },
+        {
+          "candidate": 45,
+          "environmentEpisodes": 90,
+          "objective": 0.06594177568076522,
+          "meanShape": 6.6,
+          "passRate": 0
+        },
+        {
+          "candidate": 46,
+          "environmentEpisodes": 92,
+          "objective": 0.04703995584147595,
+          "meanShape": 4.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 47,
+          "environmentEpisodes": 94,
+          "objective": 0.06619408546121941,
+          "meanShape": 6.65,
+          "passRate": 0
+        },
+        {
+          "candidate": 48,
+          "environmentEpisodes": 96,
+          "objective": 0.0691924680042416,
+          "meanShape": 6.9,
+          "passRate": 0
+        },
+        {
+          "candidate": 49,
+          "environmentEpisodes": 98,
+          "objective": 0.05898239322995728,
+          "meanShape": 5.9,
+          "passRate": 0
+        }
+      ],
+      "evidenceFile": "results/optimizer-heart.json"
+    },
+    {
+      "schema": "latte-bench/0.2",
+      "policyVersion": "six-pour/1",
+      "optimizer": "pycma/4.4.0 full-covariance CMA-ES",
+      "task": "tulip",
+      "seed": 42,
+      "trainingSeeds": 2,
+      "heldoutSeeds": 5,
+      "sourceTask": "heart",
+      "sourceTrainingEpisodes": 98,
+      "bestParameters": [
+        0.03462029785296311,
+        0.6107638508276708,
+        0.4496734237790681,
+        0.6299245527161703,
+        0.17200450387151273,
+        0.5743273218897672,
+        0.49453232649732765,
+        0.31589635442840197,
+        0.2850722122810162,
+        0.925701538858419,
+        0.4735702885930849,
+        0.2508624037812286,
+        0.6890519836662937,
+        0.46890579918567205,
+        0.1996099527894695,
+        0.4198867363025656,
+        0.263375864757892,
+        0.43591807384920855,
+        0.5370535795446733,
+        0.6679857122429336,
+        0.6252969645069187
+      ],
+      "trainingEpisodes": 34,
+      "evaluationEpisodes": 15,
+      "apiCalls": 0,
+      "apiCostUSD": 0,
+      "wallSeconds": 18.804,
+      "heldout": {
+        "initialClosedLoop": {
+          "meanShape": 9.52,
+          "passRate": 0,
+          "scores": [
+            9.7,
+            9.1,
+            9.9,
+            9.5,
+            9.4
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "optimizedClosedLoop": {
+          "meanShape": 10.8,
+          "passRate": 0,
+          "scores": [
+            11.1,
+            10.5,
+            11.7,
+            10.2,
+            10.5
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "optimizedOpenLoop": {
+          "meanShape": 11.64,
+          "passRate": 0,
+          "scores": [
+            11.7,
+            10.8,
+            12.2,
+            11.5,
+            12
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "limitations": [
+        "Stylized simulation; no real-world skill claim.",
+        "Milk holdouts vary conditions, not the target geometry.",
+        "Open-loop is a frozen-vector ablation, not a separately optimized competitor.",
+        "No matched LLM run in this report. Local compute is not free.",
+        "Warm-start transfer requires a separate cold-start run with matched budget."
+      ],
+      "firstCandidateMeanShape": 9.899999999999999,
+      "bestTrainingMeanShape": 10.65,
+      "curve": [
+        {
+          "candidate": 1,
+          "environmentEpisodes": 2,
+          "objective": 0.09866397531023582,
+          "meanShape": 9.899999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 2,
+          "environmentEpisodes": 4,
+          "objective": 0.07042929930458333,
+          "meanShape": 7.05,
+          "passRate": 0
+        },
+        {
+          "candidate": 3,
+          "environmentEpisodes": 6,
+          "objective": 0.05136258566908146,
+          "meanShape": 5.15,
+          "passRate": 0
+        },
+        {
+          "candidate": 4,
+          "environmentEpisodes": 8,
+          "objective": 0.028191707085026323,
+          "meanShape": 2.85,
+          "passRate": 0
+        },
+        {
+          "candidate": 5,
+          "environmentEpisodes": 10,
+          "objective": 0.08879463560528604,
+          "meanShape": 8.899999999999999,
+          "passRate": 0
+        },
+        {
+          "candidate": 6,
+          "environmentEpisodes": 12,
+          "objective": 0.08566788682879395,
+          "meanShape": 8.55,
+          "passRate": 0
+        },
+        {
+          "candidate": 7,
+          "environmentEpisodes": 14,
+          "objective": 0.08847951122251843,
+          "meanShape": 8.85,
+          "passRate": 0
+        },
+        {
+          "candidate": 8,
+          "environmentEpisodes": 16,
+          "objective": 0.004541697594485924,
+          "meanShape": 0.44999999999999996,
+          "passRate": 0
+        },
+        {
+          "candidate": 9,
+          "environmentEpisodes": 18,
+          "objective": 0.04041042835897271,
+          "meanShape": 4,
+          "passRate": 0
+        },
+        {
+          "candidate": 10,
+          "environmentEpisodes": 20,
+          "objective": 0.051504562691061795,
+          "meanShape": 5.15,
+          "passRate": 0
+        },
+        {
+          "candidate": 11,
+          "environmentEpisodes": 22,
+          "objective": 0.055551076352495364,
+          "meanShape": 5.550000000000001,
+          "passRate": 0
+        },
+        {
+          "candidate": 12,
+          "environmentEpisodes": 24,
+          "objective": 0.06926920630232532,
+          "meanShape": 6.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 13,
+          "environmentEpisodes": 26,
+          "objective": 0.04451813750173218,
+          "meanShape": 4.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 14,
+          "environmentEpisodes": 28,
+          "objective": 0.023583828892846586,
+          "meanShape": 2.35,
+          "passRate": 0
+        },
+        {
+          "candidate": 15,
+          "environmentEpisodes": 30,
+          "objective": 0.07797672413793104,
+          "meanShape": 7.8,
+          "passRate": 0
+        },
+        {
+          "candidate": 16,
+          "environmentEpisodes": 32,
+          "objective": 0.10666460135422103,
+          "meanShape": 10.65,
+          "passRate": 0
+        },
+        {
+          "candidate": 17,
+          "environmentEpisodes": 34,
+          "objective": 0.08230249782081529,
+          "meanShape": 8.2,
+          "passRate": 0
+        }
+      ],
+      "evidenceFile": "results/optimizer-tulip-warm.json"
+    },
+    {
+      "schema": "latte-bench/0.2",
+      "policyVersion": "six-pour/1",
+      "optimizer": "pycma/4.4.0 full-covariance CMA-ES",
+      "task": "tulip",
+      "seed": 42,
+      "trainingSeeds": 2,
+      "heldoutSeeds": 5,
+      "sourceTask": null,
+      "sourceTrainingEpisodes": 0,
+      "bestParameters": [
+        0.06376382215259785,
+        0.7366106210755625,
+        0.22495074658072295,
+        0.4477829522444178,
+        0.6320625296468139,
+        0.5255146603569679,
+        0.9999980974620171,
+        0.34334245846267963,
+        0.45657252996915676,
+        0.5157080596762299,
+        0.4887426097872012,
+        0.01929074886349715,
+        0.5230521957899921,
+        0.7015343597774134,
+        0.3789872380944941,
+        0.7117268269570581,
+        0.5563395578342003,
+        0.2322000035523176,
+        0.5548218081484192,
+        0.5562617958211424,
+        0.3206963488434982
+      ],
+      "trainingEpisodes": 34,
+      "evaluationEpisodes": 15,
+      "apiCalls": 0,
+      "apiCostUSD": 0,
+      "wallSeconds": 18.465,
+      "heldout": {
+        "initialClosedLoop": {
+          "meanShape": 9.120000000000001,
+          "passRate": 0,
+          "scores": [
+            9,
+            9.7,
+            9.7,
+            8.8,
+            8.4
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "optimizedClosedLoop": {
+          "meanShape": 10.28,
+          "passRate": 0,
+          "scores": [
+            10.8,
+            10.3,
+            11,
+            9.1,
+            10.2
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "optimizedOpenLoop": {
+          "meanShape": 11.14,
+          "passRate": 0,
+          "scores": [
+            11.5,
+            9.9,
+            11.5,
+            11.3,
+            11.5
+          ],
+          "failedChecks": [
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ],
+            [
+              "shape"
+            ]
+          ],
+          "episodeNumbers": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "limitations": [
+        "Stylized simulation; no real-world skill claim.",
+        "Milk holdouts vary conditions, not the target geometry.",
+        "Open-loop is a frozen-vector ablation, not a separately optimized competitor.",
+        "No matched LLM run in this report. Local compute is not free.",
+        "Warm-start transfer requires a separate cold-start run with matched budget."
+      ],
+      "firstCandidateMeanShape": 8.9,
+      "bestTrainingMeanShape": 10.6,
+      "curve": [
+        {
+          "candidate": 1,
+          "environmentEpisodes": 2,
+          "objective": 0.08886348919804564,
+          "meanShape": 8.9,
+          "passRate": 0
+        },
+        {
+          "candidate": 2,
+          "environmentEpisodes": 4,
+          "objective": 0.05820973442243111,
+          "meanShape": 5.85,
+          "passRate": 0
+        },
+        {
+          "candidate": 3,
+          "environmentEpisodes": 6,
+          "objective": 0.029844741194184583,
+          "meanShape": 2.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 4,
+          "environmentEpisodes": 8,
+          "objective": 0.014640196881253804,
+          "meanShape": 1.5,
+          "passRate": 0
+        },
+        {
+          "candidate": 5,
+          "environmentEpisodes": 10,
+          "objective": 0.08674285861777795,
+          "meanShape": 8.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 6,
+          "environmentEpisodes": 12,
+          "objective": 0.09431238354130464,
+          "meanShape": 9.4,
+          "passRate": 0
+        },
+        {
+          "candidate": 7,
+          "environmentEpisodes": 14,
+          "objective": 0.08462819089900112,
+          "meanShape": 8.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 8,
+          "environmentEpisodes": 16,
+          "objective": 0.05438033117035979,
+          "meanShape": 5.45,
+          "passRate": 0
+        },
+        {
+          "candidate": 9,
+          "environmentEpisodes": 18,
+          "objective": 0.09413067386717389,
+          "meanShape": 9.4,
+          "passRate": 0
+        },
+        {
+          "candidate": 10,
+          "environmentEpisodes": 20,
+          "objective": 0.08037986186841148,
+          "meanShape": 8,
+          "passRate": 0
+        },
+        {
+          "candidate": 11,
+          "environmentEpisodes": 22,
+          "objective": 0.05935519416851076,
+          "meanShape": 5.95,
+          "passRate": 0
+        },
+        {
+          "candidate": 12,
+          "environmentEpisodes": 24,
+          "objective": 0.10620115582480713,
+          "meanShape": 10.6,
+          "passRate": 0
+        },
+        {
+          "candidate": 13,
+          "environmentEpisodes": 26,
+          "objective": 0.048768497659509455,
+          "meanShape": 4.9,
+          "passRate": 0
+        },
+        {
+          "candidate": 14,
+          "environmentEpisodes": 28,
+          "objective": 0.024929161591017424,
+          "meanShape": 2.5,
+          "passRate": 0
+        },
+        {
+          "candidate": 15,
+          "environmentEpisodes": 30,
+          "objective": 0.03534206351415291,
+          "meanShape": 3.5,
+          "passRate": 0
+        },
+        {
+          "candidate": 16,
+          "environmentEpisodes": 32,
+          "objective": 0.09694953994022153,
+          "meanShape": 9.7,
+          "passRate": 0
+        },
+        {
+          "candidate": 17,
+          "environmentEpisodes": 34,
+          "objective": 0.03941655445122797,
+          "meanShape": 3.9,
+          "passRate": 0
+        }
+      ],
+      "evidenceFile": "results/optimizer-tulip-cold.json"
+    }
+  ]
+}

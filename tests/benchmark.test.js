@@ -33,8 +33,18 @@ test('held-out and independent protocols cannot silently receive practice feedba
   const c=benchmarkContext({taskId:'rosetta',protocol:'feedback',feedback});expect(c.previousEpisodes).toEqual(feedback);expect(c.task.targetFoam).toHaveLength(16);
   expect(()=>benchmarkContext({protocol:'feedback',feedback:[{...feedback[0],actions:[{command:'bogus'}]}]})).toThrow();
 });
+test('agent context includes a bounded remaining budget and labels cross-task feedback',()=>{
+  const budget={decisionsRemaining:7,simulationSecondsRemaining:41.5};
+  const feedback=[{taskId:'heart',score:10,failedChecks:['shape'],actions:[{command:'serve',duration:.1}]}];
+  const context=benchmarkContext({taskId:'tulip',protocol:'feedback',budget,feedback});
+  expect(context.budget).toEqual(budget);expect(context.previousEpisodes[0].taskId).toBe('heart');
+  for(const invalid of [{...budget,decisionsRemaining:0},{...budget,decisionsRemaining:33},{...budget,simulationSecondsRemaining:NaN}])
+    expect(()=>benchmarkContext({budget:invalid})).toThrow();
+  expect(()=>benchmarkContext({protocol:'feedback',feedback:[{...feedback[0],taskId:'unknown'}]})).toThrow();
+});
 test('learning summaries never mix experiments, targets, protocols, or model identities',()=>{
   const sample={experimentId:'a',task:taskSpec(),protocol:'independent',requestedModel:'mini',models:['mini-v1'],evaluation:{score:1},outcome:'Served'};
   const groups=comparableRuns([sample,{...sample,evaluation:{score:2}},{...sample,experimentId:'b'},{...sample,models:['mini-v2']},{...sample,protocol:'feedback'},{...sample,task:taskSpec('tulip')},{...sample,outcome:'Stopped'},{...sample,protocol:'human'}]);
   expect(groups.map(g=>g.length)).toEqual([2,1,1,1,1]);
+  expect(comparableRuns([{...sample,benchmark:'latte-bench/0.1'},{...sample,benchmark:'latte-bench/0.2'}])).toHaveLength(2);
 });

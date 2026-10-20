@@ -1,0 +1,15 @@
+{
+  "version": "milk-surface/2",
+  "description": "Stylized domain randomization; ranges are not calibrated to real milk.",
+  "milkML": [205, 245],
+  "temperatureC": [14, 22],
+  "pitcherOffset": [-0.12, 0.12],
+  "flowMultiplier": [0.85, 1.15],
+  "spreadMultiplier": [0.8, 1.2],
+  "foamRetention": [0.8, 1.0],
+  "velocityDamping": [0.95, 0.98],
+  "foamMixing": [0.001, 0.006],
+  "textureAmplitude": [0.06, 0.18],
+  "flowPulse": [0.02, 0.08],
+  "initialSwirl": [-0.025, 0.025]
+}

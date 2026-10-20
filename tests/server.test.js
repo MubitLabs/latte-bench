@@ -18,7 +18,7 @@ test('frontier route has its own model and omits Mubit routing fields',async()=>
 test('benchmark task and feedback reach the model while held-out requests reject feedback',async()=>{
   const feedback=[{score:12,failedChecks:['shape'],actions:[{command:'grind',duration:2}]}];
   const response=await post({lane:'mubit',observation:{},history:[],taskId:'tulip',seed:7,protocol:'feedback',feedback});
-  expect(response.status).toBe(200);expect((await response.json()).promptVersion).toBe('latte-controller/2');
+  expect(response.status).toBe(200);expect((await response.json()).promptVersion).toBe('latte-controller/3');
   const prompt=JSON.parse(requests.at(-1).messages[1].content);
   expect(prompt.task.id).toBe('tulip');expect(prompt.task.targetFoam).toHaveLength(16);expect(prompt.previousEpisodes).toEqual(feedback);
   const before=requests.length;
