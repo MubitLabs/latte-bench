@@ -1,0 +1,65 @@
+[
+  {
+    "model": "gpt-6-astra",
+    "mode": "no-notes",
+    "seed": 42,
+    "attempt": 3,
+    "score": 81.1,
+    "png": "passes/gpt-6-astra-no-notes-42-3.png",
+    "review": "Recognizable but asymmetric heart: shallow visible notch and a narrow tip, with an indentation on the left flank."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "notes",
+    "seed": 42,
+    "attempt": 2,
+    "score": 83.6,
+    "png": "passes/gpt-6-astra-notes-42-2.png",
+    "review": "Recognizable stylized heart: two lobes, a visible notch and a tapering lower half. The point is blunt and asymmetric."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "notes",
+    "seed": 42,
+    "attempt": 3,
+    "score": 82.5,
+    "png": "passes/gpt-6-astra-notes-42-3.png",
+    "review": "Recognizable heart-like silhouette with two lobes and a shallow notch. The lower half is asymmetric and the point is blunt."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "notes",
+    "seed": 42,
+    "attempt": 4,
+    "score": 83.9,
+    "png": "passes/gpt-6-astra-notes-42-4.png",
+    "review": "Recognizable stylized heart with two rounded lobes, a shallow visible notch and a tapering point. The silhouette leans to the left."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "notes",
+    "seed": 42,
+    "attempt": 5,
+    "score": 85.7,
+    "png": "passes/gpt-6-astra-notes-42-5.png",
+    "review": "Recognizable stylized heart with a shallow notch and a tapering lower half. The rounded point and asymmetric sides differ from the target."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "no-notes",
+    "seed": 43,
+    "attempt": 4,
+    "score": 78.8,
+    "png": "passes/gpt-6-astra-no-notes-43-4.png",
+    "review": "Marginal: a shallow notch is visible, but the silhouette is rounded and pear-like with a blunt offset tip. The numerical pass is a weak visual match."
+  },
+  {
+    "model": "gpt-6-astra",
+    "mode": "notes",
+    "seed": 43,
+    "attempt": 3,
+    "score": 78.5,
+    "png": "passes/gpt-6-astra-notes-43-3.png",
+    "review": "Marginal: only a very shallow notch separates the lobes; the lower half resembles an offset stem. The numerical pass is a weak visual match."
+  }
+]

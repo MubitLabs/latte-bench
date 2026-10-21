@@ -2,6 +2,31 @@
 
 A lightweight, vanilla JavaScript / Three.js workstation for testing planning and adaptation in a stylized latte simulator. Bun runs the app and physics. uv runs the development-only CMA-ES baseline. No React.
 
+<!-- MODEL-STUDY-START -->
+## Model study · October 2026
+
+![Latte Bench: paired notes and no-notes pass rates, best scores and costs](docs/model-study/benchmark-report.png)
+
+**12 model routes · 360 attempt slots · 3 matched milk seeds · 5 attempts per mode.** Each model plans a whole pour, sees the result afterwards, and either keeps its own compact notes or receives no history on the next attempt. All model requests use the configured Mubit gateway.
+
+**Astra was the only route to pass: 5/15 attempts with notes versus 2/15 without.** Its mean best score was lower with notes (74.7 versus 78.7), because one seed performed poorly. Notes did not consistently help across models. This small study measures context adaptation under a fixed output budget; it does not establish model-weight learning or held-out transfer. Best-so-far scores can rise through repeated sampling alone.
+
+![Five-attempt learning curves for every completed model; shaded variation across three seeds](docs/model-study/learning-curves.png)
+
+Conservative usage estimate, including unresolved error reservations: **$116.29 / $500**. 30 plans were rejected; these are marked separately from valid zero-scoring pours. GPT-5.5 Pro returned no valid plan: all 90 plan submissions exhausted the 4,096-token output allowance, including reasoning. Its conservative cost was $86.17. CMA-ES uses the same five-evaluation budget, before its first population update; its trace is reused from the unchanged v0.7 run and physically replayed.
+
+[**Full report and all model scores →**](docs/model-study/README.md) · [Per-attempt CSV](docs/model-study/attempts.csv) · [Every passing cup](docs/model-study/passes.json) · [Replayable plans and foam maps](docs/model-study/evidence.json) · [Verification](docs/model-study/verification.json)
+
+Recent means a model catalogue creation date on or after 21 April 2026, with snapshot aliases deduplicated. 6 restricted or incomplete routes are listed separately in the report; access failures are not model scores. The underlying simulator is stylized, and numerical passes can have weak notches. Mean ± SD uses only three seeds.
+
+Reproduce the published pours and charts without model calls:
+
+```sh
+bun scripts/study-replay.js
+uv run scripts/study-report.py
+```
+<!-- MODEL-STUDY-END -->
+
 ## Run
 
 ```sh
@@ -22,7 +47,7 @@ FRONTIER_MODEL=your-comparison-model-id
 
 Optional `FRONTIER_BASE_URL` / `FRONTIER_API_KEY` select another OpenAI-compatible backend. Otherwise both routes use the gateway. Configure documented gateway-specific fields through `MUBIT_EXTRA_BODY`. Restart after changing credentials. Provider-side memory, routing and weight updates remain outside this benchmark's control; fix those when comparing controllers.
 
-## Frozen two-model heart run (v0.7)
+## Earlier two-model heart run (v0.7)
 
 Freeze tag: `latte-bench-v0.7-heart-freeze`. The exact protocol is in [`experiments/heart-frozen-v3.json`](experiments/heart-frozen-v3.json). GPT-6 Astra and GPT-6.1 Sol each run five milk seeds (42–46) × ten attempts in no-notes and notes modes. CMA-ES gets the same five × ten evaluations once as a shared baseline. Total authorized cap is $50 across both models and every repair/reflection call. Four independent attempts may run concurrently; each pending call reserves its complete upper charge before dispatch.
 

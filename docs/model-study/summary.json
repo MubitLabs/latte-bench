@@ -1,0 +1,4859 @@
+{
+  "identity": {
+    "tag": "latte-bench-v0.7-multimodel-freeze",
+    "commit": "6034172993aa25be1f989e2693b647102e66f437",
+    "hashes": {
+      "bun.lock": "2207be35308039078df4d6b1b82ef32bcf125633e6f54bb606ed1cfa2892fb44",
+      "experiments/heart-model-study.json": "074ffff502161bdae422052f79541266819b99dfcdcc929604f655549c0f32ad",
+      "package.json": "6a97a5109ad5042037f969addcfa4d11e2366a86b810ffa17d1417d2519622f1",
+      "scripts/study-agent.js": "03344c0794d8b5805230b25d530a6fc33de78ccb8473bae51b2614ff6aa16414",
+      "scripts/study-prompts.js": "981290502da506893305cd55864a39fc0526e8401b9abc4ff42c13ea39590426",
+      "scripts/study-provider.js": "27d8e38ad1329a399c2475f2ffe820d728b1f8fe96d914d1999f124bc27ba5bc",
+      "src/attempts.js": "35c7c05ac8f4e0a40575041c31b6a1071ef63435138149fcf4a57f07e94a3282",
+      "src/baseline.js": "dac73d5bdbe0f095236b1de7f42128bfbe72fd2ed659040145041efb31dabdd9",
+      "src/benchmark.js": "890f4cac281f13cbdc2888e86448824f53f4a4b96b3375ca65dc38ddef30bf50",
+      "src/concurrent-budget.js": "3b517c9fcaa70241ca03e03bf9a084cccc9002e5c31a03493bfe75ce7d3eeb77",
+      "src/conditions.js": "b715f71d24ef6257f1e33b771bb19c6d98f5a642b37f5d40908b4a9bf19942c9",
+      "src/engine.js": "4559dd4ade5719b7df957b09801394116665b20794c7cfd1be6e02ebd1df7bc3",
+      "src/experiments.js": "b0464ba610337562881cfc188ef2af3a9dd91d9ad51e644768ab124e4e2e836f",
+      "src/grid.js": "b570be4ae2e2589c548d15fe1b97b43cb1f51e35b411e9ca1907cabec45f42e6",
+      "src/icons.js": "d142e297f20e6860bcddefe8ef2c3664ae409252a1b580c117767e4c5cc5ba4a",
+      "src/main.js": "20b143adffa0e6823323f7551776e627c46d419fe3cd6fe75df47578382c7aa2",
+      "src/pilot-budget.js": "3b37fe869aadcb523cf8963a874257301106814387b6547824a5fcfb294f9418",
+      "src/plans.js": "a846d68edc9298c1bb03b90ac06e8c28deea1b189358236aa47ceb46a0c51ee1",
+      "src/protocol.js": "2dd776f3536cef3df40d2f361bda6202a0f6e46aeb77cd0861d754fe1769d1d6",
+      "src/shape-metrics.js": "01163c6bb09490e7cbcff3fceed62a86a0eb1be1b5b8194f6e164f051e93551e",
+      "src/simulation.js": "3be40d7fbff5290601203fcababcf64683899c6d66cb291c24813588f7f218ef",
+      "src/style.css": "d6f66db22550470c9ca72d5caa8f391fb64d4260dba6308d2fcdbb704ab9abbb",
+      "src/workstation.js": "9fd1d237506c9b3863403ff0a56a557f8d0140de76fcae4da756ac542e4c824f",
+      "tasks/calibration.json": "e501c69c155d7fc515f6d6400313b63afaa6947bc7a88fc5cc848f7da45ece83",
+      "tasks/environment.json": "b3ea52e453d5874c61c76b7df64aa9f602365861abbd5acddb276dee6d546d99",
+      "tasks/heart.json": "a0c36260141bd0d165ecca9b23d4fc92b397f7e11f53d7f6f7e218ad58ed240f",
+      "tasks/reference-heart.json": "5e3d1e7b8302905007c0c34ba6769108cce03cbf307fdf2cbe3f5a2b9c556dc8",
+      "tasks/reference-rosetta.json": "28f261fb68eba082cc5065b116d21d2709e4754374d7849bafb21498db5d44a7",
+      "tasks/reference-tulip.json": "fa7bed6c29ed1b00afa54395adbc51641d08bf5cdc4eb8b784197d53becd8a84",
+      "tasks/rosetta.json": "23c59178928b60ca1b0d149006bd0db63ca21c0a90728fb4a30bdf30194213a0",
+      "tasks/tulip.json": "197ac594b2db35355758cbba483b57ab30e2aef440eb1d6e334d2169a648e487"
+    }
+  },
+  "continuationIdentity": {
+    "tag": "latte-bench-v0.7-multimodel-access-amendment",
+    "commit": "8ca47bf8c415fd10b8eb21b571b7d0521355d0ea",
+    "hashes": {
+      "bun.lock": "2207be35308039078df4d6b1b82ef32bcf125633e6f54bb606ed1cfa2892fb44",
+      "experiments/heart-model-study.json": "074ffff502161bdae422052f79541266819b99dfcdcc929604f655549c0f32ad",
+      "package.json": "6a97a5109ad5042037f969addcfa4d11e2366a86b810ffa17d1417d2519622f1",
+      "scripts/study-agent.js": "03344c0794d8b5805230b25d530a6fc33de78ccb8473bae51b2614ff6aa16414",
+      "scripts/study-continue.js": "c4b1e4a6ff474fe746aa8a19fe35b69edef498f593b25eb601c7e2c9849bbba7",
+      "scripts/study-prompts.js": "981290502da506893305cd55864a39fc0526e8401b9abc4ff42c13ea39590426",
+      "scripts/study-provider.js": "27d8e38ad1329a399c2475f2ffe820d728b1f8fe96d914d1999f124bc27ba5bc",
+      "src/attempts.js": "35c7c05ac8f4e0a40575041c31b6a1071ef63435138149fcf4a57f07e94a3282",
+      "src/baseline.js": "dac73d5bdbe0f095236b1de7f42128bfbe72fd2ed659040145041efb31dabdd9",
+      "src/benchmark.js": "890f4cac281f13cbdc2888e86448824f53f4a4b96b3375ca65dc38ddef30bf50",
+      "src/concurrent-budget.js": "3b517c9fcaa70241ca03e03bf9a084cccc9002e5c31a03493bfe75ce7d3eeb77",
+      "src/conditions.js": "b715f71d24ef6257f1e33b771bb19c6d98f5a642b37f5d40908b4a9bf19942c9",
+      "src/engine.js": "4559dd4ade5719b7df957b09801394116665b20794c7cfd1be6e02ebd1df7bc3",
+      "src/experiments.js": "b0464ba610337562881cfc188ef2af3a9dd91d9ad51e644768ab124e4e2e836f",
+      "src/grid.js": "b570be4ae2e2589c548d15fe1b97b43cb1f51e35b411e9ca1907cabec45f42e6",
+      "src/icons.js": "d142e297f20e6860bcddefe8ef2c3664ae409252a1b580c117767e4c5cc5ba4a",
+      "src/main.js": "20b143adffa0e6823323f7551776e627c46d419fe3cd6fe75df47578382c7aa2",
+      "src/pilot-budget.js": "3b37fe869aadcb523cf8963a874257301106814387b6547824a5fcfb294f9418",
+      "src/plans.js": "a846d68edc9298c1bb03b90ac06e8c28deea1b189358236aa47ceb46a0c51ee1",
+      "src/protocol.js": "2dd776f3536cef3df40d2f361bda6202a0f6e46aeb77cd0861d754fe1769d1d6",
+      "src/shape-metrics.js": "01163c6bb09490e7cbcff3fceed62a86a0eb1be1b5b8194f6e164f051e93551e",
+      "src/simulation.js": "3be40d7fbff5290601203fcababcf64683899c6d66cb291c24813588f7f218ef",
+      "src/style.css": "d6f66db22550470c9ca72d5caa8f391fb64d4260dba6308d2fcdbb704ab9abbb",
+      "src/workstation.js": "9fd1d237506c9b3863403ff0a56a557f8d0140de76fcae4da756ac542e4c824f",
+      "tasks/calibration.json": "e501c69c155d7fc515f6d6400313b63afaa6947bc7a88fc5cc848f7da45ece83",
+      "tasks/environment.json": "b3ea52e453d5874c61c76b7df64aa9f602365861abbd5acddb276dee6d546d99",
+      "tasks/heart.json": "a0c36260141bd0d165ecca9b23d4fc92b397f7e11f53d7f6f7e218ad58ed240f",
+      "tasks/reference-heart.json": "5e3d1e7b8302905007c0c34ba6769108cce03cbf307fdf2cbe3f5a2b9c556dc8",
+      "tasks/reference-rosetta.json": "28f261fb68eba082cc5065b116d21d2709e4754374d7849bafb21498db5d44a7",
+      "tasks/reference-tulip.json": "fa7bed6c29ed1b00afa54395adbc51641d08bf5cdc4eb8b784197d53becd8a84",
+      "tasks/rosetta.json": "23c59178928b60ca1b0d149006bd0db63ca21c0a90728fb4a30bdf30194213a0",
+      "tasks/tulip.json": "197ac594b2db35355758cbba483b57ab30e2aef440eb1d6e334d2169a648e487"
+    }
+  },
+  "proIdentity": {
+    "tag": "latte-bench-v0.7-multimodel-pro-parallel-500",
+    "commit": "b3a29c29a8f353247cea4b8e66866d451008438a",
+    "hashes": {
+      "bun.lock": "2207be35308039078df4d6b1b82ef32bcf125633e6f54bb606ed1cfa2892fb44",
+      "experiments/heart-model-study.json": "074ffff502161bdae422052f79541266819b99dfcdcc929604f655549c0f32ad",
+      "package.json": "6a97a5109ad5042037f969addcfa4d11e2366a86b810ffa17d1417d2519622f1",
+      "scripts/study-agent.js": "03344c0794d8b5805230b25d530a6fc33de78ccb8473bae51b2614ff6aa16414",
+      "scripts/study-continue.js": "c4b1e4a6ff474fe746aa8a19fe35b69edef498f593b25eb601c7e2c9849bbba7",
+      "scripts/study-pro-parallel.js": "9d4d2716ab0c9bd57faefeeff1ae2cab2cb276b241c72ffd641428342747ea6e",
+      "scripts/study-pro.js": "b3d469af5923965131534aa43c65c9bc7253fe171efb454dff1be585d9f8379c",
+      "scripts/study-prompts.js": "981290502da506893305cd55864a39fc0526e8401b9abc4ff42c13ea39590426",
+      "scripts/study-provider.js": "27d8e38ad1329a399c2475f2ffe820d728b1f8fe96d914d1999f124bc27ba5bc",
+      "src/attempts.js": "35c7c05ac8f4e0a40575041c31b6a1071ef63435138149fcf4a57f07e94a3282",
+      "src/baseline.js": "dac73d5bdbe0f095236b1de7f42128bfbe72fd2ed659040145041efb31dabdd9",
+      "src/benchmark.js": "890f4cac281f13cbdc2888e86448824f53f4a4b96b3375ca65dc38ddef30bf50",
+      "src/concurrent-budget.js": "3b517c9fcaa70241ca03e03bf9a084cccc9002e5c31a03493bfe75ce7d3eeb77",
+      "src/conditions.js": "b715f71d24ef6257f1e33b771bb19c6d98f5a642b37f5d40908b4a9bf19942c9",
+      "src/engine.js": "4559dd4ade5719b7df957b09801394116665b20794c7cfd1be6e02ebd1df7bc3",
+      "src/experiments.js": "b0464ba610337562881cfc188ef2af3a9dd91d9ad51e644768ab124e4e2e836f",
+      "src/grid.js": "b570be4ae2e2589c548d15fe1b97b43cb1f51e35b411e9ca1907cabec45f42e6",
+      "src/icons.js": "d142e297f20e6860bcddefe8ef2c3664ae409252a1b580c117767e4c5cc5ba4a",
+      "src/main.js": "20b143adffa0e6823323f7551776e627c46d419fe3cd6fe75df47578382c7aa2",
+      "src/pilot-budget.js": "3b37fe869aadcb523cf8963a874257301106814387b6547824a5fcfb294f9418",
+      "src/plans.js": "a846d68edc9298c1bb03b90ac06e8c28deea1b189358236aa47ceb46a0c51ee1",
+      "src/protocol.js": "2dd776f3536cef3df40d2f361bda6202a0f6e46aeb77cd0861d754fe1769d1d6",
+      "src/shape-metrics.js": "01163c6bb09490e7cbcff3fceed62a86a0eb1be1b5b8194f6e164f051e93551e",
+      "src/simulation.js": "3be40d7fbff5290601203fcababcf64683899c6d66cb291c24813588f7f218ef",
+      "src/style.css": "d6f66db22550470c9ca72d5caa8f391fb64d4260dba6308d2fcdbb704ab9abbb",
+      "src/workstation.js": "9fd1d237506c9b3863403ff0a56a557f8d0140de76fcae4da756ac542e4c824f",
+      "tasks/calibration.json": "e501c69c155d7fc515f6d6400313b63afaa6947bc7a88fc5cc848f7da45ece83",
+      "tasks/environment.json": "b3ea52e453d5874c61c76b7df64aa9f602365861abbd5acddb276dee6d546d99",
+      "tasks/heart.json": "a0c36260141bd0d165ecca9b23d4fc92b397f7e11f53d7f6f7e218ad58ed240f",
+      "tasks/reference-heart.json": "5e3d1e7b8302905007c0c34ba6769108cce03cbf307fdf2cbe3f5a2b9c556dc8",
+      "tasks/reference-rosetta.json": "28f261fb68eba082cc5065b116d21d2709e4754374d7849bafb21498db5d44a7",
+      "tasks/reference-tulip.json": "fa7bed6c29ed1b00afa54395adbc51641d08bf5cdc4eb8b784197d53becd8a84",
+      "tasks/rosetta.json": "23c59178928b60ca1b0d149006bd0db63ca21c0a90728fb4a30bdf30194213a0",
+      "tasks/tulip.json": "197ac594b2db35355758cbba483b57ab30e2aef440eb1d6e334d2169a648e487"
+    }
+  },
+  "queueIdentity": {
+    "tag": "latte-bench-v0.7-multimodel-queue",
+    "commit": "2d411ccc608c6be23b030c8965bcf403b0867fc2",
+    "hashes": {
+      "bun.lock": "2207be35308039078df4d6b1b82ef32bcf125633e6f54bb606ed1cfa2892fb44",
+      "experiments/heart-model-study.json": "074ffff502161bdae422052f79541266819b99dfcdcc929604f655549c0f32ad",
+      "package.json": "6a97a5109ad5042037f969addcfa4d11e2366a86b810ffa17d1417d2519622f1",
+      "scripts/study-agent.js": "03344c0794d8b5805230b25d530a6fc33de78ccb8473bae51b2614ff6aa16414",
+      "scripts/study-continue.js": "c4b1e4a6ff474fe746aa8a19fe35b69edef498f593b25eb601c7e2c9849bbba7",
+      "scripts/study-finish.js": "b303e1b0a545b0e5afa31372dcc8c9e8df7249b56b1ef0a4746c3566995678c9",
+      "scripts/study-pro-parallel.js": "9d4d2716ab0c9bd57faefeeff1ae2cab2cb276b241c72ffd641428342747ea6e",
+      "scripts/study-pro.js": "b3d469af5923965131534aa43c65c9bc7253fe171efb454dff1be585d9f8379c",
+      "scripts/study-prompts.js": "981290502da506893305cd55864a39fc0526e8401b9abc4ff42c13ea39590426",
+      "scripts/study-provider.js": "27d8e38ad1329a399c2475f2ffe820d728b1f8fe96d914d1999f124bc27ba5bc",
+      "src/attempts.js": "35c7c05ac8f4e0a40575041c31b6a1071ef63435138149fcf4a57f07e94a3282",
+      "src/baseline.js": "dac73d5bdbe0f095236b1de7f42128bfbe72fd2ed659040145041efb31dabdd9",
+      "src/benchmark.js": "890f4cac281f13cbdc2888e86448824f53f4a4b96b3375ca65dc38ddef30bf50",
+      "src/concurrent-budget.js": "3b517c9fcaa70241ca03e03bf9a084cccc9002e5c31a03493bfe75ce7d3eeb77",
+      "src/conditions.js": "b715f71d24ef6257f1e33b771bb19c6d98f5a642b37f5d40908b4a9bf19942c9",
+      "src/engine.js": "4559dd4ade5719b7df957b09801394116665b20794c7cfd1be6e02ebd1df7bc3",
+      "src/experiments.js": "b0464ba610337562881cfc188ef2af3a9dd91d9ad51e644768ab124e4e2e836f",
+      "src/grid.js": "b570be4ae2e2589c548d15fe1b97b43cb1f51e35b411e9ca1907cabec45f42e6",
+      "src/icons.js": "d142e297f20e6860bcddefe8ef2c3664ae409252a1b580c117767e4c5cc5ba4a",
+      "src/main.js": "20b143adffa0e6823323f7551776e627c46d419fe3cd6fe75df47578382c7aa2",
+      "src/pilot-budget.js": "3b37fe869aadcb523cf8963a874257301106814387b6547824a5fcfb294f9418",
+      "src/plans.js": "a846d68edc9298c1bb03b90ac06e8c28deea1b189358236aa47ceb46a0c51ee1",
+      "src/protocol.js": "2dd776f3536cef3df40d2f361bda6202a0f6e46aeb77cd0861d754fe1769d1d6",
+      "src/shape-metrics.js": "01163c6bb09490e7cbcff3fceed62a86a0eb1be1b5b8194f6e164f051e93551e",
+      "src/simulation.js": "3be40d7fbff5290601203fcababcf64683899c6d66cb291c24813588f7f218ef",
+      "src/style.css": "d6f66db22550470c9ca72d5caa8f391fb64d4260dba6308d2fcdbb704ab9abbb",
+      "src/workstation.js": "9fd1d237506c9b3863403ff0a56a557f8d0140de76fcae4da756ac542e4c824f",
+      "tasks/calibration.json": "e501c69c155d7fc515f6d6400313b63afaa6947bc7a88fc5cc848f7da45ece83",
+      "tasks/environment.json": "b3ea52e453d5874c61c76b7df64aa9f602365861abbd5acddb276dee6d546d99",
+      "tasks/heart.json": "a0c36260141bd0d165ecca9b23d4fc92b397f7e11f53d7f6f7e218ad58ed240f",
+      "tasks/reference-heart.json": "5e3d1e7b8302905007c0c34ba6769108cce03cbf307fdf2cbe3f5a2b9c556dc8",
+      "tasks/reference-rosetta.json": "28f261fb68eba082cc5065b116d21d2709e4754374d7849bafb21498db5d44a7",
+      "tasks/reference-tulip.json": "fa7bed6c29ed1b00afa54395adbc51641d08bf5cdc4eb8b784197d53becd8a84",
+      "tasks/rosetta.json": "23c59178928b60ca1b0d149006bd0db63ca21c0a90728fb4a30bdf30194213a0",
+      "tasks/tulip.json": "197ac594b2db35355758cbba483b57ab30e2aef440eb1d6e334d2169a648e487"
+    }
+  },
+  "schedulingAmendment": "After Pro finished, the original lane resumed at a committed boundary with a six-worker queue. Per-run attempt order, round barriers, inputs, output limits, validation, scoring, milk schedules and $100 lane cap are unchanged. Completed episodes are skipped.",
+  "budgetChanges": [
+    {
+      "at": "2026-10-21T08:29:43.891Z",
+      "fromUSD": 100,
+      "toUSD": 500,
+      "authorization": "User: new budget is 500usd. User explicitly retained Pro.",
+      "allocation": "Original lane capped at $100, including prior Pro calls; new Pro lane capped at $400. Sum cannot exceed $500."
+    }
+  ],
+  "protocol": {
+    "schema": "heart-model-study/1",
+    "tag": "latte-bench-v0.7-multimodel-freeze",
+    "target": "heart",
+    "targetSeed": 42,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "attemptsPerSeed": 5,
+    "modes": [
+      "no-notes",
+      "notes"
+    ],
+    "models": [
+      {
+        "id": "gpt-5.5",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 5,
+          "output": 30
+        },
+        "ratesPerMillion": {
+          "input": 5,
+          "output": 30
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-opus-4-8",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 5,
+          "output": 25
+        },
+        "ratesPerMillion": {
+          "input": 10,
+          "output": 25
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-5.5-pro",
+        "provider": "OpenAI",
+        "api": "responses",
+        "standardRates": {
+          "input": 30,
+          "output": 180
+        },
+        "ratesPerMillion": {
+          "input": 30,
+          "output": 180
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "medium"
+        }
+      },
+      {
+        "id": "claude-fable-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 10,
+          "output": 50
+        },
+        "ratesPerMillion": {
+          "input": 20,
+          "output": 50
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "chat-latest",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 5,
+          "output": 30
+        },
+        "ratesPerMillion": {
+          "input": 5,
+          "output": 30
+        },
+        "effort": {
+          "plan": null,
+          "notes": null
+        }
+      },
+      {
+        "id": "claude-sonnet-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 2,
+          "output": 10
+        },
+        "ratesPerMillion": {
+          "input": 4,
+          "output": 10
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-5.6-luna",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 0.2,
+          "output": 1.2
+        },
+        "ratesPerMillion": {
+          "input": 0.5,
+          "output": 1.2
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-opus-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 5,
+          "output": 25
+        },
+        "ratesPerMillion": {
+          "input": 10,
+          "output": 25
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-5.6-terra",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 2,
+          "output": 12
+        },
+        "ratesPerMillion": {
+          "input": 5,
+          "output": 12
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-fable-5-1",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 10,
+          "output": 50
+        },
+        "ratesPerMillion": {
+          "input": 20,
+          "output": 50
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-5.6-sol",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 4,
+          "output": 20
+        },
+        "ratesPerMillion": {
+          "input": 10,
+          "output": 20
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-opus-5-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 4,
+          "output": 20
+        },
+        "ratesPerMillion": {
+          "input": 8,
+          "output": 20
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-6-luna",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 0.1,
+          "output": 0.5
+        },
+        "ratesPerMillion": {
+          "input": 0.25,
+          "output": 0.5
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-sonnet-5-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 2,
+          "output": 10
+        },
+        "ratesPerMillion": {
+          "input": 4,
+          "output": 10
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-6-sol",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 2,
+          "output": 10
+        },
+        "ratesPerMillion": {
+          "input": 5,
+          "output": 10
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "claude-haiku-5-5",
+        "provider": "Anthropic",
+        "api": "anthropic",
+        "standardRates": {
+          "input": 0.1,
+          "output": 0.5
+        },
+        "ratesPerMillion": {
+          "input": 0.2,
+          "output": 0.5
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-6-astra",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 10,
+          "output": 50
+        },
+        "ratesPerMillion": {
+          "input": 25,
+          "output": 50
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      },
+      {
+        "id": "gpt-6.1-sol",
+        "provider": "OpenAI",
+        "api": "chat",
+        "standardRates": {
+          "input": 2,
+          "output": 10
+        },
+        "ratesPerMillion": {
+          "input": 5,
+          "output": 10
+        },
+        "effort": {
+          "plan": "medium",
+          "notes": "low"
+        }
+      }
+    ],
+    "capUSD": 100,
+    "concurrency": 6,
+    "maxTokens": {
+      "plan": 4096,
+      "notes": 2048
+    },
+    "formatRepairs": 2,
+    "selection": "Gateway catalogues fetched 2026-10-21. General text models created since 2026-04-21 inclusive. Snapshot aliases deduplicated; audio, realtime, image and embeddings excluded. OpenAI and Anthropic only as requested. chat-latest is a rolling alias.",
+    "pricingSources": [
+      "https://developers.openai.com/api/docs/pricing",
+      "https://platform.claude.com/docs/en/about-claude/pricing"
+    ],
+    "pricing": "Standard public rates, no gateway surcharge per user. Reserve all input at highest published cache-write price, all output including reasoning. Anthropic cache creation/read tokens added to fresh input. No explicit prompt caching requested. Errors retain full reservation, never retried automatically. Estimates, not invoices.",
+    "ordering": "Attempt rounds 1..5, then matched seed, then interleaved provider models and paired modes, reverse model/mode ordering on even rounds. Six concurrent independent episodes. Stop before reservation would exceed $100.",
+    "interface": "Identical prompts, physical space, client validation and two repairs. Anthropic unsupported numerical/length schema constraints moved to descriptions and checked client-side. Native adaptive thinking medium/low. OpenAI medium/low except Pro medium/medium and Instant chat-latest default. Equal output caps, not equal compute.",
+    "memory": "Fresh requests only. No-notes equals fresh target, current visible milk and parameter guide. Both arms reflect; control discards reflection. Notes carries its own latest replacement note only. No SDK memory, conversation IDs or previous response IDs. Gateway-side memory/routing not independently observable.",
+    "optimizer": "Reuse first five evaluations of frozen v0.7 CMA-ES seeds 42,43,44; identical source hashes, task, conditions and generic initialization. No reference warm start. Mark as cached baseline.",
+    "limits": "Heart only; practice milk schedules; no held-out shape/milk evaluation. Three seeds is exploratory, not a significance claim. Measures context adaptation, not weight training. Numerical passes can have a weak notch."
+  },
+  "createdAt": "2026-10-21T08:17:29.891Z",
+  "finishedAt": "2026-10-21T09:25:54.659Z",
+  "verification": {
+    "runtime": {
+      "bun": "1.3.14",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "sourceFiles": 31,
+    "validAttempts": 330,
+    "physicalReplays": 345,
+    "formatErrors": 107,
+    "rejectedPlans": 30,
+    "providerErrorEpisodes": 2,
+    "passes": 7,
+    "calls": 799,
+    "costUpperUSD": 116.28945630000001,
+    "completedChargeUSD": 115.70782630000001,
+    "heldUnknownChargeUSD": 0.5816300000000001,
+    "capUSD": 500,
+    "memoryIsolation": "Every stored request checked against fresh allowed context; gateway internals not observable",
+    "noProviderCalls": true
+  },
+  "unavailable": {
+    "claude-opus-4-8": {
+      "reason": "Provider access error (starter_credit_model): The starter credit serves these Anthropic models on this route: claude-opus-5-5, claude-sonnet-5-5, claude-haiku-4-5, claude-haiku-4-5-20251001. Name one of them as the model, or add your own Anthropic key under Provider keys in the console to use another.",
+      "call": 3,
+      "conservativeHeldUSD": 0.2907
+    },
+    "claude-fable-5": {
+      "reason": "Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.",
+      "kind": "access-policy-exclusion"
+    },
+    "claude-sonnet-5": {
+      "reason": "Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.",
+      "kind": "access-policy-exclusion"
+    },
+    "claude-opus-5": {
+      "reason": "Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.",
+      "kind": "access-policy-exclusion"
+    },
+    "claude-fable-5-1": {
+      "reason": "Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.",
+      "kind": "access-policy-exclusion"
+    },
+    "claude-haiku-5-5": {
+      "reason": "Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.",
+      "kind": "access-policy-exclusion"
+    }
+  },
+  "groups": [
+    {
+      "model": "gpt-5.5",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 3.605725,
+      "formatErrors": 10,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.5-2026-04-23"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 44.93333333333334,
+          "sd": 15.391339556170326,
+          "perSeed": [
+            30.6,
+            43,
+            61.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 44.93333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 52.63333333333333,
+          "sd": 8.994628026401832,
+          "perSeed": [
+            46.9,
+            48,
+            63
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 52.63333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 53.199999999999996,
+          "sd": 8.492349498224858,
+          "perSeed": [
+            48.6,
+            48,
+            63
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 47.166666666666664,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 53.199999999999996,
+          "sd": 8.492349498224858,
+          "perSeed": [
+            48.6,
+            48,
+            63
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 41.13333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 53.53333333333333,
+          "sd": 8.200812967830283,
+          "perSeed": [
+            48.6,
+            49,
+            63
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 42.03333333333333,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            30.6,
+            46.9,
+            48.6,
+            33.7,
+            45
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            43,
+            48,
+            33.3,
+            43.5,
+            49
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            61.2,
+            63,
+            59.6,
+            46.2,
+            32.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 2.6012049999999998,
+      "formatErrors": 5,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.5-2026-04-23"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 47.800000000000004,
+          "sd": 17.830311270418136,
+          "perSeed": [
+            65,
+            29.4,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 47.800000000000004,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 50.9,
+          "sd": 13.252546925025392,
+          "perSeed": [
+            65,
+            38.7,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 39.53333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 55.333333333333336,
+          "sd": 8.504900548115383,
+          "perSeed": [
+            65,
+            52,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 37.03333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 55.86666666666667,
+          "sd": 8.237313477908518,
+          "perSeed": [
+            65,
+            53.6,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 49.73333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 55.86666666666667,
+          "sd": 8.237313477908518,
+          "perSeed": [
+            65,
+            53.6,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 39.6,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            65,
+            42.6,
+            42.8,
+            46.7,
+            38.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            29.4,
+            38.7,
+            52,
+            53.6,
+            46.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            49,
+            37.3,
+            16.3,
+            48.9,
+            34.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-4-8",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0.2907,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 1,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            null
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-4-8",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0.29093,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 1,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            null
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5-pro",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 42.518699999999995,
+      "formatErrors": 45,
+      "rejections": 15,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.5-pro-2026-04-23"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5-pro",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 43.654740000000004,
+      "formatErrors": 45,
+      "rejections": 15,
+      "notesErrors": 1,
+      "returnedModels": [
+        "gpt-5.5-pro-2026-04-23"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-fable-5",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-fable-5",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "chat-latest",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.792235,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "chat-latest"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 37.36666666666667,
+          "sd": 22.249119832778405,
+          "perSeed": [
+            57,
+            41.9,
+            13.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 37.36666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 46.0,
+          "sd": 21.702534414210707,
+          "perSeed": [
+            57,
+            60,
+            21
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 39.86666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 46.0,
+          "sd": 21.702534414210707,
+          "perSeed": [
+            57,
+            60,
+            21
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 36.06666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 55.666666666666664,
+          "sd": 5.131601439446884,
+          "perSeed": [
+            57,
+            60,
+            50
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 51.46666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 55.666666666666664,
+          "sd": 5.131601439446884,
+          "perSeed": [
+            57,
+            60,
+            50
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 48.866666666666674,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            57,
+            38.6,
+            35,
+            46.6,
+            46.5
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            41.9,
+            60,
+            53.6,
+            57.8,
+            50.9
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            13.2,
+            21,
+            19.6,
+            50,
+            49.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "chat-latest",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.877265,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "chat-latest"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 48.36666666666667,
+          "sd": 18.296812108488552,
+          "perSeed": [
+            54.9,
+            62.5,
+            27.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 48.36666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 64.86666666666667,
+          "sd": 11.336813191251473,
+          "perSeed": [
+            54.9,
+            62.5,
+            77.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 52.70000000000001,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 64.86666666666667,
+          "sd": 11.336813191251473,
+          "perSeed": [
+            54.9,
+            62.5,
+            77.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 36.166666666666664,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 64.86666666666667,
+          "sd": 11.336813191251473,
+          "perSeed": [
+            54.9,
+            62.5,
+            77.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 31.933333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 64.86666666666667,
+          "sd": 11.336813191251473,
+          "perSeed": [
+            54.9,
+            62.5,
+            77.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 28.666666666666668,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            54.9,
+            53.3,
+            30.5,
+            22.2,
+            23.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            62.5,
+            27.6,
+            35.6,
+            26.9,
+            25.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            27.7,
+            77.2,
+            42.4,
+            46.7,
+            37.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-sonnet-5",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-sonnet-5",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.1012976,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-luna"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 37.1,
+          "sd": 11.827510304370907,
+          "perSeed": [
+            49.8,
+            35.1,
+            26.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 37.1,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 48.76666666666667,
+          "sd": 2.3288051299611405,
+          "perSeed": [
+            49.8,
+            46.1,
+            50.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 37.6,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 50.76666666666667,
+          "sd": 5.217598425840506,
+          "perSeed": [
+            49.8,
+            46.1,
+            56.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 47.5,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 50.76666666666667,
+          "sd": 5.217598425840506,
+          "perSeed": [
+            49.8,
+            46.1,
+            56.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 33.13333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 51.53333333333333,
+          "sd": 4.272391992003231,
+          "perSeed": [
+            49.8,
+            48.4,
+            56.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 37.53333333333333,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            49.8,
+            16.3,
+            46.4,
+            36.9,
+            25.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            35.1,
+            46.1,
+            39.7,
+            39.8,
+            48.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            26.4,
+            50.4,
+            56.4,
+            22.7,
+            38.5
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.10694469999999999,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-luna"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 18.333333333333332,
+          "sd": 11.056370712549997,
+          "perSeed": [
+            14,
+            30.9,
+            10.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 18.333333333333332,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 35.06666666666666,
+          "sd": 6.370504951205464,
+          "perSeed": [
+            42.4,
+            30.9,
+            31.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 35.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 35.06666666666666,
+          "sd": 6.370504951205464,
+          "perSeed": [
+            42.4,
+            30.9,
+            31.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 19.633333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 38.86666666666667,
+          "sd": 6.033517492585343,
+          "perSeed": [
+            42.4,
+            42.3,
+            31.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 31.266666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 38.86666666666667,
+          "sd": 6.033517492585343,
+          "perSeed": [
+            42.4,
+            42.3,
+            31.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 17.23333333333333,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            14,
+            42.4,
+            21,
+            30.5,
+            19.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            30.9,
+            30.7,
+            19.8,
+            42.3,
+            13.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            10.1,
+            31.9,
+            18.1,
+            21,
+            18.9
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-5",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-5",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.964635,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-terra"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 12.699999999999998,
+          "sd": 9.003888049059695,
+          "perSeed": [
+            2.8,
+            14.9,
+            20.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 12.699999999999998,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 21.099999999999998,
+          "sd": 5.574943945906541,
+          "perSeed": [
+            22.7,
+            14.9,
+            25.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.666666666666668,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 35.300000000000004,
+          "sd": 10.379306335203717,
+          "perSeed": [
+            31.7,
+            27.2,
+            47
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 35.300000000000004,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 36.199999999999996,
+          "sd": 9.681425514871247,
+          "perSeed": [
+            33.3,
+            28.3,
+            47
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 32.833333333333336,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 36.199999999999996,
+          "sd": 9.681425514871247,
+          "perSeed": [
+            33.3,
+            28.3,
+            47
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 15.9,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            2.8,
+            22.7,
+            31.7,
+            33.3,
+            30.3
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            14.9,
+            13.6,
+            27.2,
+            28.3,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            20.4,
+            25.7,
+            47,
+            36.9,
+            17.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 1.10537,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-terra"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 20.766666666666666,
+          "sd": 5.5770362499569,
+          "perSeed": [
+            27.2,
+            17.8,
+            17.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.766666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 39.199999999999996,
+          "sd": 24.693318934481038,
+          "perSeed": [
+            27.2,
+            67.6,
+            22.8
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 38.96666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 44.300000000000004,
+          "sd": 20.901435357410264,
+          "perSeed": [
+            27.2,
+            67.6,
+            38.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.2,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 44.300000000000004,
+          "sd": 20.901435357410264,
+          "perSeed": [
+            27.2,
+            67.6,
+            38.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 16.166666666666668,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 44.300000000000004,
+          "sd": 20.901435357410264,
+          "perSeed": [
+            27.2,
+            67.6,
+            38.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 15.9,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            27.2,
+            26.5,
+            22.5,
+            18.9,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            17.8,
+            67.6,
+            0,
+            3.6,
+            32.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            17.3,
+            22.8,
+            38.1,
+            26,
+            15.5
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-fable-5-1",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-fable-5-1",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 1.8993200000000001,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 23.633333333333336,
+          "sd": 24.789581144773972,
+          "perSeed": [
+            6.8,
+            12,
+            52.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 23.633333333333336,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 32.56666666666667,
+          "sd": 20.0699609699006,
+          "perSeed": [
+            33.6,
+            12,
+            52.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 18.8,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 41.0,
+          "sd": 25.34383554239571,
+          "perSeed": [
+            58.9,
+            12,
+            52.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 22.733333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 41.0,
+          "sd": 25.34383554239571,
+          "perSeed": [
+            58.9,
+            12,
+            52.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 27.26666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 41.0,
+          "sd": 25.34383554239571,
+          "perSeed": [
+            58.9,
+            12,
+            52.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 10.233333333333333,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            6.8,
+            33.6,
+            58.9,
+            41.7,
+            22.5
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            12,
+            6.9,
+            0,
+            8.6,
+            0
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            52.1,
+            15.9,
+            9.3,
+            31.5,
+            8.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 1.95884,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-5.6-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 12.566666666666668,
+          "sd": 9.452160246913577,
+          "perSeed": [
+            23.4,
+            8.3,
+            6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 12.566666666666668,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 30.5,
+          "sd": 8.28311535595153,
+          "perSeed": [
+            28.5,
+            39.6,
+            23.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 30.5,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 31.433333333333334,
+          "sd": 7.165426249242493,
+          "perSeed": [
+            28.5,
+            39.6,
+            26.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.400000000000002,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 35.13333333333333,
+          "sd": 5.8586118947523165,
+          "perSeed": [
+            28.5,
+            39.6,
+            37.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 25.233333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 35.13333333333333,
+          "sd": 5.8586118947523165,
+          "perSeed": [
+            28.5,
+            39.6,
+            37.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 25.26666666666667,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            23.4,
+            28.5,
+            17.1,
+            2.2,
+            15.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            8.3,
+            39.6,
+            17.9,
+            36.2,
+            26.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            6,
+            23.4,
+            26.2,
+            37.3,
+            33.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-5-5",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 1.728856,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "claude-opus-5-5"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 32.06666666666667,
+          "sd": 20.353459984320438,
+          "perSeed": [
+            9.7,
+            37,
+            49.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 32.06666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 38.199999999999996,
+          "sd": 10.750348831549607,
+          "perSeed": [
+            28.1,
+            37,
+            49.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 22.400000000000002,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 38.199999999999996,
+          "sd": 10.750348831549607,
+          "perSeed": [
+            28.1,
+            37,
+            49.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 17.3,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 38.76666666666667,
+          "sd": 10.700155762106144,
+          "perSeed": [
+            28.1,
+            38.7,
+            49.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 24.400000000000002,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 38.76666666666667,
+          "sd": 10.700155762106144,
+          "perSeed": [
+            28.1,
+            38.7,
+            49.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.599999999999998,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            9.7,
+            28.1,
+            7.2,
+            22.8,
+            14.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            37,
+            21.4,
+            21,
+            38.7,
+            21.3
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            49.5,
+            17.7,
+            23.7,
+            11.7,
+            25.8
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-5-5",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 1.939788,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "claude-opus-5-5"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 8.833333333333334,
+          "sd": 3.685557397915997,
+          "perSeed": [
+            6,
+            7.5,
+            13
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 8.833333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 26.400000000000002,
+          "sd": 27.199816175849428,
+          "perSeed": [
+            8.5,
+            57.7,
+            13
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 22.066666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 62.13333333333335,
+          "sd": 6.296295206971586,
+          "perSeed": [
+            58.7,
+            69.4,
+            58.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 62.13333333333335,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 67.03333333333335,
+          "sd": 7.8232559291725465,
+          "perSeed": [
+            73.4,
+            69.4,
+            58.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 55.20000000000001,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 67.03333333333335,
+          "sd": 7.8232559291725465,
+          "perSeed": [
+            73.4,
+            69.4,
+            58.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 54.46666666666666,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            6,
+            8.5,
+            58.7,
+            73.4,
+            56.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            7.5,
+            57.7,
+            69.4,
+            49,
+            69.3
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            13,
+            0,
+            58.3,
+            43.2,
+            37.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-luna",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.0516345,
+      "formatErrors": 1,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-luna"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 23.900000000000002,
+          "sd": 10.953081758117213,
+          "perSeed": [
+            20.3,
+            36.2,
+            15.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 23.900000000000002,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 28.833333333333332,
+          "sd": 8.01394617734193,
+          "perSeed": [
+            20.3,
+            36.2,
+            30
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 27.099999999999998,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 31.166666666666668,
+          "sd": 4.563259069276403,
+          "perSeed": [
+            27.3,
+            36.2,
+            30
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 18.833333333333332,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 37.699999999999996,
+          "sd": 15.733086156250463,
+          "perSeed": [
+            27.3,
+            55.8,
+            30
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 28.999999999999996,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 38.63333333333333,
+          "sd": 14.86685351153139,
+          "perSeed": [
+            30.1,
+            55.8,
+            30
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 19.366666666666667,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            20.3,
+            19.8,
+            27.3,
+            17.9,
+            30.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            36.2,
+            31.5,
+            15.5,
+            55.8,
+            7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            15.2,
+            30,
+            13.7,
+            13.3,
+            21
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-luna",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.0547755,
+      "formatErrors": 1,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-luna"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 30.666666666666668,
+          "sd": 22.413017051109684,
+          "perSeed": [
+            19.1,
+            16.4,
+            56.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 30.666666666666668,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 37.86666666666667,
+          "sd": 16.93881144984303,
+          "perSeed": [
+            23.4,
+            33.7,
+            56.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 30.233333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 37.86666666666667,
+          "sd": 16.93881144984303,
+          "perSeed": [
+            23.4,
+            33.7,
+            56.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 14.699999999999998,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 39.43333333333333,
+          "sd": 16.574176701523772,
+          "perSeed": [
+            23.4,
+            38.4,
+            56.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 30.899999999999995,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 42.300000000000004,
+          "sd": 12.707084638106414,
+          "perSeed": [
+            32,
+            38.4,
+            56.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 23.166666666666668,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            19.1,
+            23.4,
+            18.9,
+            11.9,
+            32
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            16.4,
+            33.7,
+            22.7,
+            38.4,
+            2.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            56.5,
+            33.6,
+            2.5,
+            42.4,
+            34.8
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.7131,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "claude-sonnet-5-5"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "perSeed": [
+            0,
+            0,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 0.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 22.53333333333333,
+          "sd": 11.751737460194274,
+          "perSeed": [
+            36.1,
+            16,
+            15.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 22.53333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 36.56666666666666,
+          "sd": 18.28369036418341,
+          "perSeed": [
+            48.3,
+            45.9,
+            15.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 35.166666666666664,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 36.56666666666666,
+          "sd": 18.28369036418341,
+          "perSeed": [
+            48.3,
+            45.9,
+            15.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 14.1,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 36.56666666666666,
+          "sd": 18.28369036418341,
+          "perSeed": [
+            48.3,
+            45.9,
+            15.5
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 22.400000000000002,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            0,
+            36.1,
+            48.3,
+            0,
+            30.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            0,
+            16,
+            45.9,
+            27.4,
+            25.8
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            0,
+            15.5,
+            11.3,
+            14.9,
+            10.8
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.88299,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "claude-sonnet-5-5"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 12.9,
+          "sd": 11.190621073023605,
+          "perSeed": [
+            18.7,
+            20,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 12.9,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 16.966666666666665,
+          "sd": 15.671736768250458,
+          "perSeed": [
+            30.9,
+            20,
+            0
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 10.299999999999999,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 29.73333333333333,
+          "sd": 15.076582282909259,
+          "perSeed": [
+            47.1,
+            20,
+            22.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 28.5,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 36.23333333333333,
+          "sd": 14.32492001141135,
+          "perSeed": [
+            47.1,
+            20,
+            41.6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 32.5,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 40.46666666666667,
+          "sd": 7.266590213665094,
+          "perSeed": [
+            47.1,
+            32.7,
+            41.6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 34.73333333333334,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            18.7,
+            30.9,
+            47.1,
+            39,
+            36.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            20,
+            0,
+            16.3,
+            16.9,
+            32.7
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            0,
+            0,
+            22.1,
+            41.6,
+            35.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-sol",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.789805,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 39.6,
+          "sd": 19.051771571168914,
+          "perSeed": [
+            56.4,
+            43.5,
+            18.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 39.6,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 49.63333333333333,
+          "sd": 6.473278406907378,
+          "perSeed": [
+            56.4,
+            43.5,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 44.199999999999996,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 53.1,
+          "sd": 12.179080425056727,
+          "perSeed": [
+            66.8,
+            43.5,
+            49
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 44.86666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 58.0,
+          "sd": 10.213716267842964,
+          "perSeed": [
+            66.8,
+            46.8,
+            60.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 46.23333333333333,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 58.0,
+          "sd": 10.213716267842964,
+          "perSeed": [
+            66.8,
+            46.8,
+            60.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 36.53333333333333,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            56.4,
+            45.3,
+            66.8,
+            31.5,
+            48.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            43.5,
+            38.3,
+            39.4,
+            46.8,
+            39.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            18.9,
+            49,
+            28.4,
+            60.4,
+            21.9
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-sol",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.826685,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 33.9,
+          "sd": 7.104224095564555,
+          "perSeed": [
+            37.8,
+            25.7,
+            38.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 33.9,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 33.9,
+          "sd": 7.104224095564555,
+          "perSeed": [
+            37.8,
+            25.7,
+            38.2
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.366666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 37.23333333333333,
+          "sd": 2.0108041509140886,
+          "perSeed": [
+            37.8,
+            35,
+            38.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 35.300000000000004,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 49.03333333333333,
+          "sd": 18.51224819770234,
+          "perSeed": [
+            37.8,
+            70.4,
+            38.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 42.900000000000006,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 49.03333333333333,
+          "sd": 18.51224819770234,
+          "perSeed": [
+            37.8,
+            70.4,
+            38.9
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 24.166666666666668,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            37.8,
+            9.1,
+            32,
+            32.7,
+            33.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            25.7,
+            17.8,
+            35,
+            70.4,
+            3.3
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            38.2,
+            34.2,
+            38.9,
+            25.6,
+            36
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-haiku-5-5",
+      "mode": "no-notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "claude-haiku-5-5",
+      "mode": "notes",
+      "complete": false,
+      "attempts": 0,
+      "passes": 0,
+      "passRate": null,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 2,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 3,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 4,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        },
+        {
+          "attempt": 5,
+          "n": 0,
+          "mean": null,
+          "sd": null,
+          "perSeed": [],
+          "attemptPassRate": null,
+          "attemptScoreMean": null,
+          "everPass": null
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-astra",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 2,
+      "passRate": 0.13333333333333333,
+      "costUpperUSD": 3.5154,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-astra"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 52.76666666666666,
+          "sd": 22.32696426595728,
+          "perSeed": [
+            63.5,
+            67.7,
+            27.1
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 52.76666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 61.833333333333336,
+          "sd": 6.853709457901857,
+          "perSeed": [
+            63.5,
+            67.7,
+            54.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 45.366666666666674,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 75.03333333333335,
+          "sd": 6.789207121110187,
+          "perSeed": [
+            81.1,
+            67.7,
+            76.3
+          ],
+          "attemptPassRate": 0.3333333333333333,
+          "attemptScoreMean": 74.23333333333333,
+          "everPass": 0.3333333333333333
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 78.73333333333333,
+          "sd": 2.4006943440041106,
+          "perSeed": [
+            81.1,
+            78.8,
+            76.3
+          ],
+          "attemptPassRate": 0.3333333333333333,
+          "attemptScoreMean": 67.0,
+          "everPass": 0.6666666666666666
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 78.73333333333333,
+          "sd": 2.4006943440041106,
+          "perSeed": [
+            81.1,
+            78.8,
+            76.3
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 64.73333333333333,
+          "everPass": 0.6666666666666666
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            63.5,
+            62.2,
+            81.1,
+            62.2,
+            43
+          ],
+          "firstPass": 3,
+          "costToFirstPassUSD": 0.70295
+        },
+        {
+          "seed": 43,
+          "scores": [
+            67.7,
+            19.6,
+            65.3,
+            78.8,
+            76.3
+          ],
+          "firstPass": 4,
+          "costToFirstPassUSD": 0.9305
+        },
+        {
+          "seed": 44,
+          "scores": [
+            27.1,
+            54.3,
+            76.3,
+            60,
+            74.9
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-astra",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 5,
+      "passRate": 0.3333333333333333,
+      "costUpperUSD": 3.5839499999999997,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6-astra"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 61.166666666666664,
+          "sd": 16.95120448031152,
+          "perSeed": [
+            70.5,
+            71.4,
+            41.6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 61.166666666666664,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 71.60000000000001,
+          "sd": 11.901260437449471,
+          "perSeed": [
+            83.6,
+            71.4,
+            59.8
+          ],
+          "attemptPassRate": 0.3333333333333333,
+          "attemptScoreMean": 70.76666666666667,
+          "everPass": 0.3333333333333333
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 73.96666666666665,
+          "sd": 12.530895152914388,
+          "perSeed": [
+            83.6,
+            78.5,
+            59.8
+          ],
+          "attemptPassRate": 0.6666666666666666,
+          "attemptScoreMean": 72.60000000000001,
+          "everPass": 0.6666666666666666
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 74.06666666666666,
+          "sd": 12.646870495633829,
+          "perSeed": [
+            83.9,
+            78.5,
+            59.8
+          ],
+          "attemptPassRate": 0.3333333333333333,
+          "attemptScoreMean": 71.76666666666667,
+          "everPass": 0.6666666666666666
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 74.66666666666667,
+          "sd": 13.36874464313435,
+          "perSeed": [
+            85.7,
+            78.5,
+            59.8
+          ],
+          "attemptPassRate": 0.3333333333333333,
+          "attemptScoreMean": 72.53333333333333,
+          "everPass": 0.6666666666666666
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            70.5,
+            83.6,
+            82.5,
+            83.9,
+            85.7
+          ],
+          "firstPass": 2,
+          "costToFirstPassUSD": 0.47087500000000004
+        },
+        {
+          "seed": 43,
+          "scores": [
+            71.4,
+            68.9,
+            78.5,
+            73.5,
+            72.5
+          ],
+          "firstPass": 3,
+          "costToFirstPassUSD": 0.6989
+        },
+        {
+          "seed": 44,
+          "scores": [
+            41.6,
+            59.8,
+            56.8,
+            57.9,
+            59.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "mode": "no-notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.700175,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6.1-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 42.1,
+          "sd": 11.905040949110589,
+          "perSeed": [
+            42.5,
+            53.8,
+            30
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 42.1,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 59.366666666666674,
+          "sd": 14.648321860654667,
+          "perSeed": [
+            42.5,
+            68.9,
+            66.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 58.03333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 59.366666666666674,
+          "sd": 14.648321860654667,
+          "perSeed": [
+            42.5,
+            68.9,
+            66.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 48.26666666666667,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 64.26666666666667,
+          "sd": 10.562354535487499,
+          "perSeed": [
+            52.7,
+            73.4,
+            66.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 59.0,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 71.83333333333333,
+          "sd": 4.5566800780100145,
+          "perSeed": [
+            75.4,
+            73.4,
+            66.7
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 62.70000000000001,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            42.5,
+            38.5,
+            30.8,
+            52.7,
+            75.4
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            53.8,
+            68.9,
+            59.1,
+            73.4,
+            57.5
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            30,
+            66.7,
+            54.9,
+            50.9,
+            55.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "mode": "notes",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0.73439,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [
+        "gpt-6.1-sol"
+      ],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 42.800000000000004,
+          "sd": 20.588346218188583,
+          "perSeed": [
+            40.6,
+            64.4,
+            23.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 42.800000000000004,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 63.800000000000004,
+          "sd": 20.19108714259834,
+          "perSeed": [
+            40.6,
+            77.4,
+            73.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 62.900000000000006,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 66.06666666666668,
+          "sd": 16.28905563049416,
+          "perSeed": [
+            47.4,
+            77.4,
+            73.4
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 52.199999999999996,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 76.9,
+          "sd": 0.43588989435407194,
+          "perSeed": [
+            76.7,
+            77.4,
+            76.6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 68.63333333333334,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 76.9,
+          "sd": 0.43588989435407194,
+          "perSeed": [
+            76.7,
+            77.4,
+            76.6
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 57.76666666666667,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            40.6,
+            37.9,
+            47.4,
+            76.7,
+            53.2
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            64.4,
+            77.4,
+            61.9,
+            52.6,
+            68.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            23.4,
+            73.4,
+            47.3,
+            76.6,
+            52
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    },
+    {
+      "model": "CMA-ES",
+      "mode": "optimizer",
+      "complete": true,
+      "attempts": 15,
+      "passes": 0,
+      "passRate": 0.0,
+      "costUpperUSD": 0,
+      "formatErrors": 0,
+      "rejections": 0,
+      "notesErrors": 0,
+      "returnedModels": [],
+      "curves": [
+        {
+          "attempt": 1,
+          "n": 3,
+          "mean": 20.266666666666666,
+          "sd": 17.089567968012922,
+          "perSeed": [
+            10.4,
+            10.4,
+            40
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 20.266666666666666,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 2,
+          "n": 3,
+          "mean": 29.8,
+          "sd": 8.889881888979177,
+          "perSeed": [
+            23.7,
+            25.7,
+            40
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 18.599999999999998,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 3,
+          "n": 3,
+          "mean": 31.233333333333334,
+          "sd": 8.219691802819211,
+          "perSeed": [
+            23.7,
+            30,
+            40
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 21.7,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 4,
+          "n": 3,
+          "mean": 31.233333333333334,
+          "sd": 8.219691802819211,
+          "perSeed": [
+            23.7,
+            30,
+            40
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 14.200000000000001,
+          "everPass": 0.0
+        },
+        {
+          "attempt": 5,
+          "n": 3,
+          "mean": 32.43333333333333,
+          "sd": 8.212389014978124,
+          "perSeed": [
+            23.7,
+            33.6,
+            40
+          ],
+          "attemptPassRate": 0.0,
+          "attemptScoreMean": 16.433333333333334,
+          "everPass": 0.0
+        }
+      ],
+      "seeds": [
+        {
+          "seed": 42,
+          "scores": [
+            10.4,
+            23.7,
+            17.9,
+            4.3,
+            12.1
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 43,
+          "scores": [
+            10.4,
+            25.7,
+            30,
+            25.6,
+            33.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        },
+        {
+          "seed": 44,
+          "scores": [
+            40,
+            6.4,
+            17.2,
+            12.7,
+            3.6
+          ],
+          "firstPass": null,
+          "costToFirstPassUSD": null
+        }
+      ]
+    }
+  ],
+  "requestDiagnostics": [
+    {
+      "model": "gpt-5.5",
+      "planCalls": 45,
+      "truncatedPlans": 15,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-opus-4-8",
+      "planCalls": 2,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-5.5-pro",
+      "planCalls": 90,
+      "truncatedPlans": 90,
+      "reflectionCalls": 30,
+      "truncatedReflections": 1
+    },
+    {
+      "model": "claude-fable-5",
+      "planCalls": 0,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "chat-latest",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-sonnet-5",
+      "planCalls": 0,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-opus-5",
+      "planCalls": 0,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-fable-5-1",
+      "planCalls": 0,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-opus-5-5",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-6-luna",
+      "planCalls": 32,
+      "truncatedPlans": 2,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-6-sol",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "claude-haiku-5-5",
+      "planCalls": 0,
+      "truncatedPlans": 0,
+      "reflectionCalls": 0,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-6-astra",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "planCalls": 30,
+      "truncatedPlans": 0,
+      "reflectionCalls": 30,
+      "truncatedReflections": 0
+    }
+  ],
+  "completeModels": [
+    "gpt-6-astra",
+    "gpt-6.1-sol",
+    "claude-opus-5-5",
+    "chat-latest",
+    "gpt-5.5",
+    "gpt-6-sol",
+    "gpt-5.6-terra",
+    "gpt-6-luna",
+    "claude-sonnet-5-5",
+    "gpt-5.6-luna",
+    "gpt-5.6-sol",
+    "gpt-5.5-pro"
+  ],
+  "excludedFromRanking": [
+    "claude-opus-4-8",
+    "claude-fable-5",
+    "claude-sonnet-5",
+    "claude-opus-5",
+    "claude-fable-5-1",
+    "claude-haiku-5-5"
+  ]
+}

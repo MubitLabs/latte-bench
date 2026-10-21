@@ -1,0 +1,21 @@
+{
+  "runtime": {
+    "bun": "1.3.14",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "sourceFiles": 31,
+  "validAttempts": 330,
+  "physicalReplays": 345,
+  "formatErrors": 107,
+  "rejectedPlans": 30,
+  "providerErrorEpisodes": 2,
+  "passes": 7,
+  "calls": 799,
+  "costUpperUSD": 116.28945630000001,
+  "completedChargeUSD": 115.70782630000001,
+  "heldUnknownChargeUSD": 0.5816300000000001,
+  "capUSD": 500,
+  "memoryIsolation": "Every stored request checked against fresh allowed context; gateway internals not observable",
+  "noProviderCalls": true
+}

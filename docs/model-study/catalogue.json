@@ -1,0 +1,149 @@
+{
+  "selectedAt": "2026-10-21",
+  "cutoff": "2026-04-21",
+  "policy": "Gateway catalogues fetched 2026-10-21. General text models created since 2026-04-21 inclusive. Snapshot aliases deduplicated; audio, realtime, image and embeddings excluded. OpenAI and Anthropic only as requested. chat-latest is a rolling alias.",
+  "models": [
+    {
+      "id": "gpt-5.5",
+      "provider": "OpenAI",
+      "createdAt": "2026-04-22T02:27:27.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-opus-4-8",
+      "provider": "Anthropic",
+      "createdAt": "2026-05-28T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-5.5-pro",
+      "provider": "OpenAI",
+      "createdAt": "2026-04-22T21:45:49.000Z",
+      "api": "responses",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-fable-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-06-07T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "chat-latest",
+      "provider": "OpenAI",
+      "createdAt": "2026-05-02T06:50:02.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-sonnet-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-06-29T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "provider": "OpenAI",
+      "createdAt": "2026-06-23T15:30:58.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-opus-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-07-24T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "provider": "OpenAI",
+      "createdAt": "2026-06-23T15:27:39.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-fable-5-1",
+      "provider": "Anthropic",
+      "createdAt": "2026-08-28T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "provider": "OpenAI",
+      "createdAt": "2026-06-23T15:20:18.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-opus-5-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-09-21T16:24:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-6-luna",
+      "provider": "OpenAI",
+      "createdAt": "2026-09-14T17:15:02.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-09-28T00:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-6-sol",
+      "provider": "OpenAI",
+      "createdAt": "2026-09-14T17:12:17.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "provider": "Anthropic",
+      "createdAt": "2026-10-07T18:00:00Z",
+      "api": "anthropic",
+      "structuredOutput": {
+        "supported": true
+      }
+    },
+    {
+      "id": "gpt-6-astra",
+      "provider": "OpenAI",
+      "createdAt": "2026-08-27T18:00:04.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "provider": "OpenAI",
+      "createdAt": "2026-09-27T23:47:54.000Z",
+      "api": "chat",
+      "structuredOutput": null
+    }
+  ]
+}
