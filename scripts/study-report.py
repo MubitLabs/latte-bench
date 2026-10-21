@@ -52,48 +52,37 @@ with (O/'attempts.csv').open('w') as f:
  w=csv.writer(f,lineterminator="\n");w.writerow(['model','mode','milk_seed','attempt','outcome','score','passed','cost_upper_usd','format_errors','notes_error','returned_models'])
  for e in D['experiments']:
   for a in e['attempts']:w.writerow([e['model'],e['mode'],e['seed'],a['number'],a['outcome'],score(a) if a['evaluation'] else '',passed(a) if a['evaluation'] else '',a['costUpperUSD'],a['formatErrors'],a.get('notesError') or '', ';'.join(a.get('returnedModels',[]))])
-# Main README plate: deliberately composed rather than a default chart export.
-height=max(12.5,6.5+.48*len(models));fig=plt.figure(figsize=(12,height),facecolor=BG)
-fig.text(.065,.953,'LATTE BENCH   /   MODEL STUDY 01',fontsize=11,fontweight='bold',color=GREEN)
-fig.text(.065,.922,'A little memory.\nA better pour?',fontsize=36,fontweight='bold',linespacing=1.12,va='top')
-fig.text(.067,.815,'Heart · 3 seeds × 5 attempts · 4,096 output tokens per plan',fontsize=12,color=MUTED)
-ax=fig.add_axes([.78,.795,.15,.17]);cup(ax,check['reference']['surface']);fig.text(.795,.796,'CALIBRATED REFERENCE',fontsize=8,color=MUTED)
-# Compact metadata strip.
-for k,(value,label) in enumerate([(str(len(models)),'MODELS COMPLETED'),(str(V['validAttempts']),'VALID POURS'),(f"${V['costUpperUSD']:.2f}",'CONSERVATIVE COST'),(f"${V['capUSD']}",'SPEND CEILING')]):
- x=.065+k*.225;fig.text(x,.762,value,fontsize=26,fontweight='bold');fig.text(x,.741,label,fontsize=8,color=MUTED)
-fig.add_artist(plt.Line2D([.065,.94],[.718,.718],transform=fig.transFigure,color=LINE))
-fig.text(.065,.691,'How often did the cup pass?',fontsize=19,fontweight='bold')
-fig.text(.065,.666,'15 attempts per arm. Ranked by notes pass rate, then mean best score.',fontsize=10,color=MUTED)
-fig.text(.665,.691,'Best score after five attempts',fontsize=14,fontweight='bold')
-fig.text(.665,.666,'Mean across 3 seeds; whiskers show ±1 SD.',fontsize=9,color=MUTED)
-# Shared row alignment, label column inside axis.
-bottom=.19;top=.635;N=len(models);ax=fig.add_axes([.065,bottom,.56,top-bottom]);bx=fig.add_axes([.675,bottom,.245,top-bottom]);ys=np.arange(N)
-for q in [ax,bx]:q.set_facecolor(BG);q.spines[:].set_visible(False);q.set_ylim(N-.5,-.5);q.tick_params(left=False,labelleft=False,bottom=False,labelbottom=False)
-ax.set_xlim(-64,115);bx.set_xlim(0,103)
+# Minimal comparison: scores first, protocol details in the linked methodology.
+fig=plt.figure(figsize=(12,10.8),facecolor=BG)
+fig.text(.065,.935,'Latte Bench',fontsize=32,fontweight='bold')
+fig.text(.065,.889,'Model performance with and without saved feedback.',fontsize=13,color=INK)
+fig.text(.065,.846,'Notes = the model’s own summary of feedback, saved for its next attempt.',fontsize=11,color=MUTED)
+fig.text(.065,.819,'Without notes, each attempt starts with no past feedback.',fontsize=11,color=MUTED)
+fig.text(.065,.755,'Model',fontsize=11,fontweight='bold')
+fig.text(.405,.755,'Without notes',fontsize=11,fontweight='bold',ha='right',color=TAN)
+fig.text(.555,.755,'With notes',fontsize=11,fontweight='bold',ha='right',color=GREEN)
+fig.text(.66,.755,'Score change',fontsize=11,fontweight='bold')
+fig.text(.065,.727,'Mean best score / 100 after five attempts. Higher is better.',fontsize=10,color=MUTED)
+N=len(models);ax=fig.add_axes([.065,.19,.88,.51]);ax.set(xlim=(0,1),ylim=(N-.5,-.5));ax.axis('off')
 for i,m in enumerate(models):
- if i%2==0:
-  ax.axhspan(i-.46,i+.46,color=PAPER,zorder=0);bx.axhspan(i-.46,i+.46,color=PAPER,zorder=0)
- rejected_total=group(m,'no-notes')['rejections']+group(m,'notes')['rejections']
- ax.text(-62,i-(.12 if rejected_total else 0),pretty(m),va='center',fontsize=11.5,fontweight='bold')
- if rejected_total:ax.text(-62,i+.22,f'{rejected_total}/30 rejected plans',va='center',fontsize=7.5,color='#a63e34')
- for mode,dy,c in [('no-notes',-.18,TAN),('notes',.18,GREEN)]:
-  g=group(m,mode);val=100*g['passRate'];ax.barh(i+dy,val,height=.24,color=c,zorder=2)
-  ax.text(max(1,val)+2,i+dy,f"{g['passes']}/15",va='center',fontsize=10.5,color=c)
-  q=g['curves'][-1]
-  if g['rejections']==g['attempts']:
-   bx.plot(0,i+dy,marker='x',color='#a63e34',ms=7,clip_on=False);bx.text(6,i+dy,'No valid plan',va='center',fontsize=8,color='#a63e34')
-  else:bx.errorbar(q['mean'],i+dy,xerr=q['sd'],fmt='o',color=c,ms=5,elinewidth=1.3,capsize=2)
-for v in [0,25,50,75,100]:
- ax.axvline(v,color=LINE,lw=.7,zorder=0);ax.text(v,N-.05,f'{v}%',ha='center',fontsize=8,color=MUTED)
-for v in [0,50,100]:bx.axvline(v,color=LINE,lw=.7,zorder=0);bx.text(v,N-.05,str(v),ha='center',fontsize=8,color=MUTED)
-bx.axvline(78.26,color=GREEN,ls=(0,(2,3)),lw=.8,alpha=.5)
-fig.text(.065,.15,'●  No notes',fontsize=11,color=TAN);fig.text(.20,.15,'●  Agent notes',fontsize=11,color=GREEN)
-base=group('CMA-ES','optimizer');fig.text(.39,.15,f"CMA-ES baseline: {base['passes']}/15 passes · {base['curves'][-1]['mean']:.1f} mean best score",fontsize=10,color=MUTED)
-fig.text(.065,.108,'ONE PLAN. ONE POUR. FEEDBACK AFTERWARDS.',fontsize=9,fontweight='bold')
-fig.text(.065,.084,'Agent notes change the next prompt; no-notes receives no history. Changes to model weights are not measured.',fontsize=9,color=MUTED)
-fig.text(.065,.063,'Fixed output budget, including reasoning. Three seeds, one shape. Numerical passes can have weak notches.',fontsize=9,color=MUTED)
-fig.text(.065,.031,f"{len(missing)} restricted/incomplete routes excluded from rankings · frozen v0.7 scorer · actual 32×32 foam · 21 October 2026",fontsize=8,color=MUTED)
+ if i%2==0:ax.axhspan(i-.46,i+.46,color=PAPER,zorder=0)
+ ax.text(.012,i,pretty(m),va='center',fontsize=12,fontweight='bold')
+ a,b=group(m,'no-notes'),group(m,'notes')
+ if a['rejections']==a['attempts'] and b['rejections']==b['attempts']:
+  ax.text(.49,i,'No valid plan returned',va='center',ha='center',fontsize=10,color=MUTED)
+  continue
+ x,y=a['curves'][-1]['mean'],b['curves'][-1]['mean'];delta=y-x
+ ax.text(.386,i,f'{x:.1f}',ha='right',va='center',fontsize=14,color=TAN)
+ ax.text(.557,i,f'{y:.1f}',ha='right',va='center',fontsize=14,color=GREEN)
+ origin=.77;end=origin+delta*.004
+ ax.plot([origin,end],[i,i],color=GREEN if delta>=0 else TAN,lw=8,solid_capstyle='round',zorder=2)
+ ax.text(.975,i,f'{delta:+.1f}',ha='right',va='center',fontsize=11,color=GREEN if delta>=0 else TAN)
+ax.plot([.77,.77],[-.5,N-1.5],color=LINE,lw=1,zorder=0)
+fig.text(.065,.142,'7 of 11 evaluated models scored higher with notes.',fontsize=13,fontweight='bold')
+fig.text(.065,.106,'Same three milk seeds per model. Score combines shape overlap, contour fit and concavity.',fontsize=10,color=MUTED)
+fig.text(.065,.079,'Pro exhausted the fixed output limit. Full protocol, pass rates and uncertainty are in the report.',fontsize=10,color=MUTED)
 fig.savefig(O/'benchmark-report.png',dpi=180,facecolor=BG);fig.savefig(O/'benchmark-report.svg',facecolor=BG);plt.close(fig)
+base=group('CMA-ES','optimizer')
 # Per-model curves, constant axes and SD shading.
 cols=3;rows=math.ceil(len(models)/cols);fig,axes=plt.subplots(rows,cols,figsize=(12,2.75*rows+1.5),squeeze=False);fig.patch.set_facecolor(BG)
 for i,m in enumerate(models):
@@ -106,12 +95,12 @@ for i,m in enumerate(models):
   if rejects:ax.scatter(rejects,[y[k-1] for k in rejects],marker='x',s=65,color='#a63e34',zorder=5,clip_on=False)
   ax.fill_between(x,np.maximum(0,y-sd),np.minimum(100,y+sd),color=c,alpha=.12)
  ax.plot(range(1,6),[q['mean'] for q in base['curves']],':',color=MUTED,lw=1.2);ax.axhline(78.26,color=GREEN,ls=(0,(2,4)),alpha=.3,lw=.7)
- if i//cols==rows-1:ax.set_xlabel('Attempt budget',fontsize=9)
+ if i//cols==rows-1:ax.set_xlabel('Attempt',fontsize=9)
  if i%cols==0:ax.set_ylabel('Best-so-far score',fontsize=9)
 for ax in axes.flat[len(models):]:ax.axis('off')
 fig.subplots_adjust(left=.06,right=.97,top=.88,bottom=.09,hspace=.55,wspace=.25)
-fig.text(.06,.963,'Learning curves, one model at a time.',fontsize=25,fontweight='bold');fig.text(.06,.928,'Mean best-so-far ± sample SD across the same 3 milk seeds. Shared 0–100 axes.',fontsize=11,color=MUTED)
-fig.text(.06,.027,'● No notes',color=TAN,fontsize=10);fig.text(.18,.027,'● Agent notes',color=GREEN,fontsize=10);fig.text(.32,.027,'··· Cached CMA-ES',color=MUTED,fontsize=10);fig.text(.52,.027,'× Rejected slot · dotted green: quality floor (other gates also apply)',fontsize=9,color=MUTED)
+fig.text(.06,.963,'Score by attempt',fontsize=25,fontweight='bold');fig.text(.06,.928,'Best score so far, with and without notes. Shading shows variation across three seeds.',fontsize=11,color=MUTED)
+fig.text(.06,.027,'● Without notes',color=TAN,fontsize=10);fig.text(.21,.027,'● With notes',color=GREEN,fontsize=10);fig.text(.35,.027,'··· CMA-ES',color=MUTED,fontsize=10);fig.text(.53,.027,'× Rejected slot · dotted green: quality floor (other gates also apply)',fontsize=9,color=MUTED)
 fig.savefig(O/'learning-curves.png',dpi=180,facecolor=BG);plt.close(fig)
 # Exact pixel evidence, one PNG for every numerical pass and first/best per seed.
 (O/'passes').mkdir(exist_ok=True);(O/'examples').mkdir(exist_ok=True)
@@ -148,10 +137,28 @@ for g in groups:
 lines+=['','## Protocol and limits','','[Access/budget amendment](../../experiments/heart-model-study-amendment.md): access exclusions were made after initial compatibility outcomes. The [user-directed $500 amendment](../../experiments/heart-model-study-budget-500.md) reinstated Pro; every initial attempt and charge remains included.','','Same heart target, 33 bounded parameters, seeds 42–44, five sequential attempts per mode. Full-speed execution without mid-pour observation. Both modes write reflections; no-notes discards them. Notes uses only its own most recent replacement note. Volume and starting temperature are visible; flow, foam texture, spread and mixing are hidden.','',P['interface'],'',D.get('schedulingAmendment',''),'The parallel Pro lane was separately capped at $400; all earlier calls stayed in the original $100 lane. The report preserves both lane snapshots and every freeze identity.','',P['memory'],'',P['optimizer'],'','CMA-ES population is eight: this five-evaluation baseline ends before its first population update. It measures the initial search budget, not converged optimizer performance.','',P['limits'],'','Best-so-far curves can rise through repeated sampling alone. A rising curve is not itself evidence of learning. Compare the paired notes/no-notes arms; at attempt 1 their inputs are identical but their model samples are independent. Three seeds do not support a reliable significance claim.','', 'The 4,096-token plan budget includes hidden reasoning. A model that spends the allowance before returning JSON can be rejected without ever making a simulated pour. This is a fixed-budget controller comparison, not an unrestricted ranking of model intelligence. Rejected slots contribute zero to curves and are marked with a red cross; they have no simulated score.','', 'Quality is 100 × max(0, min(IoU, boundary F1) − 0.25 × mean raw foam density in the target’s concavity). Quality ≥78.26%, IoU ≥78.26%, precision ≥85.34%, boundary F1 ≥81.98%, plus all serving checks. Curves show best score, not necessarily a passing cup.','',f"{V['physicalReplays']} physical replays verified. {V['formatErrors']} format errors; {V['rejectedPlans']} rejected plans. Provider failures are excluded from model rankings, never presented as valid zero scores.",'','## Availability and billing','',P['selection'],'',P['pricing'],'','The initial $100 budget was raised by the user to $500. Pro was temporarily deferred, then resumed in a parallel $400 lane while the original lane remained capped at $100. Its original output-token limits were retained.','',f"Completed-call conservative estimate: ${V['completedChargeUSD']:.6f}; unknown-charge reservations: ${V['heldUnknownChargeUSD']:.6f}. These are token-based bounds, not invoices.",'','Sources: [OpenAI pricing](https://developers.openai.com/api/docs/pricing), [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing).','']
 for m in missing:lines.append(f"- **{m}**: {D['unavailable'].get(m,{}).get('reason','Incomplete under the shared cap')}")
 lines+=['','## Evidence','','[Per-attempt CSV](attempts.csv) · [Per-request token/cost ledger](calls.csv) · [Full summary](summary.json) · [Plans, scores and foam maps](evidence.json) · [Verification](verification.json) · [Every numerical pass](passes.json)','', 'Reproduce every published plan offline with `bun scripts/study-replay.js`. Regenerate these charts with `uv run scripts/study-report.py`. Neither command sends model requests.','','First valid and best pours for every evaluated seed and mode are in [examples](examples/). All numerical passes are in [passes](passes/). Rejected plans have no simulated foam map.','']
-lines+=['','## Visual review of every numerical pass','','All seven passing maps were inspected against the target. Two are marginal visual matches despite passing the frozen numerical scorer. No threshold was changed after seeing these results.','','![Every numerical pass, alongside the target](pass-contact-1.png)','','| Pour | Score | Visual review |','|---|---:|---|']
+lines+=['','## Visual review of every numerical pass','','All seven passing maps were inspected against the target. Two are marginal visual matches despite passing the frozen numerical scorer. No threshold was changed after seeing these results.','','![Every numerical pass](pass-contact-1.png)','','| Pour | Score | Visual review |','|---|---:|---|']
 for p in passes:
  lines.append(f"| [{pretty(p['model'])} · {p['mode']} · seed {p['seed']} · attempt {p['attempt']}]({p['png']}) | {p['score']:.1f}% | {p['review']} |")
-(O/'README.md').write_text('\n'.join(lines)+'\n')
+(O/'methodology.md').write_text('\n'.join(lines)+'\n')
+(O/'README.md').write_text('''# Latte Bench
+
+Can models improve a simulated latte pour using their own notes?
+
+**With notes:** the model saves a summary of feedback for its next attempt. **Without notes:** it receives no past feedback. Neither mode changes model weights.
+
+![Scores with and without notes](benchmark-report.png)
+
+Score is the mean best result after five attempts across three matched milk seeds. It measures shape overlap, contour fit and concavity on a 0–100 scale.
+
+Astra was the only model to pass: **5/15 pours with notes, 2/15 without**. Its average best score was lower with notes because one seed performed poorly. Two passing pours were weak visual matches.
+
+![Best score by attempt](learning-curves.png)
+
+The CMA-ES comparison uses five evaluations, before its first population update. Pro returned no valid plan within the fixed output limit. These results measure performance with saved feedback, not established learning or transfer.
+
+[Methodology and full results](methodology.md) · [Scores CSV](attempts.csv) · [Passing pours](passes.json) · [Replayable evidence](evidence.json)
+''')
 print(json.dumps(dict(completeModels=len(models),unavailable=missing,passes=len(passes),cost=V['costUpperUSD'])))
 
 # Keep generated vector markup free of trailing whitespace.
