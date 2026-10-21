@@ -1,0 +1,342 @@
+{
+  "schema": "heart-model-study/1",
+  "tag": "latte-bench-v0.7-multimodel-freeze",
+  "target": "heart",
+  "targetSeed": 42,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "attemptsPerSeed": 5,
+  "modes": [
+    "no-notes",
+    "notes"
+  ],
+  "models": [
+    {
+      "id": "gpt-5.5",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 5,
+        "output": 30
+      },
+      "ratesPerMillion": {
+        "input": 5,
+        "output": 30
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 5,
+        "output": 25
+      },
+      "ratesPerMillion": {
+        "input": 10,
+        "output": 25
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-5.5-pro",
+      "provider": "OpenAI",
+      "api": "responses",
+      "standardRates": {
+        "input": 30,
+        "output": 180
+      },
+      "ratesPerMillion": {
+        "input": 30,
+        "output": 180
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "medium"
+      }
+    },
+    {
+      "id": "claude-fable-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 10,
+        "output": 50
+      },
+      "ratesPerMillion": {
+        "input": 20,
+        "output": 50
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "chat-latest",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 5,
+        "output": 30
+      },
+      "ratesPerMillion": {
+        "input": 5,
+        "output": 30
+      },
+      "effort": {
+        "plan": null,
+        "notes": null
+      }
+    },
+    {
+      "id": "claude-sonnet-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 2,
+        "output": 10
+      },
+      "ratesPerMillion": {
+        "input": 4,
+        "output": 10
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 0.2,
+        "output": 1.2
+      },
+      "ratesPerMillion": {
+        "input": 0.5,
+        "output": 1.2
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-opus-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 5,
+        "output": 25
+      },
+      "ratesPerMillion": {
+        "input": 10,
+        "output": 25
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 2,
+        "output": 12
+      },
+      "ratesPerMillion": {
+        "input": 5,
+        "output": 12
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-fable-5-1",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 10,
+        "output": 50
+      },
+      "ratesPerMillion": {
+        "input": 20,
+        "output": 50
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 4,
+        "output": 20
+      },
+      "ratesPerMillion": {
+        "input": 10,
+        "output": 20
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-opus-5-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 4,
+        "output": 20
+      },
+      "ratesPerMillion": {
+        "input": 8,
+        "output": 20
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-6-luna",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "ratesPerMillion": {
+        "input": 0.25,
+        "output": 0.5
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 2,
+        "output": 10
+      },
+      "ratesPerMillion": {
+        "input": 4,
+        "output": 10
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-6-sol",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 2,
+        "output": 10
+      },
+      "ratesPerMillion": {
+        "input": 5,
+        "output": 10
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "provider": "Anthropic",
+      "api": "anthropic",
+      "standardRates": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "ratesPerMillion": {
+        "input": 0.2,
+        "output": 0.5
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-6-astra",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 10,
+        "output": 50
+      },
+      "ratesPerMillion": {
+        "input": 25,
+        "output": 50
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "provider": "OpenAI",
+      "api": "chat",
+      "standardRates": {
+        "input": 2,
+        "output": 10
+      },
+      "ratesPerMillion": {
+        "input": 5,
+        "output": 10
+      },
+      "effort": {
+        "plan": "medium",
+        "notes": "low"
+      }
+    }
+  ],
+  "capUSD": 100,
+  "concurrency": 6,
+  "maxTokens": {
+    "plan": 4096,
+    "notes": 2048
+  },
+  "formatRepairs": 2,
+  "selection": "Gateway catalogues fetched 2026-10-21. General text models created since 2026-04-21 inclusive. Snapshot aliases deduplicated; audio, realtime, image and embeddings excluded. OpenAI and Anthropic only as requested. chat-latest is a rolling alias.",
+  "pricingSources": [
+    "https://developers.openai.com/api/docs/pricing",
+    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "pricing": "Standard public rates, no gateway surcharge per user. Reserve all input at highest published cache-write price, all output including reasoning. Anthropic cache creation/read tokens added to fresh input. No explicit prompt caching requested. Errors retain full reservation, never retried automatically. Estimates, not invoices.",
+  "ordering": "Attempt rounds 1..5, then matched seed, then interleaved provider models and paired modes, reverse model/mode ordering on even rounds. Six concurrent independent episodes. Stop before reservation would exceed $100.",
+  "interface": "Identical prompts, physical space, client validation and two repairs. Anthropic unsupported numerical/length schema constraints moved to descriptions and checked client-side. Native adaptive thinking medium/low. OpenAI medium/low except Pro medium/medium and Instant chat-latest default. Equal output caps, not equal compute.",
+  "memory": "Fresh requests only. No-notes equals fresh target, current visible milk and parameter guide. Both arms reflect; control discards reflection. Notes carries its own latest replacement note only. No SDK memory, conversation IDs or previous response IDs. Gateway-side memory/routing not independently observable.",
+  "optimizer": "Reuse first five evaluations of frozen v0.7 CMA-ES seeds 42,43,44; identical source hashes, task, conditions and generic initialization. No reference warm start. Mark as cached baseline.",
+  "limits": "Heart only; practice milk schedules; no held-out shape/milk evaluation. Three seeds is exploratory, not a significance claim. Measures context adaptation, not weight training. Numerical passes can have a weak notch."
+}
