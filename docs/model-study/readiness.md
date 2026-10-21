@@ -4,6 +4,8 @@ latte/bench by mubit measures bounded open-loop planning and adaptation through 
 
 ## Control rate
 
+The fixed control rate and shared parameter space are intentional experimental controls. The benchmark holds the execution interface constant so comparisons focus on planning, learning from feedback through context, and optimization within the same constraints. It is not intended to rank model response speed or high-frequency motor control.
+
 Model latency does not affect a pour. The model returns one complete plan; the executor interpolates its six movement segments at 60 Hz with a fixed 1/60-second simulation step. Every controller receives the same 33-parameter space. Segment durations are rounded to simulation ticks.
 
 This removes a model-response-frequency advantage, but not representation limits or numerical sensitivity. Six straight segments constrain the available trajectories. Changing segment count, update frequency, or observation cadence defines a different benchmark configuration. Timestep convergence and ranking stability across simulation rates have not been established. The legacy interactive mode must be reported separately.
