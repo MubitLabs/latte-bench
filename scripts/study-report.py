@@ -11,8 +11,12 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Circle
 from PIL import Image, ImageDraw, ImageFont
 R=pathlib.Path(__file__).resolve().parent.parent; O=R/'docs/model-study'; D=json.loads((O/'evidence.json').read_text()); P=D['protocol']; V=D['verification']
-BG='#f3f1e9'; PAPER='#faf9f4'; INK='#263b2d'; MUTED='#737969'; GREEN='#41654c'; TAN='#bb8963'; LINE='#dddccf'
-plt.rcParams.update({'font.family':'DejaVu Sans','text.color':INK,'axes.labelcolor':MUTED,'xtick.color':MUTED,'ytick.color':MUTED,'font.size':10,'axes.edgecolor':LINE,'svg.fonttype':'none'})
+BG='#0e2a1f'; PAPER='#123324'; INK='#e3ecdf'; MUTED='#9ab2a2'; GREEN='#a5e2b5'; TAN='#b5c7ba'; LINE='#244636'
+from matplotlib import font_manager
+font_path=pathlib.Path('/System/Library/Fonts/Helvetica.ttc')
+if font_path.exists():font_manager.fontManager.addfont(str(font_path))
+FONT=font_manager.FontProperties(fname=str(font_path)).get_name() if font_path.exists() else 'DejaVu Sans'
+plt.rcParams.update({'font.family':FONT,'font.weight':'normal','axes.titleweight':'normal','text.color':INK,'axes.labelcolor':MUTED,'xtick.color':MUTED,'ytick.color':MUTED,'font.size':10,'axes.edgecolor':LINE,'svg.fonttype':'none'})
 check=json.loads((R/'docs/heart-frozen-v3/scorer-check.json').read_text()); target=check['target']
 def score(a):return (a.get('evaluation') or {}).get('score',0)
 def passed(a):return (a.get('evaluation') or {}).get('passed',False)
@@ -52,55 +56,60 @@ with (O/'attempts.csv').open('w') as f:
  w=csv.writer(f,lineterminator="\n");w.writerow(['model','mode','milk_seed','attempt','outcome','score','passed','cost_upper_usd','format_errors','notes_error','returned_models'])
  for e in D['experiments']:
   for a in e['attempts']:w.writerow([e['model'],e['mode'],e['seed'],a['number'],a['outcome'],score(a) if a['evaluation'] else '',passed(a) if a['evaluation'] else '',a['costUpperUSD'],a['formatErrors'],a.get('notesError') or '', ';'.join(a.get('returnedModels',[]))])
-# Minimal comparison: scores first, protocol details in the linked methodology.
-fig=plt.figure(figsize=(12,10.8),facecolor=BG)
-fig.text(.065,.935,'Latte Bench',fontsize=32,fontweight='bold')
-fig.text(.065,.889,'Model performance with and without saved feedback.',fontsize=13,color=INK)
-fig.text(.065,.846,'Notes = the model’s own summary of feedback, saved for its next attempt.',fontsize=11,color=MUTED)
-fig.text(.065,.819,'Without notes, each attempt starts with no past feedback.',fontsize=11,color=MUTED)
-fig.text(.065,.755,'Model',fontsize=11,fontweight='bold')
-fig.text(.405,.755,'Without notes',fontsize=11,fontweight='bold',ha='right',color=TAN)
-fig.text(.555,.755,'With notes',fontsize=11,fontweight='bold',ha='right',color=GREEN)
-fig.text(.66,.755,'Score change',fontsize=11,fontweight='bold')
-fig.text(.065,.727,'Mean best score / 100 after five attempts. Higher is better.',fontsize=10,color=MUTED)
-N=len(models);ax=fig.add_axes([.065,.19,.88,.51]);ax.set(xlim=(0,1),ylim=(N-.5,-.5));ax.axis('off')
+# Shareable overview: branding, definitions and one score comparison.
+fig=plt.figure(figsize=(14,9.5),facecolor=BG)
+fig.text(.05,.926,'latte/bench',fontsize=27,color=INK)
+fig.text(.202,.929,'by mubit',fontsize=11,color=MUTED)
+fig.text(.05,.755,'Model scores,\nwith and without\nsaved notes.',fontsize=29,color=INK,linespacing=1.28,va='top')
+fig.text(.05,.505,'Models plan a latte pour, then see\nthe resulting cup and score.',fontsize=13,color=MUTED,linespacing=1.55,va='top')
+fig.text(.05,.39,'with notes',fontsize=12,color=GREEN)
+fig.text(.05,.355,'The model writes a summary of feedback\nand uses it on its next attempt.',fontsize=11,color=MUTED,linespacing=1.5,va='top')
+fig.text(.05,.265,'without notes',fontsize=12,color=TAN)
+fig.text(.05,.23,'Each attempt starts with no past feedback.',fontsize=11,color=MUTED,va='top')
+fig.text(.05,.105,'7 / 11',fontsize=30,color=GREEN)
+fig.text(.05,.069,'evaluated models scored higher with notes',fontsize=10,color=MUTED)
+fig.add_artist(FancyBboxPatch((.43,.1),.53,.82,boxstyle='round,pad=0.012,rounding_size=0.015',transform=fig.transFigure,facecolor=PAPER,edgecolor=LINE,lw=.8,zorder=0))
+fig.text(.455,.866,'Best pour score',fontsize=20,color=INK)
+fig.text(.455,.831,'Mean best score / 100. Higher is better.',fontsize=11,color=MUTED)
+fig.text(.455,.774,'model',fontsize=10,color=MUTED)
+fig.text(.727,.774,'without notes',fontsize=10,color=TAN,ha='right')
+fig.text(.832,.774,'with notes',fontsize=10,color=GREEN,ha='right')
+fig.text(.932,.774,'change',fontsize=10,color=MUTED,ha='right')
+N=len(models);ax=fig.add_axes([.45,.178,.49,.56]);ax.set(xlim=(0,1),ylim=(N-.5,-.5));ax.axis('off')
 for i,m in enumerate(models):
- if i%2==0:ax.axhspan(i-.46,i+.46,color=PAPER,zorder=0)
- ax.text(.012,i,pretty(m),va='center',fontsize=12,fontweight='bold')
+ ax.axhline(i+.5,color=LINE,lw=.45)
+ ax.text(.01,i,pretty(m),va='center',fontsize=11,color=INK)
  a,b=group(m,'no-notes'),group(m,'notes')
  if a['rejections']==a['attempts'] and b['rejections']==b['attempts']:
-  ax.text(.49,i,'No valid plan returned',va='center',ha='center',fontsize=10,color=MUTED)
+  ax.text(.98,i,'no valid plan returned',va='center',ha='right',fontsize=10,color=MUTED)
   continue
  x,y=a['curves'][-1]['mean'],b['curves'][-1]['mean'];delta=y-x
- ax.text(.386,i,f'{x:.1f}',ha='right',va='center',fontsize=14,color=TAN)
- ax.text(.557,i,f'{y:.1f}',ha='right',va='center',fontsize=14,color=GREEN)
- origin=.77;end=origin+delta*.004
- ax.plot([origin,end],[i,i],color=GREEN if delta>=0 else TAN,lw=8,solid_capstyle='round',zorder=2)
- ax.text(.975,i,f'{delta:+.1f}',ha='right',va='center',fontsize=11,color=GREEN if delta>=0 else TAN)
-ax.plot([.77,.77],[-.5,N-1.5],color=LINE,lw=1,zorder=0)
-fig.text(.065,.142,'7 of 11 evaluated models scored higher with notes.',fontsize=13,fontweight='bold')
-fig.text(.065,.106,'Same three milk seeds per model. Score combines shape overlap, contour fit and concavity.',fontsize=10,color=MUTED)
-fig.text(.065,.079,'Pro exhausted the fixed output limit. Full protocol, pass rates and uncertainty are in the report.',fontsize=10,color=MUTED)
+ ax.text(.565,i,f'{x:.1f}',ha='right',va='center',fontsize=13,color=TAN)
+ ax.text(.78,i,f'{y:.1f}',ha='right',va='center',fontsize=13,color=GREEN)
+ ax.text(.984,i,f'{delta:+.1f}',ha='right',va='center',fontsize=11,color=GREEN if delta>=0 else TAN)
+fig.text(.455,.135,'Five attempts per run, averaged across three matched milk seeds.',fontsize=9,color=MUTED)
+fig.text(.455,.064,'Pro reached the output limit. Notes change context, not model weights.',fontsize=9,color=MUTED)
+fig.text(.96,.027,'latte bench by mubit',fontsize=9,color=MUTED,ha='right')
 fig.savefig(O/'benchmark-report.png',dpi=180,facecolor=BG);fig.savefig(O/'benchmark-report.svg',facecolor=BG);plt.close(fig)
 base=group('CMA-ES','optimizer')
 # Per-model curves, constant axes and SD shading.
 cols=3;rows=math.ceil(len(models)/cols);fig,axes=plt.subplots(rows,cols,figsize=(12,2.75*rows+1.5),squeeze=False);fig.patch.set_facecolor(BG)
 for i,m in enumerate(models):
- ax=axes.flat[i];ax.set_facecolor(PAPER);ax.spines[['top','right']].set_visible(False);ax.grid(axis='y',color=LINE,lw=.5);ax.set(ylim=(0,100),xlim=(.9,5.1),xticks=[1,2,3,4,5],yticks=[0,25,50,75,100]);ax.set_title(pretty(m),loc='left',fontweight='bold',fontsize=12,pad=12)
- if group(m,'no-notes')['rejections']+group(m,'notes')['rejections']==30:ax.text(.04,.93,'All 30 plans rejected',transform=ax.transAxes,color='#a63e34',fontsize=9,va='top')
+ ax=axes.flat[i];ax.set_facecolor(PAPER);ax.spines[['top','right']].set_visible(False);ax.grid(axis='y',color=LINE,lw=.5);ax.set(ylim=(0,100),xlim=(.9,5.1),xticks=[1,2,3,4,5],yticks=[0,25,50,75,100]);ax.set_title(pretty(m),loc='left',fontweight='normal',fontsize=12,pad=12)
+ if group(m,'no-notes')['rejections']+group(m,'notes')['rejections']==30:ax.text(.04,.93,'All 30 plans rejected',transform=ax.transAxes,color='#d0b594',fontsize=9,va='top')
  for mode,c in [('no-notes',TAN),('notes',GREEN)]:
   g=group(m,mode);y=np.array([q['mean'] for q in g['curves']]);sd=np.array([q['sd'] for q in g['curves']]);x=np.arange(1,6)
-  ax.plot(x,y,'o-',color=c,lw=2,ms=4)
+  ax.plot(x,y,'o-',color=c,lw=2,ms=4,markerfacecolor=PAPER if mode=='no-notes' else c)
   rejects=[k for k in range(1,6) if any(a['number']==k and a['outcome']=='Rejected' for e in D['experiments'] if e['model']==m and e['mode']==mode for a in e['attempts'])]
-  if rejects:ax.scatter(rejects,[y[k-1] for k in rejects],marker='x',s=65,color='#a63e34',zorder=5,clip_on=False)
+  if rejects:ax.scatter(rejects,[y[k-1] for k in rejects],marker='x',s=65,color='#d0b594',zorder=5,clip_on=False)
   ax.fill_between(x,np.maximum(0,y-sd),np.minimum(100,y+sd),color=c,alpha=.12)
  ax.plot(range(1,6),[q['mean'] for q in base['curves']],':',color=MUTED,lw=1.2);ax.axhline(78.26,color=GREEN,ls=(0,(2,4)),alpha=.3,lw=.7)
  if i//cols==rows-1:ax.set_xlabel('Attempt',fontsize=9)
  if i%cols==0:ax.set_ylabel('Best-so-far score',fontsize=9)
 for ax in axes.flat[len(models):]:ax.axis('off')
 fig.subplots_adjust(left=.06,right=.97,top=.88,bottom=.09,hspace=.55,wspace=.25)
-fig.text(.06,.963,'Score by attempt',fontsize=25,fontweight='bold');fig.text(.06,.928,'Best score so far, with and without notes. Shading shows variation across three seeds.',fontsize=11,color=MUTED)
-fig.text(.06,.027,'● Without notes',color=TAN,fontsize=10);fig.text(.21,.027,'● With notes',color=GREEN,fontsize=10);fig.text(.35,.027,'··· CMA-ES',color=MUTED,fontsize=10);fig.text(.53,.027,'× Rejected slot · dotted green: quality floor (other gates also apply)',fontsize=9,color=MUTED)
+fig.text(.06,.963,'latte/bench  ·  score by attempt',fontsize=25,fontweight='normal');fig.text(.97,.965,'by mubit',fontsize=10,color=MUTED,ha='right');fig.text(.06,.928,'Best score so far, with and without notes. Shading shows variation across three seeds.',fontsize=11,color=MUTED)
+fig.text(.06,.027,'Without notes',color=TAN,fontsize=10);fig.add_artist(plt.Line2D([.05],[.031],transform=fig.transFigure,marker='o',markerfacecolor=PAPER,markeredgecolor=TAN,markersize=4,linestyle='none'));fig.text(.21,.027,'● With notes',color=GREEN,fontsize=10);fig.text(.35,.027,'··· CMA-ES',color=MUTED,fontsize=10);fig.text(.53,.027,'× Rejected slot · dotted green: quality floor (other gates also apply)',fontsize=9,color=MUTED)
 fig.savefig(O/'learning-curves.png',dpi=180,facecolor=BG);plt.close(fig)
 # Exact pixel evidence, one PNG for every numerical pass and first/best per seed.
 (O/'passes').mkdir(exist_ok=True);(O/'examples').mkdir(exist_ok=True)
@@ -140,18 +149,20 @@ lines+=['','## Evidence','','[Per-attempt CSV](attempts.csv) · [Per-request tok
 lines+=['','## Visual review of every numerical pass','','All seven passing maps were inspected against the target. Two are marginal visual matches despite passing the frozen numerical scorer. No threshold was changed after seeing these results.','','![Every numerical pass](pass-contact-1.png)','','| Pour | Score | Visual review |','|---|---:|---|']
 for p in passes:
  lines.append(f"| [{pretty(p['model'])} · {p['mode']} · seed {p['seed']} · attempt {p['attempt']}]({p['png']}) | {p['score']:.1f}% | {p['review']} |")
-(O/'methodology.md').write_text('\n'.join(lines)+'\n')
-(O/'README.md').write_text('''# Latte Bench
+(O/'methodology.md').write_text('\n'.join(lines).replace('**','')+'\n')
+(O/'README.md').write_text('''# latte/bench
+
+latte bench by mubit
 
 Can models improve a simulated latte pour using their own notes?
 
-**With notes:** the model saves a summary of feedback for its next attempt. **Without notes:** it receives no past feedback. Neither mode changes model weights.
+With notes: the model saves a summary of feedback for its next attempt. Without notes: it receives no past feedback. Neither mode changes model weights.
 
 ![Scores with and without notes](benchmark-report.png)
 
 Score is the mean best result after five attempts across three matched milk seeds. It measures shape overlap, contour fit and concavity on a 0–100 scale.
 
-Astra was the only model to pass: **5/15 pours with notes, 2/15 without**. Its average best score was lower with notes because one seed performed poorly. Two passing pours were weak visual matches.
+Astra was the only model to pass: 5/15 pours with notes, 2/15 without. Its average best score was lower with notes because one seed performed poorly. Two passing pours were weak visual matches.
 
 ![Best score by attempt](learning-curves.png)
 

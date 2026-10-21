@@ -1,17 +1,19 @@
-# Latte Bench
+# latte/bench
+
+latte bench by mubit
 
 A benchmark for model planning and adaptation in a simulated latte pour.
 
 <!-- MODEL-STUDY-START -->
 ## Results
 
-**With notes:** the model saves a summary of feedback for its next attempt. **Without notes:** it receives no past feedback.
+With notes: the model saves a summary of feedback for its next attempt. Without notes: it receives no past feedback.
 
-![Latte Bench: scores with and without notes](docs/model-study/benchmark-report.png)
+![latte/bench by mubit: scores with and without notes](docs/model-study/benchmark-report.png)
 
 Score is the mean best result after five attempts across three matched milk seeds. Notes help some models, but not all; these results do not establish learning or transfer.
 
-[**Full results →**](docs/model-study/README.md) · [Methodology](docs/model-study/methodology.md) · [Scores CSV](docs/model-study/attempts.csv)
+[Full results →](docs/model-study/README.md) · [Methodology](docs/model-study/methodology.md) · [Scores CSV](docs/model-study/attempts.csv)
 <!-- MODEL-STUDY-END -->
 
 ## Run

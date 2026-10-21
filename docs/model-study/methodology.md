@@ -1,6 +1,6 @@
 # Multi-model heart study
 
-Frozen protocol: `latte-bench-v0.7-multimodel-freeze`. 12 complete model routes, 330 valid pours. Conservative cost including held error reservations: **$116.2895 / $500**.
+Frozen protocol: `latte-bench-v0.7-multimodel-freeze`. 12 complete model routes, 330 valid pours. Conservative cost including held error reservations: $116.2895 / $500.
 
 ![Model comparison](benchmark-report.png)
 
@@ -21,9 +21,9 @@ Frozen protocol: `latte-bench-v0.7-multimodel-freeze`. 12 complete model routes,
 | GPT-5.6 Sol | 0/15 | 0/15 | 41.0 ± 25.3 | 35.1 ± 5.9 | 0/30 | 0/30 | $3.858 |
 | GPT-5.5 Pro | 0/15 | 0/15 | No valid plan | No valid plan | 30/30 | 1/30 | $86.173 |
 
-Astra was the only route with numerical passes: **5/15 with notes versus 2/15 without notes**. Its mean best score was nevertheless lower with notes (**74.7 versus 78.7**) because one seed performed poorly. Notes did not improve every model; these three-seed results are exploratory.
+Astra was the only route with numerical passes: 5/15 with notes versus 2/15 without notes. Its mean best score was nevertheless lower with notes (74.7 versus 78.7) because one seed performed poorly. Notes did not improve every model; these three-seed results are exploratory.
 
-GPT-5.5 Pro returned no valid plan in any of its 30 attempt slots: all 90 plan submissions exhausted the 4,096-token output allowance. Its conservative cost was **$86.17344**. This measures a failure under this output budget, not its unrestricted pouring ability.
+GPT-5.5 Pro returned no valid plan in any of its 30 attempt slots: all 90 plan submissions exhausted the 4,096-token output allowance. Its conservative cost was $86.17344. This measures a failure under this output budget, not its unrestricted pouring ability.
 
 
 ## Success across the three milk seeds
@@ -95,12 +95,12 @@ Completed-call conservative estimate: $115.707826; unknown-charge reservations: 
 
 Sources: [OpenAI pricing](https://developers.openai.com/api/docs/pricing), [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing).
 
-- **claude-opus-4-8**: Provider access error (starter_credit_model): The starter credit serves these Anthropic models on this route: claude-opus-5-5, claude-sonnet-5-5, claude-haiku-4-5, claude-haiku-4-5-20251001. Name one of them as the model, or add your own Anthropic key under Provider keys in the console to use another.
-- **claude-fable-5**: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
-- **claude-sonnet-5**: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
-- **claude-opus-5**: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
-- **claude-fable-5-1**: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
-- **claude-haiku-5-5**: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
+- claude-opus-4-8: Provider access error (starter_credit_model): The starter credit serves these Anthropic models on this route: claude-opus-5-5, claude-sonnet-5-5, claude-haiku-4-5, claude-haiku-4-5-20251001. Name one of them as the model, or add your own Anthropic key under Provider keys in the console to use another.
+- claude-fable-5: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
+- claude-sonnet-5: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
+- claude-opus-5: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
+- claude-fable-5-1: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
+- claude-haiku-5-5: Not dispatched: gateway starter-credit policy returned by the Opus 4.8 request explicitly permits only Opus 5.5, Sonnet 5.5, and older Haiku 4.5. No Anthropic provider key is configured for other models.
 
 ## Evidence
 
