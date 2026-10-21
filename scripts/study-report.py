@@ -168,7 +168,9 @@ Astra was the only model to pass: 5/15 pours with notes, 2/15 without. Its avera
 
 The CMA-ES comparison uses five evaluations, before its first population update. Pro returned no valid plan within the fixed output limit. These results measure performance with saved feedback, not established learning or transfer.
 
-[Methodology and full results](methodology.md) · [Scores CSV](attempts.csv) · [Passing pours](passes.json) · [Replayable evidence](evidence.json)
+[Methodology and full results](methodology.md) · [Scores CSV](attempts.csv) · [Passing pours](passes.json) · [Replayable evidence](evidence.json) · [Parameter explorer](parameter-audit.html) · [Parameter CSV](parameter-changes.csv) · [Scope and readiness](readiness.md)
+
+The parameter explorer is a self-contained HTML file: download and open it locally. GitHub shows its source. Regenerate it with `bun scripts/parameter-audit.js`; no API calls are made.
 ''')
 print(json.dumps(dict(completeModels=len(models),unavailable=missing,passes=len(passes),cost=V['costUpperUSD'])))
 

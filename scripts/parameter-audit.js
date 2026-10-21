@@ -1,0 +1,14 @@
+import {PLAN_PARAMETER_GUIDE,SPACE_HASH} from '../src/plans.js';
+import {parameterAudit} from './lib/parameter-audit.js';
+const dir='docs/model-study',source=await Bun.file(dir+'/evidence.json').json();
+const experiments=parameterAudit(source.experiments,PLAN_PARAMETER_GUIDE);
+const data={schema:'parameter-audit/1',spaceHash:SPACE_HASH,epsilon:1e-9,parameters:PLAN_PARAMETER_GUIDE,experiments};
+await Bun.write(dir+'/parameter-audit.json',JSON.stringify(data));
+const columns=['model','mode','seed','attempt','outcome','score','previous_attempt','parameter_index','parameter','unit','normalized','physical','normalized_delta','physical_delta','score_change','environment_changed'];
+const cell=v=>'"'+String(v??'').replaceAll('"','""')+'"',rows=[columns.join(',')];
+for(const e of experiments)for(const a of e.attempts)for(const [i,p]of PLAN_PARAMETER_GUIDE.entries())rows.push([e.model,e.mode,e.seed,a.number,a.outcome,a.score,a.previousAttempt,i,p.name,p.unit,a.values?.[i],a.physical?.[i],a.delta?.[i],a.physicalDelta?.[i],a.scoreChange,a.environmentChanged].map(cell).join(','));
+await Bun.write(dir+'/parameter-changes.csv',rows.join('\n')+'\n');
+const template=await Bun.file('scripts/parameter-audit.html').text();
+await Bun.write(dir+'/parameter-audit.html',template.replace('/*DATA*/{}',JSON.stringify(data).replaceAll('<','\\u003c')));
+const all=experiments.flatMap(e=>e.attempts),comparable=all.filter(a=>a.delta);
+console.log(JSON.stringify({attempts:all.length,validPlans:all.filter(a=>a.values).length,adjacentComparisons:comparable.length,missingPlans:all.filter(a=>!a.values).length,csvRows:rows.length-1,providerCalls:0}));

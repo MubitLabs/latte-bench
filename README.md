@@ -13,7 +13,7 @@ With notes: the model saves a summary of feedback for its next attempt. Without 
 
 Score is the mean best result after five attempts across three matched milk seeds. Notes help some models, but not all; these results do not establish learning or transfer.
 
-[Full results →](docs/model-study/README.md) · [Methodology](docs/model-study/methodology.md) · [Scores CSV](docs/model-study/attempts.csv)
+[Full results →](docs/model-study/README.md) · [Methodology](docs/model-study/methodology.md) · [Scores CSV](docs/model-study/attempts.csv) · [Parameter changes](docs/model-study/parameter-audit.html)
 <!-- MODEL-STUDY-END -->
 
 ## Run
